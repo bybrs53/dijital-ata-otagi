@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ata Obası - Dijital Kültür ve Bilgi Platformu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons for Historical & Modern Vibe -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obaBg: '#0b0d10',
+                        obaCard: '#12151c',
+                        obaGold: '#d4af37',
+                        obaGoldHover: '#f3e5ab',
+                        obaBronze: '#cd7f32',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght=500;700;900&family=Plus+Jakarta+Sans:wght=300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0d10;
+        }
+        .historical-font {
+            font-family: 'Cinzel', serif;
+        }
+        /* Özel Kaydırma Çubuğu */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090b0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 3px;
+        }
+        /* Işıma Efektleri */
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- 1. GİRİŞ SINAVI VE KATILIM EKRANI (OVERLAY) -->
+    <div id="quiz-overlay" class="fixed inset-0 z-50 bg-obaBg flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-obaCard border-2 border-obaGold rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(212,175,55,0.15)] relative">
+            
+            <div class="text-center mb-8">
+                <span class="text-4xl mb-2 block">⛺</span>
+                <h1 class="historical-font text-3xl md:text-4xl font-extrabold text-obaGold tracking-wider text-glow">ATA OBASI</h1>
+                <p class="text-sm text-gray-400 mt-2">Toy Meclisi'ne katılmak ve kutlu otağa geçmek için Oba Kapısı sınavını tamamlamalısın.</p>
+                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-obaGold to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <!-- Soru Akışı Konteyneri -->
+            <div id="quiz-container" class="space-y-6">
+                <!-- Soru Göstergeci -->
+                <div class="flex justify-between items-center text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                    <span id="question-index">Soru 1 / 4</span>
+                    <span id="score-counter" class="text-obaGold">Puan: 0</span>
+                </div>
+
+                <!-- Aktif Soru Kartı -->
+                <div id="question-card" class="bg-black/40 p-5 rounded-xl border border-gray-800">
+                    <h3 id="question-text" class="text-lg font-medium text-white mb-4 leading-relaxed">Soru yükleniyor...</h3>
+                    <div id="options-grid" class="grid grid-cols-1 gap-3">
+                        <!-- Seçenekler dinamik yüklenecek -->
+                    </div>
+                </div>
+
+                <!-- Sonuç Bildirimi (Gizli) -->
+                <div id="quiz-feedback" class="hidden text-center p-3 rounded-lg text-sm font-semibold"></div>
+
+                <div class="flex justify-between items-center pt-2">
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden ml-auto px-6 py-2.5 bg-obaGold text-black font-bold rounded-lg hover:bg-obaGoldHover transition-all flex items-center gap-2">
+                        Sonraki Soru <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button id="enter-otag-btn" onclick="showCoronation()" class="hidden w-full py-4 bg-gradient-to-r from-obaBronze to-obaGold text-black font-extrabold text-lg rounded-xl hover:brightness-110 transition-all shadow-lg shadow-obaGold/10 flex justify-center items-center gap-2">
+                        <span>🛡️ Oba Kapısından Geç</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Obaya Katılım Konteyneri (Şifre Destekli) -->
+            <div id="coronation-container" class="hidden space-y-6 text-center py-4">
+                <span class="text-6xl animate-bounce block">⛺</span>
+                <h3 class="historical-font text-2xl md:text-3xl font-extrabold text-obaGold tracking-wide text-glow">Kutlu Olsun, Sınavı Tamamladın!</h3>
+                <p class="text-sm md:text-base text-gray-300 max-w-md mx-auto leading-relaxed">
+                    Obamıza hoş geldin yoldaş! Toy Meclisi seni bekler. Unvanını gir, cinsiyetini seç ve kutlu obaya katıl! (Yetkililer şifrelerini yazarak giriş yapabilir).
+                </p>
+                <div class="max-w-md mx-auto space-y-4 pt-2">
+                    <input id="bey-name-input" type="text" placeholder="Unvanın veya Yetkili Şifren..." class="w-full bg-black/60 border-2 border-obaGold rounded-xl px-4 py-3.5 text-center text-xl font-bold text-white focus:outline-none focus:border-obaGoldHover placeholder-gray-600 transition-all shadow-inner" value="Yoldaş">
+                    
+                    <!-- Cinsiyet Seçimi Paneli -->
+                    <div class="flex justify-center gap-4 text-sm font-semibold">
+                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-3 rounded-xl hover:border-obaGold transition-all select-none">
+                            <input type="radio" name="gender-selection" value="erkek" checked class="accent-obaGold w-4 h-4"> 
+                            <span>♂️ Erkek (Alp)</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-3 rounded-xl hover:border-obaGold transition-all select-none">
+                            <input type="radio" name="gender-selection" value="kiz" class="accent-obaGold w-4 h-4"> 
+                            <span>♀️ Kız (Asena)</span>
+                        </label>
+                    </div>
+
+                    <button onclick="unlockOtag()" class="w-full py-4 bg-gradient-to-r from-obaGold via-yellow-500 to-obaBronze text-black font-extrabold text-lg rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-obaGold/20 flex justify-center items-center gap-2">
+                        ⛺ Obaya Katıl
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN PLATFORM (BAŞLANGIÇTA GİZLİ) -->
+    <div id="main-platform" class="hidden flex-1 flex flex-col">
+        <!-- ÜST NAVİGASYON -->
+        <header class="bg-black/60 border-b border-gray-800 backdrop-blur-md sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex flex-col items-start gap-1.5 w-full md:w-auto">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">⛺</span>
+                        <span class="historical-font text-xl md:text-2xl font-bold text-obaGold tracking-wider text-glow">ATA OBASI</span>
+                    </div>
+                    <!-- Sabit Oba Yetkilileri Rozeti -->
+                    <div class="flex items-center gap-2 text-[10px] text-gray-300 font-semibold tracking-wider bg-black/40 px-2.5 py-1 rounded-lg border border-obaGold/30 shadow-inner">
+                        <span class="text-obaGold flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> Oba Yetkilileri:</span>
+                        <span class="text-amber-500 font-bold">Baybars Han</span>
+                        <span class="text-gray-600">&</span>
+                        <span class="text-purple-400 font-bold">Börteçine Hatun</span>
+                    </div>
+                </div>
+                
+                <!-- OBA KOPUZ/DOMBRA MÜZİK ÇALARI -->
+                <div class="bg-black/40 border border-obaGold/30 rounded-xl px-4 py-2 flex items-center gap-3 w-full md:w-auto">
+                    <div class="text-xs">
+                        <p class="text-obaGold font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-music animate-pulse"></i> <span>Kopuz Ezgileri</span>
+                        </p>
+                        <p id="now-playing-title" class="text-[10px] text-gray-400 max-w-[150px] truncate">Müzik durduruldu</p>
+                    </div>
+                    <div class="flex items-center gap-2 ml-auto">
+                        <button onclick="prevTrack()" class="text-gray-400 hover:text-obaGold text-xs px-1.5 py-1 transition-colors"><i class="fa-solid fa-backward"></i></button>
+                        <button id="play-pause-btn" onclick="togglePlayMusic()" class="bg-obaGold text-black text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center hover:brightness-110 transition-all"><i class="fa-solid fa-play"></i></button>
+                        <button onclick="nextTrack()" class="text-gray-400 hover:text-obaGold text-xs px-1.5 py-1 transition-colors"><i class="fa-solid fa-forward"></i></button>
+                    </div>
+                </div>
+
+                <!-- SAĞ ÜST KÖŞE: GÖRKEMLİ OBA KÜTÜPHANESİ VE SİNEMA MERKEZİ -->
+                <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+                    <button onclick="openLibrary()" class="bg-gradient-to-r from-amber-600 via-obaGold to-yellow-500 text-black text-xs md:text-sm px-5 py-3 rounded-xl flex items-center gap-2 glow-gold font-extrabold transition-all hover:scale-105 active:scale-95" title="Oba Kütüphanesi">
+                        <i class="fa-solid fa-book-open text-base"></i> <span>📖 OBA KÜTÜPHANESİ</span>
+                    </button>
+                    <button onclick="openCinema()" class="bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs md:text-sm px-5 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-red-600/25 font-extrabold transition-all hover:scale-105 active:scale-95" title="Oba Sineması">
+                        <i class="fa-solid fa-film text-base"></i> <span>🎥 OBA SİNEMASI</span>
+                    </button>
+                    <button onclick="relockOtag()" class="text-gray-400 hover:text-red-400 transition-colors p-2" title="Obadan Çık">
+                        <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MERKEZİ PANEL -->
+        <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full flex flex-col gap-8">
+            <!-- Karşılama Banner'ı -->
+            <div class="bg-gradient-to-r from-obaCard to-black/30 border border-obaGold/20 rounded-2xl p-6 md:p-8 relative overflow-hidden shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 opacity-5 text-9xl historical-font pointer-events-none text-obaGold">🏹</div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="text-xs uppercase tracking-widest text-obaGold font-semibold">Toy Kurultayı</span>
+                    <h2 id="welcome-title" class="historical-font text-3xl font-extrabold text-white mt-1">Ata Obası Meclis Meydanı</h2>
+                    <p id="welcome-desc" class="text-gray-400 mt-2 text-sm md:text-base leading-relaxed">
+                        Kutlu obamıza hoş geldin yoldaş. Aşağıdaki meclis kayıt panelinden yeni meclis odaları oluşturabilir, yanındaki sadık oba yetkililerin **Baybars Han** ve **Börteçine Hatun** ile meclis kurabilir, fermanlar salabilirsin.
+                    </p>
+                </div>
+            </div>
+
+            <!-- MECLİS ODALARI PANELİ VE YENİ MECLİS FORMU -->
+            <div id="lobby-view" class="space-y-8">
+                <!-- Yeni Meclis Kayıt Kartı -->
+                <div class="bg-gradient-to-b from-[#1b1e26] to-obaCard border border-obaGold/30 rounded-2xl p-6 shadow-xl">
+                    <h3 class="historical-font text-xl font-bold text-obaGold mb-4 flex items-center gap-2 text-glow">
+                        <i class="fa-solid fa-scroll text-amber-500"></i> Yeni Toy Meclisi Kur ve Kaydet (Yetkili Sadece)
+                    </h3>
+                    <form onsubmit="handleCreateRoom(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Meclis Adı (Oda İsmi)</label>
+                            <input id="new-room-name" type="text" placeholder="Örn: Göktürk İnanışları ve Kültürü" required class="w-full bg-black/40 border border-gray-700 focus:border-obaGold rounded-xl px-4 py-3 text-white text-sm focus:outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Kategori</label>
+                            <select id="new-room-category" class="w-full bg-black/40 border border-gray-700 focus:border-obaGold rounded-xl px-4 py-3 text-white text-sm focus:outline-none transition-all">
+                                <option value="Cumhuriyet Tarihi">Cumhuriyet Tarihi</option>
+                                <option value="İlk Çağlar ve Bozkır">İlk Çağlar ve Bozkır</option>
+                                <option value="Yakın Dönem">Yakın Dönem</option>
+                                <option value="Kültür & Sanat">Kültür & Sanat</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full py-3 bg-gradient-to-r from-obaGold to-amber-500 text-black font-extrabold text-sm rounded-xl hover:brightness-110 active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg shadow-obaGold/10">
+                                <i class="fa-solid fa-circle-plus"></i> Meclis Kaydet ve Aç
+                            </button>
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Meclis Konusu (Kısa Açıklama)</label>
+                            <input id="new-room-desc" type="text" placeholder="Örn: Bilgeler meclisinde Bozkır kültürünü ve kadim adetlerimizi tartışıyoruz." required class="w-full bg-black/40 border border-gray-700 focus:border-obaGold rounded-xl px-4 py-3 text-white text-sm focus:outline-none transition-all">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Aktif Meclisler Başlığı -->
+                <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                    <h3 class="historical-font text-2xl font-bold text-gray-200 flex items-center gap-2">
+                        <i class="fa-solid fa-users text-obaGold text-xl"></i> Aktif Toy Meclisleri
+                    </h3>
+                    <span class="text-sm text-gray-400" id="total-rooms-indicator">Henüz kurulan meclis yok</span>
+                </div>
+
+                <!-- Dinamik Meclis Listesi -->
+                <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Dinamik olarak JS tarafından doldurulacak -->
+                </div>
+            </div>
+
+            <!-- 2. AKTİF ODA SİMÜLASYONU -->
+            <div id="room-view" class="hidden flex-1 flex flex-col lg:flex-row gap-6">
+                <!-- Sol Panel: Sohbet & Konferans Akışı -->
+                <div class="flex-1 bg-obaCard border border-gray-800 rounded-xl flex flex-col justify-between h-[650px] shadow-2xl">
+                    <!-- Oda Başlığı -->
+                    <div class="p-4 border-b border-gray-800 flex items-center justify-between bg-black/20 rounded-t-xl">
+                        <div class="flex items-center gap-3">
+                            <button onclick="leaveRoom()" class="text-gray-400 hover:text-white mr-2">
+                                <i class="fa-solid fa-arrow-left text-lg"></i>
+                            </button>
+                            <div>
+                                <h4 id="active-room-title" class="text-lg font-bold text-obaGold historical-font text-glow">Oda İsmi</h4>
+                                <p class="text-xs text-green-400 flex items-center gap-1 mt-0.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping"></span>
+                                    <span>Toy Meclisi Kuruldu • Oba Yetkilileri Obada</span>
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="leaveRoom()" class="px-3 py-1.5 bg-red-950/40 text-red-400 border border-red-900/40 text-xs rounded-lg hover:bg-red-900/50 transition-colors">
+                            Meclisten Ayrıl
+                        </button>
+                    </div>
+
+                    <!-- Canlı Mesaj Alanı -->
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                        <!-- Mesajlar dinamik olarak buraya eklenecek -->
+                    </div>
+
+                    <!-- Mesaj Yazma Paneli -->
+                    <form onsubmit="sendUserMessage(event)" class="p-4 border-t border-gray-800 bg-black/20 rounded-b-xl flex gap-3">
+                        <input id="chat-input" type="text" placeholder="Kutlu buyruğunuzu veya fikrinizi iletin..." class="flex-1 bg-black/40 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-obaGold placeholder-gray-500" required autocomplete="off">
+                        <button type="submit" class="px-5 py-3 bg-gradient-to-r from-obaGold to-amber-500 text-black font-extrabold rounded-lg hover:brightness-110 transition-colors flex items-center gap-2">
+                            <span>Ferman Gönder</span>
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Sağ Panel: Odadaki Katılımcılar & Bey Kürsüsü -->
+                <div class="w-full lg:w-80 bg-obaCard border border-gray-800 rounded-xl p-4 flex flex-col justify-between shadow-2xl">
+                    <div>
+                        <h5 class="font-bold text-gray-300 text-sm tracking-wider uppercase mb-4 pb-2 border-b border-gray-800 flex items-center justify-between">
+                            <span>Toyda Olanlar</span>
+                            <span class="text-xs text-obaGold" id="room-users-count">3 Meclis Canı</span>
+                        </h5>
+                        
+                        <div id="room-users-list" class="space-y-3 max-h-72 overflow-y-auto mb-4">
+                            <!-- Kullanıcılar listesi dinamik yüklenecek -->
+                        </div>
+                    </div>
+
+                    <!-- Bey Yetki Kürsüsü -->
+                    <div class="border-t border-gray-800 pt-4 mt-auto">
+                        <h6 class="text-xs font-extrabold text-obaGold uppercase tracking-widest mb-3 flex items-center gap-2 text-glow">
+                            <i class="fa-solid fa-crown text-amber-400"></i> BEY KÜRSÜSÜ YETKİLERİ
+                        </h6>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="triggerToyuTopla()" class="px-3 py-2.5 bg-gradient-to-r from-amber-600 to-obaGold text-black font-black text-xs rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 shadow-md shadow-obaGold/15">
+                                🥁 Toyu Topla
+                            </button>
+                            <button onclick="triggerFermanSal()" class="px-3 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-500 text-black font-black text-xs rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 shadow-md shadow-amber-500/15">
+                                📜 Ferman Sal
+                            </button>
+                        </div>
+                        <div class="mt-4 p-2.5 bg-black/40 rounded-lg border border-obaGold/20 text-[11px] text-gray-400 space-y-1">
+                            <p class="font-semibold text-obaGold flex items-center gap-1">
+                                <i class="fa-solid fa-circle-info"></i> Kutlu Beylik Yetkisi
+                            </p>
+                            <p id="auth-info-text">Oba yetkilisi olarak sisteme 1283 veya 1881 şifresiyle giriş yaptığında buradaki ferman yetkilerini kullanabilirsin kanka.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-black/80 border-t border-gray-900 py-6 text-center text-xs text-gray-500">
+            <p>© 2026 Ata Obası • "Gelecek, geçmişin bilge köklerinde gizlidir."</p>
+        </footer>
+    </div>
+
+    <!-- OBA KÜTÜPHANESİ MODALI -->
+    <div id="library-modal" class="hidden fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 backdrop-blur-md overflow-y-auto">
+        <div class="bg-obaCard border border-obaGold rounded-2xl max-w-6xl w-full h-[90vh] flex flex-col shadow-[0_0_60px_rgba(212,175,55,0.25)]">
+            <!-- Modal Başlığı -->
+            <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-black/30 rounded-t-2xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">📚</span>
+                    <div>
+                        <h3 class="historical-font text-xl md:text-2xl font-extrabold text-obaGold text-glow">Oba Kütüphanesi</h3>
+                        <p class="text-xs text-gray-400">Tarihimizin, edebiyatımızın ve kutlu devlet felsefemizin tüm başyapıtları tek bir mecliste</p>
+                    </div>
+                </div>
+                <button onclick="closeLibrary()" class="text-gray-400 hover:text-white transition-colors text-xl p-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Gövdesi (Arama ve Filtreler) -->
+            <div class="p-4 bg-black/20 border-b border-gray-800 flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="relative w-full md:max-w-md">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input id="library-search-input" type="text" oninput="filterLibrary()" placeholder="Eser adı, yazar veya dönem arayın..." class="w-full bg-black/60 border border-gray-700 focus:border-obaGold rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none transition-all placeholder-gray-500">
+                </div>
+                <span id="library-count-badge" class="text-xs font-semibold px-3 py-1.5 bg-obaGold/10 border border-obaGold/30 text-obaGold rounded-lg">
+                    15 Eser Kayıtlı
+                </span>
+            </div>
+
+            <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                <!-- Sol Panel: Geniş Eser Listesi -->
+                <div class="w-full md:w-96 border-r border-gray-800 overflow-y-auto p-4 space-y-3" id="library-list-container">
+                    <!-- Dinamik doldurulacak -->
+                </div>
+
+                <!-- Sağ Panel: Eser İçeriği & Seçme Sözler -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-br from-obaCard to-black/40" id="library-detail-container">
+                    <!-- Seçilen esere göre detaylar yüklenecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OBA SİNEMA ODASI MODALI -->
+    <div id="cinema-modal" class="hidden fixed inset-0 z-50 bg-black/98 flex items-center justify-center p-4 backdrop-blur-lg overflow-y-auto">
+        <div class="bg-obaCard border border-red-500/40 rounded-2xl max-w-6xl w-full h-[90vh] flex flex-col shadow-[0_0_60px_rgba(239,68,68,0.15)]">
+            <!-- Modal Başlığı -->
+            <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-black/30 rounded-t-2xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl animate-pulse">🍿</span>
+                    <div>
+                        <h3 class="historical-font text-xl md:text-2xl font-extrabold text-red-500 text-glow">Oba Sinema Odası</h3>
+                        <p class="text-xs text-gray-400">Atalarımızın ve tarihimizin şanlı sahneleri beyaz perdede</p>
+                    </div>
+                </div>
+                <button onclick="closeCinema()" class="text-gray-400 hover:text-white transition-colors text-xl p-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Gövdesi -->
+            <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+                <!-- Sol Taraf: Film Seçici Listesi -->
+                <div class="w-full lg:w-80 border-r border-gray-800 overflow-y-auto p-4 space-y-4" id="cinema-list-container">
+                    <!-- Filmler dinamik yüklenecek -->
+                </div>
+
+                <!-- Sağ Taraf: Sinema Ekranı ve Detaylar -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-black to-[#0c0d12]" id="cinema-detail-container">
+                    <!-- Aktif sinema içeriği dinamik yüklenecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const quizQuestions = [
+            {
+                text: "1. Hangisi Atatürk İlkelerinden biri değildir?",
+                options: ["A) Aristokrasi", "B) Cumhuriyetçilik", "C) Milliyetçilik", "D) Halkçılık"],
+                correct: 0 
+            },
+            {
+                text: "2. Tarihte bilinen ilk Türk kadın hükümdar kimdir?",
+                options: ["A) Terken Hatun", "B) Malhun Hatun", "C) Tomris Hatun", "D) Altacan Hatun"],
+                correct: 2
+            },
+            {
+                text: "3. Türkiye'nin ve dünyanın ilk kadın savaş pilotu kimdir?",
+                options: ["A) Sabiha Gökçen", "B) Bedriye Tahir Gökmen", "C) Sabiha Bengütaş", "D) Nene Hatun"],
+                correct: 0
+            },
+            {
+                text: "4. Mustafa Kemal Atatürk'ün Harp Okulu'ndaki apolet numarası kaçtır?",
+                options: ["A) 1919", "B) 1881", "C) 1453", "D) 1283"],
+                correct: 3
+            }
+        ];
+
+        // OBA KÜTÜPHANESİ 15 BÜYÜK ESER VERİTABANI
+        const libraryWorks = [
+            {
+                id: "nutuk",
+                title: "Nutuk",
+                author: "Mustafa Kemal Atatürk",
+                era: "20. Yüzyıl (Cumhuriyet Dönemi)",
+                desc: "Türkiye Cumhuriyeti'nin kuruluş sürecini, Kurtuluş Savaşı'nı ve yapılan inkılapları bizzat liderinin ağzından anlatan, Türk milletinin en önemli tarihi ve siyasi başyapıtıdır.",
+                significance: "Cumhuriyetin kuruluş felsefesini, karşılaşılan zorlukları ve egemenliğin kayıtsız şartsız millete ait olduğunu gösteren kutlu rehberdir.",
+                quotes: [
+                    "Ey Türk gençliği! Birinci vazifen; Türk istiklalini, Türk cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.",
+                    "Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!",
+                    "Temel ilke, Türk milletinin haysiyetli ve şerefli bir millet olarak yaşamasıdır. Bu ilke, ancak tam bağımsızlığa sahip olmakla sağlanabilir."
+                ]
+            },
+            {
+                id: "orhun",
+                title: "Orhun Abideleri",
+                author: "Yollıg Tigin",
+                era: "8. Yüzyıl (Göktürk Kağanlığı)",
+                desc: "Türk adının geçtiği ilk Türkçe metinler olan Kül Tigin, Bilge Kağan ve Vezir Tonyukuk yazıtlarıdır. Türk devlet geleneğini ve millete verilen öğütleri barındırır.",
+                significance: "Türk yazı dilinin ve edebiyatının ilk yazılı örnekleridir. Kağanların halka hesap vermesini ve milletin birliğini öğütler.",
+                quotes: [
+                    "Ey Türk, oğuz beyleri, milleti, işitin: Üstte mavi gök çökmedikçe, altta yağız yer delinmedikçe, senin ilini ve töreni kim bozabilir?",
+                    "Türk milleti! Titre ve kendine dön!",
+                    "Aç milleti doyurdum, çıplak milleti giydirdim. Fakir milleti zengin kıldım."
+                ]
+            },
+            {
+                id: "divan",
+                title: "Divânu Lügati't-Türk",
+                author: "Kaşgarlı Mahmud",
+                era: "11. Yüzyıl (Karahanlılar Dönemi)",
+                desc: "Türkçenin Arapçadan daha üstün ve zengin bir dil olduğunu kanıtlamak amacıyla yazılmış, ilk Türkçe sözlük, ansiklopedi ve coğrafi haritayı barındıran eşsiz bir eserdir.",
+                significance: "Sadece bir sözlük değil; Türk boylarının dillerini, coğrafyasını, edebiyatını ve folklorunu günümüze taşıyan en büyük kültür hazinesidir.",
+                quotes: [
+                    "Dil ile düğümlenen şey, diş ile çözülmez. Türkçeyi öğreniniz, çünkü Türkler için uzun sürecek bir saltanat vardır.",
+                    "Erdem başı dildir. Kişi dilini korursa, başını korumuş olur.",
+                    "Kuş kanadı ile, insan gücü ile uçar. Dil ise ruhun kanatlarıdır."
+                ]
+            },
+            {
+                id: "kutadgu",
+                title: "Kutadgu Bilig",
+                author: "Yusuf Has Hacib",
+                era: "11. Yüzyıl (Karahanlılar Dönemi)",
+                desc: "İdeal devlet yönetimini, adaleti, mutluluğu ve ahlakı anlatan, Türkçe yazılmış ilk siyasetname ve didaktik şiir formundaki başyapıttır.",
+                significance: "Adalet, Mutluluk, Akıl ve Akıbet adındaki dört sembolik karakter üzerinden insanlığa kutlu yaşam yollarını sunar.",
+                quotes: [
+                    "Memleketi tutmak için çok asker gerekir. Askeri beslemek için çok mal lazımdır. Bu malı elde etmek için halkın zengin olması gerekir. Halkın zengin olması için ise adaletin tam olması şarttır.",
+                    "Akıl senin için sarsılmaz bir dosttur. Bilgi ise seni her türlü kötülükten koruyan bir kaledir.",
+                    "Halkı yönetenlerin gözü tok, gönlü adil and yüreği şefkatli olmalıdır."
+                ]
+            },
+            {
+                id: "dedekorkut",
+                title: "Dede Korkut Hikayeleri",
+                author: "Kolektif / Anonim Destanlar",
+                era: "15. Yüzyıl (Yazıya Geçiş Dönemi)",
+                desc: "Oğuz Türklerinin kahramanlıklarını, savaşlarını, aile bağlarını, doğa üstü varlıklarla mücadelelerini ve törelerini bilgece anlatan destansı anlatılardır.",
+                significance: "Türk milletinin sözlü kültürünün, geleneklerinin, değerlerinin ve yaşayış tarzının en canlı ve sanatsal ifadesidir.",
+                quotes: [
+                    "Güleç yüzlü hatunun ölene dek solmasın, ulu çınarın devrilmesin, kutlu yurdun bozulmasın.",
+                    "Yalancı dünyaya konup göçenler, ecel geldiğinde bir gün sessizce giderler. Kara taş altında yatan yiğitler unutulmaz.",
+                    "Gönlü açık olmayanın eli açık olmaz. Töre bilmeyenin devleti baki kalmaz."
+                ]
+            },
+            {
+                id: "siyasetname",
+                title: "Siyasetnâme",
+                author: "Nizamülmülk",
+                era: "11. Yüzyıl (Büyük Selçuklu Dönemi)",
+                desc: "Büyük Selçuklu Veziri Nizamülmülk tarafından kaleme alınan, hükümdarlara devlet yönetimini, askeri nizam, liyakat ve adalet konularında rehberlik eden siyasi başyapıttır.",
+                significance: "Türk-İslam devlet geleneğinin işleyişini, adalet kurallarını ve devletin bekası için gereken liyakat esaslarını ortaya koyar.",
+                quotes: [
+                    "Devlet küfür ile yaşar ama adaletsizlik ve zulüm ile yaşayamaz.",
+                    "Hükümdar her zaman liyakat sahibi, gözü tok kişileri devlet makamlarına atamalıdır.",
+                    "Geceleri tebaasının derdiyle uyuyamayan lider, adaletin ta kendisini kurmuştur."
+                ]
+            },
+            {
+                id: "divanihikmet",
+                title: "Divân-ı Hikmet",
+                author: "Hoca Ahmed Yesevî",
+                era: "12. Yüzyıl (Karahanlılar / Tasavvuf)",
+                desc: "Pir-i Türkistan Hoca Ahmed Yesevî'nin sade bir Türkçe ile söylediği, İslamiyet'i ve güzel ahlakı bozkırın her yanına yayan manevi manzumeler bütünüdür.",
+                significance: "Türk tasavvuf tarihinin kurucu eseri olup Anadolu'daki hoşgörü kültürünün manevi temel taşıdır.",
+                quotes: [
+                    "Nerede görsen gönlü kırık, merhem ol sen; Öyle mazlum yolda kalsa, yoldaşı ol sen.",
+                    "Cahil ile yoldaş olma, başın gider; Alim ile yoldaş olursan, aşın gelir.",
+                    "Gönlünde aşk ateşi yanmayan kul, canlı bir cenazeden farksızdır."
+                ]
+            },
+            {
+                id: "seyahatname",
+                title: "Seyahatnâme",
+                author: "Evliya Çelebi",
+                era: "17. Yüzyıl (Osmanlı Dönemi)",
+                desc: "Evliya Çelebi'nin 50 yılı aşkın süre boyunca Osmanlı coğrafyasında, Avrupa'da ve Orta Doğu'da yaptığı seyahatleri 10 dev cilt halinde kaydettiği devasa gezi ansiklopedisidir.",
+                significance: "Türk kültürünü, dillerini, şehir mimarisini, folklörünü ve günlük yaşantıyı en gerçekçi ve renkli haliyle günümüze ulaştırır.",
+                quotes: [
+                    "Şefaat ya Resulallah diyecek yerde 'Seyahat ya Resulallah' dedim, böylece yola revan outm.",
+                    "Türk boylarının olduğu her diyarda bir samimiyet, cömertlik ve kutlu misafirperverlik gördüm.",
+                    "Seyahat, insanın aklını zenginleştiren, ruhunu arındıran en büyük bilgi meclisidir."
+                ]
+            },
+            {
+                id: "risale",
+                title: "Risaletü'n-Nushiyye",
+                author: "Yunus Emre",
+                era: "14. Yüzyıl (Anadolu Selçuklu / Beylikler)",
+                desc: "Yunus Emre'nin insan nefsini, ruh gelişimini, hoşgörü, kibir ve öfke gibi ahlaki kavramları savaş allegorileriyle nasihat şeklinde anlattığı eşsiz eseri.",
+                significance: "Anadolu Türkçesinin tasavvufi zenginliğini, aşk ve barış felsefesini en saf haliyle inşa etmiştir.",
+                quotes: [
+                    "Cümle yaratılmışa bir göz ile bakmayan, halka müderris ise hakikatte asidir.",
+                    "Sevelim, sevilelim, bu dünya kimseye kalmaz.",
+                    "Gönül Çalab'ın tahtı, Çalap gönüle baktı. İki cihan bedbahtı, kim gönül yıktı ise."
+                ]
+            },
+            {
+                id: "atestengomlek",
+                title: "Ateşten Gömlek",
+                author: "Halide Edib Adıvar",
+                era: "20. Yüzyıl (Kurtuluş Savaşı Dönemi)",
+                desc: "Kurtuluş Savaşı döneminde cephede bizzat görev alan Halide Edib'in kaleminden çıkan, İzmir'in işgalinden Ankara'daki bağımsızlık ateşine kadar uzanan destansı Milli Mücadele romanıdır.",
+                significance: "Milletimizin bağımsızlık aşkını ve vatan için giydiği o 'ateşten gömleği' en sarsıcı şekilde belgeleyen ilk romandır.",
+                quotes: [
+                    "Vatan bir aşk gibidir, insan onun için her acıya katlanır ve bu gömlek ateşten olsa bile severek giyer.",
+                    "Bizim kalbimiz milli bağımsızlık inancıyla doluydu, orada şahsi korkulara yer yoktu.",
+                    "Türk milleti bağımsızlığını kendi kanıyla yazarak her türlü esareti reddetmiştir."
+                ]
+            },
+            {
+                id: "republic_calikusu",
+                title: "Çalıkuşu",
+                author: "Reşat Nuri Güntekin",
+                era: "20. Yüzyıl (Cumhuriyet / Anadolu Aydınlanması)",
+                desc: "Genç, idealist ve İstanbullu bir öğretmen olan Feride'nin, Anadolu'nun çeşitli kasaba ve köylerinde karşılaştığı zorluklara karşı duruşunu anlatan başyapıttır.",
+                significance: "Cumhuriyet aydınlanmasının ve Anadolu kadınının eğitim mücadelesinin en asil simgesidir.",
+                quotes: [
+                    "İnsan, acılarını biriktirdikçe büyür ve sevgisiyle dünyayı iyileştirir.",
+                    "Anadolu'nun her bir köşesi, cehaletin karanlığından ilmin ışığına kavuşmayı bekleyen tertemiz yüreklerle doludur.",
+                    "Umut, ruhun hiç sönmeyen feneridir."
+                ]
+            },
+            {
+                id: "world_republic_institute",
+                title: "Saatleri Ayarlama Enstitüsü",
+                author: "Ahmet Hamdi Tanpınar",
+                era: "20. Yüzyıl (Modern Cumhuriyet Dönemi)",
+                desc: "Türk toplumunun Doğu-Batı arasında sıkışmışlığını, modernleşme sancılarını ve bürokrasiyi muazzam bir mizahla ve derin bir felsefeyle eleştiren zirve romandır.",
+                significance: "Zaman bilincini, insan ruhunu ve toplumsal dönüşümü en özgün üslupla inceleyen modern Türk klasiğidir.",
+                quotes: [
+                    "Zamanın kendisi bir nizamdır. Saati ayarlamak, hayatı ve insanı düzene koymaktır.",
+                    "İnsan neyi severse, zaman onunla akar.",
+                    "Doğu ile Batı, insanın içinde barışmadıkça, dışarıda asla uzlaşamaz."
+                ]
+            },
+            {
+                id: "world_republic_republic",
+                title: "Devlet (Politeia)",
+                author: "Platon (Eflatun)",
+                era: "İlk Çağ Antik Felsefe (Dünya Klasikleri)",
+                desc: "İdeal bir devlet düzeninin nasıl olması gerektiğini, adaletin, erdemin, liyakatin ve bilgeliğin yönetimdeki mutlak yerini ele alan insanlık tarihinin kurucu siyaset felsefesi eseridir.",
+                significance: "Filozofların kral, kralların filozof olması gerektiği teziyle adalet kavramını ölümsüzleştirmiştir.",
+                quotes: [
+                    "Devletin başına bilgeler geçmezse, halkın acıları asla son bulmaz.",
+                    "Liyakatli olmayanların iktidar olduğu yerde adalet, sadece güçlünün çıkarına hizmet eder.",
+                    "Eğitim, ruhu doğru yöne çevirme sanatıdır."
+                ]
+            },
+            {
+                id: "world_crime_punishment",
+                title: "Suç ve Ceza",
+                author: "Fyodor Dostoyevski",
+                era: "19. Yüzyıl Realizm (Dünya Klasikleri)",
+                desc: "Raskolnikov adlı yoksul bir öğrencinin, 'üstün insan' teorisini kanıtlamak için işlediği cinayet sonrasında yaşadığı vicdan azabını ve ruhsal arınmasını anlatan psikolojik deha eseridir.",
+                significance: "İnsanın iç dünyasını, vicdanını, günahı ve kefareti en sarsıcı şekilde işleyen roman sanatının zirvesidir.",
+                quotes: [
+                    "Acı çekmek, büyük bir akıl ve derin bir yürek için her zaman zorunludur.",
+                    "İnsanların en çok korktuğu şey, yeni bir adım atmak ve yeni bir kelime söylemektir.",
+                    "Vicdanı olan bir insan, hatasını anladığı an zaten kendi cezasını kendisi kesmiştir."
+                ]
+            },
+            {
+                id: "world_war_peace",
+                title: "Savaş ve Barış",
+                author: "Lev Tolstoy",
+                era: "19. Yüzyıl Realizm (Dünya Klasikleri)",
+                desc: "Napolyon Savaşları gölgesinde Rus aristokrasisinin, halkın ve askerlerin kaderlerini muhteşem bir panorama ve felsefi zenginlikle sunan dev destandır.",
+                significance: "Tarihin akışını, bireyin iradesini ve insanlık onurunu sarsıcı bir dille ele alan gelmiş geçmiş en büyük romanlardan biridir.",
+                quotes: [
+                    "En güçlü iki savaşçı, zaman ve sabırdır.",
+                    "Tarih, tek tek bireylerin ortak iradesinin yarattığı kaçınılmaz bir nehir gibidir.",
+                    "Başkalarının acılarını da kendi acın gibi hissedebildiğinde insansın."
+                ]
+            }
+        ];
+
+        // OBA SİNEMA ODASI FİLMLERİ VERİTABANI
+        const cinemaMovies = [
+            {
+                id: "tomris_movie",
+                title: "Tomris Hatun",
+                director: "Akan Satayev",
+                year: "2019",
+                youtubeId: "lAre1tvM6Do", 
+                poster: "🏹",
+                desc: "MÖ 6. yüzyılda Saka Türklerinin kadın hakanı Tomris Hatun'un, yaşadığı dönemin en güçlü devleti olan Pers İmparatorluğu'na boyun eğmeyerek kazandığı şanlı zaferi destansı bir dille anlatır.",
+                background: "Tomris Hatun, ordularını birleştirerek tarihin en büyük cenklerinden birinde Pers Kralı Kuruş'u yenmiş ve Türk kadınının ve askeri dehasının gücünü dünyaya ilan etmiştir."
+            },
+            {
+                id: "ataturk_1_movie",
+                title: "Atatürk 1: 1881 - 1919",
+                director: "Mehmet Ada Öztekin",
+                year: "2023",
+                youtubeId: "J6YdxsvH9j4", 
+                poster: "🎖️",
+                desc: "Mustafa Kemal Atatürk'ün çocukluğundan başlayarak, askeri okullardaki parıltılı dehasını, Trablusgarp ve Gelibolu cephelerindeki kahramanlıklarını ve 1919'da Samsun'a çıkışına kadar olan kutlu yolculuğunu işler.",
+                background: "Aras Bulut İynemli'nin başrolünde olduğu film, bir yetimin nasıl bir ulusun kurtarıcısına dönüştüğünü ve içindeki o sönmeyen bağımsızlık ateşini sarsıcı bir dille beyaz perdeye taşımıştır."
+            },
+            {
+                id: "ataturk_2_movie",
+                title: "Atatürk 2: 1919 - 1923",
+                director: "Mehmet Ada Öztekin",
+                year: "2024",
+                youtubeId: "4Uc10KOh6fA", 
+                poster: "👑",
+                desc: "Çanakkale Savaşı'nın o cehennem andıran cephelerinden, Doğu ve Suriye cephelerindeki büyük mücadelelere kadar uzanan; Atatürk'ün askeri dehasını ve Milli Mücadele'yi örgütleyişini doruk noktasına ulaştıran şaheserdir.",
+                background: "Gelibolu'da 'Ben size taarruzu değil, ölmeyi emrediyorum' buyruğunun arkasındaki tarihi kararlılığı ve cumhuriyete giden asil ve sancılı adımları belgeler nitelikte sunmaktadır."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+        
+        // Rol ve Kimlik Değişkenleri
+        let beyName = "Yoldaş"; 
+        let userGender = "erkek"; 
+        let isAuthorized = false; // Sadece 1283 ve 1881 girenlerde true olacak
+        let isBaybars = false;
+        let isBortecine = false;
+
+        let selectedWorkId = "nutuk";
+        let selectedMovieId = "tomris_movie";
+
+        // DİNAMİK MECLİSLERİN TUTULACAĞI VERİ TABANI (3 SABİT MECLİS İLE BAŞLAR)
+        const simulatedChats = {
+            "Bilim": {
+                category: "Kültür & Sanat",
+                desc: "Bilimin ışığında, göklerin ve yerin sırlarını, kadim bilgileri tartıştığımız akıl meclisi.",
+                users: [], 
+                messages: [
+                    { sender: "System", color: "text-gray-500", text: "Bilim meclisine hoş geldiniz. Akıl ve fen ile obamızı ileri taşıyacağız." }
+                ],
+                randomReplies: []
+            },
+            "Atatürk'ün İzinde": {
+                category: "Cumhuriyet Tarihi",
+                desc: "Atatürk ilke ve inkılapları kılavuzluğunda, muasır medeniyetler seviyesine giden kutlu yolu yürüyoruz.",
+                users: [],
+                messages: [
+                    { sender: "System", color: "text-gray-500", text: "Atatürk'ün çizdiği yolda, tam bağımsızlık inancıyla buradayız!" }
+                ],
+                randomReplies: []
+            },
+            "Özgürlük": {
+                category: "Yakın Dönem",
+                desc: "Tam bağımsızlık, hürriyet ve adalet fikirlerinin yankılandığı hür düşünce meydanı.",
+                users: [],
+                messages: [
+                    { sender: "System", color: "text-gray-500", text: "Hür doğduk, hür yaşarız. Özgürlük meclisi adalet dağıtsın." }
+                ],
+                randomReplies: []
+            }
+        };
+
+        // SINAV SİSTEMİ ÇALIŞTIRMA
+        function loadQuestion() {
+            answered = false;
+            const currentQ = quizQuestions[currentQuestionIndex];
+            
+            document.getElementById("question-index").innerText = `Soru ${currentQuestionIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById("question-text").innerText = currentQ.text;
+            
+            const optionsGrid = document.getElementById("options-grid");
+            optionsGrid.innerHTML = "";
+            
+            currentQ.options.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn w-full bg-[#12161f] text-left p-4 rounded-xl border border-gray-700 hover:border-obaGold hover:bg-[#181e2b] transition-all duration-200 text-sm md:text-base font-medium";
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(btn, idx);
+                optionsGrid.appendChild(btn);
+            });
+
+            document.getElementById("next-btn").classList.add("hidden");
+            document.getElementById("quiz-feedback").classList.add("hidden");
+        }
+
+        function selectOption(selectedBtn, optionIndex) {
+            if (answered) return; 
+            answered = true;
+            
+            const currentQ = quizQuestions[currentQuestionIndex];
+            const feedbackDiv = document.getElementById("quiz-feedback");
+            const optionsGrid = document.getElementById("options-grid");
+            const buttons = optionsGrid.querySelectorAll("button");
+
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === currentQ.correct) {
+                    btn.classList.remove("bg-[#12161f]", "border-gray-700");
+                    btn.classList.add("bg-green-900/40", "border-green-500", "text-green-200");
+                }
+            });
+
+            if (optionIndex === currentQ.correct) {
+                selectedBtn.classList.remove("bg-[#12161f]", "border-gray-700");
+                selectedBtn.classList.add("bg-green-900/60", "border-green-400", "text-green-100");
+                score += 25;
+                document.getElementById("score-counter").innerText = `Puan: ${score}`;
+                
+                feedbackDiv.className = "mt-4 text-center p-3 rounded-lg text-sm font-semibold bg-green-950/40 text-green-400 border border-green-900/50";
+                feedbackDiv.innerHTML = "<i class='fa-solid fa-circle-check'></i> Doğru yanıt yoldaş! Bilgelerin yolundasın.";
+            } else {
+                selectedBtn.classList.remove("bg-[#12161f]", "border-gray-700");
+                selectedBtn.classList.add("bg-red-900/60", "border-red-400", "text-red-100");
+                
+                feedbackDiv.className = "mt-4 text-center p-3 rounded-lg text-sm font-semibold bg-red-950/40 text-red-400 border border-red-900/50";
+                feedbackDiv.innerHTML = "<i class='fa-solid fa-circle-xmark'></i> Yanlış cevap yoldaş, doğrusunu yeşille belirttim.";
+            }
+            feedbackDiv.classList.remove("hidden");
+
+            if (currentQuestionIndex === quizQuestions.length - 1) {
+                document.getElementById("next-btn").classList.add("hidden");
+                document.getElementById("enter-otag-btn").classList.remove("hidden");
+            } else {
+                document.getElementById("next-btn").classList.remove("hidden");
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        function showCoronation() {
+            document.getElementById("quiz-container").classList.add("hidden");
+            document.getElementById("coronation-container").classList.remove("hidden");
+            
+            // "Obaya Katıl" formunun hemen altına şık bir "Yetkili Giriş Anahtarı" ekliyoruz.
+            const container = document.getElementById("coronation-container");
+            const existingForm = container.querySelector(".max-w-md");
+            
+            // Eğer key alanı daha önce eklenmemişse ekle
+            if (!document.getElementById("yetkili-key-input")) {
+                const keySection = document.createElement("div");
+                keySection.className = "border-t border-gray-800/80 pt-4 mt-2";
+                keySection.innerHTML = `
+                    <label class="block text-xs font-bold uppercase tracking-widest text-obaGold/80 mb-2">🔑 Yetkili Giriş Anahtarı</label>
+                    <input id="yetkili-key-input" type="password" placeholder="Anahtar (Boş bırakabilirsin)" class="w-full bg-black/60 border-2 border-gray-800 focus:border-obaGold rounded-xl px-4 py-3 text-center text-sm text-white focus:outline-none transition-all placeholder-gray-700">
+                    <p class="text-[10px] text-gray-500 mt-1.5">Yetkili girişleri için anahtar kutusunu doldurunuz.</p>
+                `;
+                // Butondan hemen önceye ekle
+                const joinBtn = existingForm.querySelector("button");
+                existingForm.insertBefore(keySection, joinBtn);
+            }
+        }
+
+        // OBAYA GİRİŞ VE ŞİFRE KONTROLÜ
+        function unlockOtag() {
+            const inputVal = document.getElementById("bey-name-input").value.trim();
+            const keyInput = document.getElementById("yetkili-key-input");
+            const keyVal = keyInput ? keyInput.value.trim() : "";
+            const genderVal = document.querySelector('input[name="gender-selection"]:checked').value;
+            userGender = genderVal;
+
+            if (keyVal === "1283") {
+                // Baybars Han Girişi (Bey)
+                beyName = "Baybars Han";
+                userGender = "erkek";
+                isAuthorized = true;
+                isBaybars = true;
+                isBortecine = false;
+                
+                // Başlıkları ve açıklamaları güncelle
+                document.getElementById("welcome-title").innerHTML = "👑 Hoş Geldin Baybars Han!";
+                document.getElementById("welcome-desc").innerText = "Obanın şanlı beyi olarak otağına hoş geldin beyim. Tüm meclis kurma, toy toplama ve ferman salma yetkileri senindir. Alplerin ve asenaların buyruklarını bekliyor.";
+                
+                showNotification("Beyim hoşgeldin! 👑");
+            } else if (keyVal === "1881") {
+                // Börteçine Hatun Girişi (Asena Yetkili)
+                beyName = "Börteçine Hatun";
+                userGender = "kiz";
+                isAuthorized = true;
+                isBaybars = false;
+                isBortecine = true;
+
+                document.getElementById("welcome-title").innerHTML = "🔮 Hoş Geldin Börteçine Hatun!";
+                document.getElementById("welcome-desc").innerText = "Obanın bilge asenası ve yetkilisi olarak otağına şeref verdiniz hanımım. Meclis kurma, toy meclisini toplama ve asil fermanlar salma yetkileri sizindir.";
+
+                showNotification("Hanımım otağımıza şeref verdiniz! 🔮");
+            } else {
+                // Normal Yoldaş Girişi
+                beyName = inputVal || "Yoldaş";
+                isAuthorized = false;
+                isBaybars = false;
+                isBortecine = false;
+
+                document.getElementById("welcome-title").innerText = "Ata Obası Meclis Meydanı";
+                document.getElementById("welcome-desc").innerHTML = `Kutlu obaya hoş geldin <b>${beyName} yoldaş</b>. Yetkililerin <b>Baybars Han</b> ve <b>Börteçine Hatun</b> meclisi yönetirken sen de fikirlerini sunabilir ve kütüphaneyi inceleyebilirsin kanka.`;
+
+                showNotification(`Obaya hoş geldin, ${beyName} yoldaş! ⛺`);
+            }
+
+            // Bey kürsüsü bilgi metnini yetki durumuna göre düzenle
+            if (isAuthorized) {
+                document.getElementById("auth-info-text").innerHTML = "Sisteme yetkili olarak giriş yaptın beyim/hanımım. <b>Toyu Topla</b> ve <b>Ferman Sal</b> yetkilerini dilediğin gibi kullanabilirsin.";
+            } else {
+                document.getElementById("auth-info-text").innerHTML = "Toyu toplama ve Ferman salma yetkisi yalnızca <b>Baybars Han (1283)</b> ve <b>Börteçine Hatun (1881)</b> yetkililerindedir.";
+            }
+
+            document.getElementById("quiz-overlay").classList.add("hidden");
+            document.getElementById("main-platform").classList.remove("hidden");
+            
+            renderRooms();
+        }
+
+        function relockOtag() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById("score-counter").innerText = `Puan: ${score}`;
+            document.getElementById("enter-otag-btn").classList.add("hidden");
+            
+            document.getElementById("quiz-container").classList.remove("hidden");
+            document.getElementById("coronation-container").classList.add("hidden");
+            
+            document.getElementById("main-platform").classList.add("hidden");
+            document.getElementById("quiz-overlay").classList.remove("hidden");
+            loadQuestion();
+        }
+
+        // YENİ ODA KAYDETME (YETKİ KONTROLÜ)
+        function handleCreateRoom(e) {
+            e.preventDefault();
+
+            if (!isAuthorized) {
+                showNotification("Bu kutlu yetki (Meclis Kurma) yalnızca Baybars Han (1283) veya Börteçine Hatun'a (1881) aittir!");
+                return;
+            }
+
+            const nameInput = document.getElementById("new-room-name");
+            const descInput = document.getElementById("new-room-desc");
+            const categorySelect = document.getElementById("new-room-category");
+
+            const rName = nameInput.value.trim();
+            const rDesc = descInput.value.trim();
+            const rCat = categorySelect.value;
+
+            if (!rName || !rDesc) return;
+
+            simulatedChats[rName] = {
+                category: rCat,
+                desc: rDesc,
+                users: [], 
+                messages: [
+                    { sender: "System", color: "text-gray-500", text: `Yetkilimiz tarafından '${rName}' meclis odası başarıyla açıldı!` }
+                ],
+                randomReplies: []
+            };
+
+            nameInput.value = "";
+            descInput.value = "";
+
+            renderRooms();
+            showNotification(`"${rName}" meclisi başarıyla kaydedildi!`);
+        }
+
+        function renderRooms() {
+            const grid = document.getElementById("rooms-grid");
+            const totalIndicator = document.getElementById("total-rooms-indicator");
+            grid.innerHTML = "";
+
+            const keys = Object.keys(simulatedChats);
+            totalIndicator.innerText = `${keys.length} Meclis Kayıtlı`;
+
+            keys.forEach(roomName => {
+                const room = simulatedChats[roomName];
+                const card = document.createElement("div");
+                card.onclick = () => joinRoom(roomName);
+                card.className = "group bg-obaCard border border-gray-800 hover:border-obaGold/50 rounded-xl p-6 cursor-pointer transition-all hover:-translate-y-1 shadow-lg hover:shadow-obaGold/5 flex flex-col justify-between h-64";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-amber-500/10 text-obaGold text-xs px-2.5 py-1 rounded-md font-semibold border border-obaGold/20">${room.category}</span>
+                            <span class="text-gray-500 text-xs flex items-center gap-1"><i class="fa-solid fa-user"></i> Aktif</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white group-hover:text-obaGold transition-colors truncate">${roomName}</h4>
+                        <p class="text-gray-400 text-sm mt-2 line-clamp-3">${room.desc}</p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-800/60 mt-4">
+                        <span class="text-xs text-obaGold font-semibold">Meclise Giriş Yap ➔</span>
+                        <div class="flex -space-x-2">
+                            <div class="w-6 h-6 rounded-full bg-amber-600 border border-obaCard flex items-center justify-center text-[8px] font-bold text-white">B</div>
+                            <div class="w-6 h-6 rounded-full bg-purple-600 border border-obaCard flex items-center justify-center text-[8px] font-bold text-white">BÖ</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        let activeRoom = null;
+
+        function joinRoom(roomName) {
+            activeRoom = roomName;
+            document.getElementById("lobby-view").classList.add("hidden");
+            document.getElementById("room-view").classList.remove("hidden");
+            
+            document.getElementById("active-room-title").innerText = `⛺ ${roomName} Meclisi`;
+            
+            loadRoomData();
+        }
+
+        function leaveRoom() {
+            activeRoom = null;
+            document.getElementById("room-view").classList.add("hidden");
+            document.getElementById("lobby-view").classList.remove("hidden");
+            renderRooms();
+        }
+
+        function loadRoomData() {
+            const data = simulatedChats[activeRoom];
+            if (!data) return;
+
+            const messagesContainer = document.getElementById("chat-messages");
+            messagesContainer.innerHTML = "";
+            data.messages.forEach(msg => {
+                appendMessage(msg.sender, msg.text, msg.color);
+            });
+
+            updateUsersList();
+        }
+
+        // ODA İÇİNDEKİ KULLANICI LİSTESİ (YETKİYE GÖRE DİNAMİK YAPILANDIRILIYOR)
+        function updateUsersList() {
+            const data = simulatedChats[activeRoom];
+            const usersContainer = document.getElementById("room-users-list");
+            usersContainer.innerHTML = "";
+            
+            // Mevcut kullanıcıyı listeye ekle
+            const meRole = isAuthorized ? (isBaybars ? "YETKİLİ (ALP)" : "YETKİLİ (ASENA)") : (userGender === 'erkek' ? 'ALP' : 'ASENA');
+            const meColor = isBaybars ? "text-amber-500 font-bold" : (isBortecine ? "text-purple-400 font-bold" : "text-obaGold");
+            const meDiv = document.createElement("div");
+            meDiv.className = "flex items-center justify-between p-2 rounded-lg bg-gradient-to-r from-amber-500/10 to-obaGold/10 border-2 border-obaGold/60 shadow-[0_0_10px_rgba(212,175,55,0.1)]";
+            meDiv.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-sm font-extrabold ${meColor}">👑 ${beyName}</span>
+                </div>
+                <span class="text-[9px] bg-obaGold text-black font-black px-1.5 py-0.5 rounded shadow">${meRole}</span>
+            `;
+            usersContainer.appendChild(meDiv);
+
+            // Botlar silindi. Sadece sabit ve tek yetkililer kalacak.
+            const staticAuthorities = [];
+            if (!isBaybars) {
+                staticAuthorities.push({ name: "Baybars Han", role: "Oba Yetkilisi (Alp)", color: "text-amber-500 font-bold" });
+            }
+            if (!isBortecine) {
+                staticAuthorities.push({ name: "Börteçine Hatun", role: "Oba Yetkilisi (Asena)", color: "text-purple-400 font-bold" });
+            }
+
+            document.getElementById("room-users-count").innerText = `${staticAuthorities.length + 1} Meclis Canı`;
+
+            staticAuthorities.forEach(user => {
+                const userDiv = document.createElement("div");
+                userDiv.className = "flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors";
+                
+                let roleBadge = "";
+                if(user.name === "Baybars Han") {
+                    roleBadge = `<span class="text-[9px] bg-amber-600/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded font-extrabold">YETKİLİ (ALP)</span>`;
+                } else if(user.name === "Börteçine Hatun") {
+                    roleBadge = `<span class="text-[9px] bg-purple-600/20 text-purple-400 border border-purple-500/30 px-1.5 py-0.5 rounded font-extrabold">YETKİLİ (ASENA)</span>`;
+                }
+
+                userDiv.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                        <span class="text-sm font-medium ${user.color}">${user.name}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        ${roleBadge}
+                    </div>
+                `;
+                usersContainer.appendChild(userDiv);
+            });
+        }
+
+        function appendMessage(sender, text, colorClass = "text-obaGold", isUser = false) {
+            const messagesContainer = document.getElementById("chat-messages");
+            const msgDiv = document.createElement("div");
+            
+            if (isUser) {
+                msgDiv.className = "flex flex-col items-end space-y-1";
+                msgDiv.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-obaGold font-extrabold">👑 ${sender}</span>
+                        <span class="text-[10px] text-gray-500">Buyruğunuz</span>
+                    </div>
+                    <div class="bg-gradient-to-r from-amber-500 to-obaGold text-black text-sm px-4 py-2.5 rounded-2xl rounded-tr-none max-w-md shadow-[0_0_15px_rgba(212,175,55,0.3)] font-bold border border-obaGold/50">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                msgDiv.className = "flex flex-col items-start space-y-1";
+                msgDiv.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold ${colorClass}">${sender}</span>
+                        <span class="text-[10px] text-gray-500">Az önce</span>
+                    </div>
+                    <div class="bg-[#12161f] border border-gray-800 text-gray-100 text-sm px-4 py-2.5 rounded-2xl rounded-tl-none max-w-md shadow-md leading-relaxed">
+                        ${text}
+                    </div>
+                `;
+            }
+
+            messagesContainer.appendChild(msgDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function sendUserMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById("chat-input");
+            const messageText = input.value.trim();
+            if (!messageText) return;
+
+            appendMessage(beyName, messageText, isBaybars ? "text-amber-500" : (isBortecine ? "text-purple-400" : "text-obaGold"), true);
+            input.value = "";
+        }
+
+        // TOYU TOPLAMA YETKİ KONTROLÜ (1283 ve 1881 şifrelere özel)
+        function triggerToyuTopla() {
+            if (!isAuthorized) {
+                showNotification("Toyu toplama yetkisi yalnızca Baybars Han (1283) ve Börteçine Hatun (1881) yetkililerindedir!");
+                return;
+            }
+
+            const messagesContainer = document.getElementById("chat-messages");
+            
+            const sysDiv = document.createElement("div");
+            sysDiv.className = "flex justify-center my-4";
+            sysDiv.innerHTML = `
+                <div class="bg-gradient-to-r from-amber-600/20 via-obaGold/20 to-amber-600/20 border-y border-obaGold/40 text-obaGold px-6 py-2.5 rounded-md text-xs font-bold tracking-widest text-center shadow-lg animate-pulse">
+                    🥁 KUTLU DAVULLAR ÇALIYOR! OBA YETKİLİSİ ${beyName.toUpperCase()} TOYU TOPLADI! 🥁
+                </div>
+            `;
+            messagesContainer.appendChild(sysDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Yanındaki diğer yetkili selam verir
+            setTimeout(() => {
+                let responder = "";
+                let rText = "";
+                let rColor = "";
+
+                if (isBaybars) {
+                    responder = "Börteçine Hatun";
+                    rText = "Kutlu davul seslerini işittim Baybars Han! Toy meclisimize baş üstüne katılıyorum, fikirlerimiz şanlı olsun! 🔮";
+                    rColor = "text-purple-400 font-bold";
+                } else if (isBortecine) {
+                    responder = "Baybars Han";
+                    rText = "Bilge Börteçine Hatun'un daveti başımız üstüne! Cenk alpleri ve yetkililer her daim hizmetinizdedir! ⚔️";
+                    rColor = "text-amber-500 font-bold";
+                }
+
+                appendMessage(responder, rText, rColor);
+            }, 1500);
+        }
+
+        // FERMAN SALMA YETKİ KONTROLÜ (1283 ve 1881 şifrelere özel)
+        function triggerFermanSal() {
+            if (!isAuthorized) {
+                showNotification("Ferman salma yetkisi yalnızca Baybars Han (1283) ve Börteçine Hatun (1881) yetkililerindedir!");
+                return;
+            }
+
+            const ferman = prompt("Kutlu fermanınızı yazın yoldaşım:");
+            if (!ferman || !ferman.trim()) return;
+
+            const messagesContainer = document.getElementById("chat-messages");
+
+            const fermanDiv = document.createElement("div");
+            fermanDiv.className = "flex justify-center my-6 w-full";
+            fermanDiv.innerHTML = `
+                <div class="bg-black/85 border-2 border-dashed border-obaGold p-6 rounded-xl max-w-lg w-full shadow-[0_0_30px_rgba(212,175,55,0.2)] relative text-center">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-obaCard px-3 text-obaGold text-xl">📜 BEY FERMANI</span>
+                    <p class="text-obaGold text-xs font-bold uppercase tracking-wider mb-2">Buyruk Baş Üstüne!</p>
+                    <p class="text-white text-base font-extrabold italic leading-relaxed">"${ferman.trim()}"</p>
+                    <p class="text-gray-500 text-[10px] mt-4 tracking-widest uppercase">— ${beyName.toUpperCase()}</p>
+                </div>
+            `;
+            messagesContainer.appendChild(fermanDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            setTimeout(() => {
+                let responder = "";
+                let rText = "";
+                let rColor = "";
+
+                if (isBaybars) {
+                    responder = "Börteçine Hatun";
+                    rText = "Fermanınız başımız üstünedir Baybars Han! Asenalarımız ve bilgelerimiz buyruğu hemen yayacaktır! 🔮";
+                    rColor = "text-purple-400 font-bold";
+                } else if (isBortecine) {
+                    responder = "Baybars Han";
+                    rText = "Kutlu fermanınız canımızdır Börteçine Hatun! Alplerimiz emirlerinizi yerine getirmeye hazırdır! ⚔️";
+                    rColor = "text-amber-500 font-bold";
+                }
+
+                appendMessage(responder, rText, rColor);
+            }, 1500);
+        }
+
+        // ==========================================
+        // OBA KÜTÜPHANESİ FONKSİYONLARI 
+        // ==========================================
+        function openLibrary() {
+            document.getElementById("library-modal").classList.remove("hidden");
+            document.body.style.overflow = "hidden"; 
+            renderLibraryList();
+            selectLibraryWork(selectedWorkId);
+        }
+
+        function closeLibrary() {
+            document.getElementById("library-modal").classList.add("hidden");
+            document.body.style.overflow = "auto";
+        }
+
+        function renderLibraryList(filteredWorks = libraryWorks) {
+            const container = document.getElementById("library-list-container");
+            container.innerHTML = "";
+
+            const countBadge = document.getElementById("library-count-badge");
+            countBadge.innerText = `${filteredWorks.length} Eser Listeleniyor`;
+
+            if (filteredWorks.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500 text-sm">
+                        <p>Aranan kriterde bir eser bulunamadı yoldaş.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredWorks.forEach(work => {
+                const btn = document.createElement("button");
+                btn.className = `w-full text-left p-4 rounded-xl border transition-all duration-200 flex flex-col gap-1.5 hover:border-obaGold/60 ${selectedWorkId === work.id ? 'border-obaGold bg-obaGold/5 shadow-md shadow-obaGold/5' : 'border-gray-800 bg-black/30'}`;
+                btn.onclick = () => selectLibraryWork(work.id);
+                btn.innerHTML = `
+                    <div class="flex justify-between items-center w-full">
+                        <span class="text-[9px] text-obaGold font-semibold uppercase tracking-wider bg-obaGold/10 px-2 py-0.5 rounded">${work.era}</span>
+                        <i class="fa-solid fa-scroll text-obaGold/40 text-xs"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white group-hover:text-obaGold">${work.title}</span>
+                    <span class="text-xs text-gray-400 truncate"><i class="fa-solid fa-feather-pointed text-[10px] text-gray-500"></i> ${work.author}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectLibraryWork(id) {
+            selectedWorkId = id;
+            
+            const searchInput = document.getElementById("library-search-input").value.trim().toLowerCase();
+            const filtered = libraryWorks.filter(w => 
+                w.title.toLowerCase().includes(searchInput) || 
+                w.author.toLowerCase().includes(searchInput) ||
+                w.era.toLowerCase().includes(searchInput)
+            );
+            renderLibraryList(filtered);
+
+            const work = libraryWorks.find(w => w.id === id);
+            const container = document.getElementById("library-detail-container");
+            if (!work) return;
+
+            let quotesHTML = "";
+            work.quotes.forEach(quote => {
+                quotesHTML += `
+                    <div class="relative bg-black/40 border-l-4 border-obaGold p-4 rounded-r-xl shadow-inner group transition-all hover:bg-black/60">
+                        <p class="text-sm md:text-base text-gray-200 font-medium italic leading-relaxed">"${quote}"</p>
+                        <div class="flex justify-end gap-3 mt-3 opacity-80 group-hover:opacity-100 transition-opacity">
+                            <button onclick="copyQuote(this, '${quote.replace(/'/g, "\\'")}')" class="text-xs text-gray-400 hover:text-obaGold flex items-center gap-1.5 transition-colors">
+                                <i class="fa-solid fa-copy"></i> <span>Kopyala</span>
+                            </button>
+                            <button onclick="quoteToChat('${quote.replace(/'/g, "\\'")}', '${work.title}')" class="text-xs text-obaGold hover:text-obaGoldHover font-bold flex items-center gap-1.5 transition-colors">
+                                <i class="fa-solid fa-quote-left"></i> <span>Meclise Alıntıla</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="border-b border-gray-800 pb-5">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div>
+                                <h4 class="historical-font text-2xl md:text-3xl font-extrabold text-white tracking-wide">${work.title}</h4>
+                                <p class="text-sm text-obaGold mt-1"><i class="fa-solid fa-pen-nib"></i> Müellif / Yazar: <span class="font-bold text-gray-200">${work.author}</span></p>
+                            </div>
+                            <div class="bg-amber-500/10 border border-obaGold/30 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-obaGold self-start">
+                                ${work.era}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h5 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-book-open-reader text-obaGold"></i> Eser Hakkında ve Özeti
+                        </h5>
+                        <p class="text-sm md:text-base text-gray-300 leading-relaxed bg-black/30 p-4 rounded-xl border border-gray-800">
+                            ${work.desc}
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h5 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-obaGold"></i> Tarihsel Değeri ve Önemi
+                        </h5>
+                        <p class="text-sm md:text-base text-gray-300 leading-relaxed bg-black/30 p-4 rounded-xl border border-gray-800">
+                            ${work.significance}
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h5 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-feather-pointed text-obaGold"></i> Kutlu Sözler ve Alıntılar
+                        </h5>
+                        <div class="space-y-4">
+                            ${quotesHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterLibrary() {
+            const query = document.getElementById("library-search-input").value.trim().toLowerCase();
+            const filtered = libraryWorks.filter(work => 
+                work.title.toLowerCase().includes(query) || 
+                work.author.toLowerCase().includes(query) ||
+                work.era.toLowerCase().includes(query)
+            );
+            renderLibraryList(filtered);
+            
+            if (filtered.length > 0 && !filtered.some(w => w.id === selectedWorkId)) {
+                selectLibraryWork(filtered[0].id);
+            }
+        }
+
+        function copyQuote(btn, text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-check text-green-500"></i> <span class="text-green-400">Kopyalandı</span>`;
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+            }, 2000);
+            showNotification("Bilge söz panoya kopyalandı yoldaş!");
+        }
+
+        function quoteToChat(quoteText, workTitle) {
+            if (!activeRoom) {
+                showNotification("Kutlu yoldaşım, bu sözü meclise sunmak için önce bir Toy Odasına girmelisin!");
+                return;
+            }
+            
+            const formattedQuote = `"${quoteText}" — (${workTitle} Eserinden Kutlu Bir Alıntı)`;
+            appendMessage(beyName, formattedQuote, isBaybars ? "text-amber-500" : (isBortecine ? "text-purple-400" : "text-obaGold"), true);
+            closeLibrary();
+            
+            setTimeout(() => {
+                let responder = "";
+                let reaction = "";
+                let rColor = "";
+
+                if (isBaybars) {
+                    responder = "Börteçine Hatun";
+                    reaction = `Bu asil sözlerin bozkırda asenalarımızın yolunu aydınlatacaktır Baybars Han. '${workTitle}' içindeki hikmet başımız üstüne. 🔮`;
+                    rColor = "text-purple-400 font-bold";
+                } else if (isBortecine) {
+                    responder = "Baybars Han";
+                    reaction = `Börteçine Hatun'un '${workTitle}' eserinden getirdiği bu kutlu alıntı alplerimizin vatan sevgisini bir kez daha harladı! ⚔️`;
+                    rColor = "text-amber-500 font-bold";
+                } else {
+                    // Yoldaş sunarsa her ikisi de yorum yapabilir
+                    responder = "Börteçine Hatun";
+                    reaction = `Meclis yoldaşımız '${workTitle}' içindeki bu şanlı bilge hikmeti ne güzel hatırlattı. Gökten inen ışık gibidir.`;
+                    rColor = "text-purple-400 font-bold";
+                }
+                
+                appendMessage(responder, reaction, rColor);
+            }, 1500);
+        }
+
+        // ==========================================
+        // OBA SİNEMASI OYNATICI FONKSİYONLARI 
+        // ==========================================
+        function openCinema() {
+            document.getElementById("cinema-modal").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+            renderCinemaList();
+            selectCinemaMovie(selectedMovieId);
+        }
+
+        function closeCinema() {
+            document.getElementById("cinema-detail-container").innerHTML = `
+                <div class="text-center py-20 text-gray-500">
+                    <p>Oynatıcı durduruluyor...</p>
+                </div>
+            `;
+            document.getElementById("cinema-modal").classList.add("hidden");
+            document.body.style.overflow = "auto";
+        }
+
+        function renderCinemaList() {
+            const container = document.getElementById("cinema-list-container");
+            container.innerHTML = "";
+
+            cinemaMovies.forEach(movie => {
+                const activeStyle = selectedMovieId === movie.id 
+                    ? 'border-red-500 bg-red-500/10 shadow-lg shadow-red-500/5' 
+                    : 'border-gray-800 bg-black/40 hover:border-red-500/50';
+
+                const card = document.createElement("button");
+                card.className = `w-full text-left p-4 rounded-xl border flex items-center gap-4 transition-all duration-300 ${activeStyle}`;
+                card.onclick = () => selectCinemaMovie(movie.id);
+                card.innerHTML = `
+                    <div class="w-10 h-10 rounded-lg bg-black/60 border border-gray-700 flex items-center justify-center text-xl text-red-500">
+                        ${movie.poster}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold text-white truncate">${movie.title}</p>
+                        <p class="text-xs text-gray-400 mt-0.5">${movie.year} • Yönetmen: ${movie.director.split(' ')[0]}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectCinemaMovie(id) {
+            selectedMovieId = id;
+            renderCinemaList();
+
+            const movie = cinemaMovies.find(m => m.id === id);
+            const container = document.getElementById("cinema-detail-container");
+            if (!movie) return;
+
+            // Güvenli YouTube No-Cookie altyapısı (Açılmama problemlerine kesin çözüm)
+            const embedUrl = `https://www.youtube-nocookie.com/embed/${movie.youtubeId}?autoplay=0&rel=0&showinfo=0&modestbranding=1`;
+            const directUrl = `https://www.youtube.com/watch?v=${movie.youtubeId}`;
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Sinema Ekranı (Oynatıcı) -->
+                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden border-2 border-red-500/30 bg-black shadow-2xl glow-red">
+                        <iframe 
+                            src="${embedUrl}" 
+                            title="${movie.title} Fragman"
+                            class="absolute top-0 left-0 w-full h-full"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <!-- Direkt YouTube Butonu (Yedek Garantili Çözüm) -->
+                    <div class="bg-red-950/20 border border-red-900/30 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">⚠️</span>
+                            <p class="text-xs text-red-200">Tarayıcı güvenliği veya reklam engelleyiciniz videoyu engelliyorsa direkt izleyebilirsiniz:</p>
+                        </div>
+                        <a href="${directUrl}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-md transition-all flex items-center gap-2">
+                            <i class="fa-brands fa-youtube text-base"></i> <span>YouTube'dan Direkt Aç</span>
+                        </a>
+                    </div>
+
+                    <!-- Film Bilgileri -->
+                    <div class="bg-black/40 p-5 rounded-xl border border-gray-800 space-y-4">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+                            <div>
+                                <h4 class="historical-font text-xl md:text-2xl font-extrabold text-white text-glow">${movie.title}</h4>
+                                <p class="text-xs text-red-400 mt-1">Yönetmen: <span class="text-gray-300 font-bold">${movie.director}</span> | Yapım Yılı: <span class="text-gray-300 font-bold">${movie.year}</span></p>
+                            </div>
+                            <button onclick="movieToChat('${movie.title.replace(/'/g, "\\'")}', '${movie.year}')" class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-amber-600 hover:brightness-110 active:scale-95 text-white text-xs font-black rounded-lg transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-comments"></i> <span>Mecliste Film Hakkında Konuş</span>
+                            </button>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <span class="text-[10px] text-red-500 font-extrabold uppercase tracking-widest block">Film Özeti</span>
+                            <p class="text-sm text-gray-300 leading-relaxed">${movie.desc}</p>
+                        </div>
+
+                        <div class="space-y-1.5 border-t border-gray-800 pt-3 mt-3">
+                            <span class="text-[10px] text-red-500 font-extrabold uppercase tracking-widest block">Tarihsel Arka Plan ve Önemi</span>
+                            <p class="text-xs text-gray-400 leading-relaxed italic">${movie.background}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function movieToChat(movieTitle, movieYear) {
+            if (!activeRoom) {
+                showNotification("Kutlu yoldaşım, bu film üzerine konuşmak için önce bir Toy Odasına girmelisin!");
+                return;
+            }
+
+            const formattedMessage = `Az önce şanlı Oba Sineması'nda "${movieTitle} (${movieYear})" filmini izledim yoldaşlar. Bu görkemli tarihsel başyapıt hakkında ne düşünüyorsunuz?`;
+            appendMessage(beyName, formattedMessage, isBaybars ? "text-amber-500" : (isBortecine ? "text-purple-400" : "text-obaGold"), true);
+            closeCinema();
+
+            setTimeout(() => {
+                let responder = "";
+                let reaction = "";
+                let rColor = "";
+
+                if (isBaybars) {
+                    responder = "Börteçine Hatun";
+                    if (movieTitle.includes("Tomris")) {
+                        reaction = `Kutlu yoldaşım Tomris Hatun'un cesareti tüm asenalarımızın kalbine birer bağımsızlık meşalesi yakmıştır! 🔮`;
+                    } else {
+                        reaction = `Gazi Mustafa Kemal Atatürk'ün askeri dehasını, vizyonunu ve şanlı mücadelesini izlemek her daim ufkumuzu aydınlatıyor!`;
+                    }
+                    rColor = "text-purple-400 font-bold";
+                } else if (isBortecine) {
+                    responder = "Baybars Han";
+                    if (movieTitle.includes("Tomris")) {
+                        reaction = `Pers ordusuna boyun eğmeyen Saka alplerinin o şanlı zaferi tüylerimizi diken diken etti Börteçine Hatun! Cenk ruhumuz her zaman diridir! ⚔️`;
+                    } else {
+                        reaction = `Atatürk'ün o vizyoner zekası, obamızın her zaman akılla ve ilimle yönetilmesi gerektiğinin en büyük kanıtıdır hanımım.`;
+                    }
+                    rColor = "text-amber-500 font-bold";
+                } else {
+                    // Yoldaş sunarsa
+                    responder = "Baybars Han";
+                    reaction = `Yoldaşımız ne güzel sordu. Çanakkale'de 'Ben size taarruzu değil, ölmeyi emrediyorum' diyen dehanın mirasını korumak bizim can borcumuzdur!`;
+                    rColor = "text-amber-500 font-bold";
+                }
+
+                appendMessage(responder, reaction, rColor);
+            }, 1500);
+        }
+
+        function showNotification(text) {
+            let toast = document.getElementById("oba-toast");
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "oba-toast";
+                toast.className = "fixed bottom-5 left-1/2 -translate-x-1/2 bg-black/90 border border-obaGold/60 text-obaGold text-xs md:text-sm px-6 py-3 rounded-xl shadow-2xl z-[100] transition-all opacity-0 pointer-events-none text-center";
+                document.body.appendChild(toast);
+            }
+            toast.innerText = text;
+            toast.classList.remove("opacity-0", "pointer-events-none");
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "pointer-events-none");
+            }, 3000);
+        }
+
+        // ==========================================
+        // WEB AUDIO API EZGİ ÇALAR
+        // ==========================================
+        let audioCtx = null;
+        let isPlaying = false;
+        let trackIndex = 0;
+        let playInterval = null;
+        let synthNodes = [];
+
+        const playlist = [
+            {
+                title: "Dombra Ezgisi (Kutlu Şenlik)",
+                notes: [220, 220, 293, 293, 329, 329, 392, 329, 293, 220, 293, 220],
+                durations: [400, 400, 400, 400, 400, 400, 600, 400, 400, 400, 800, 400],
+                tempo: 450
+            },
+            {
+                title: "Bozkır Rüzgarı (Kopuz Tınısı)",
+                notes: [196, 246, 293, 349, 392, 440, 392, 349, 293, 246, 196, 220],
+                durations: [600, 600, 600, 600, 1000, 600, 600, 600, 600, 600, 1000, 1000],
+                tempo: 700
+            },
+            {
+                title: "Cenk Marşı (Davul ve Savaş Sazı)",
+                notes: [147, 147, 220, 220, 246, 220, 147, 147, 220, 246, 293, 220],
+                durations: [300, 300, 500, 300, 300, 500, 300, 300, 500, 300, 300, 800],
+                tempo: 350
+            }
+        ];
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSynthNote(freq, duration) {
+            if (!audioCtx) return;
+            
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc1.type = 'sawtooth';
+            osc1.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            osc2.type = 'triangle';
+            osc2.frequency.setValueAtTime(freq * 1.5, audioCtx.currentTime); 
+
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (duration / 1000));
+
+            osc1.connect(gainNode);
+            osc2.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc1.start();
+            osc2.start();
+            osc1.stop(audioCtx.currentTime + (duration / 1000));
+            osc2.stop(audioCtx.currentTime + (duration / 1000));
+
+            synthNodes.push(osc1, osc2);
+        }
+
+        function togglePlayMusic() {
+            initAudio();
+            const btn = document.getElementById("play-pause-btn");
+
+            if (isPlaying) {
+                stopMusic();
+                btn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            } else {
+                isPlaying = true;
+                btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                playTrack(trackIndex);
+            }
+        }
+
+        function playTrack(index) {
+            stopMusic();
+            isPlaying = true;
+            trackIndex = index;
+            const track = playlist[trackIndex];
+            document.getElementById("now-playing-title").innerText = track.title;
+            document.getElementById("play-pause-btn").innerHTML = '<i class="fa-solid fa-pause"></i>';
+
+            let noteIndex = 0;
+            const playLoop = () => {
+                if (!isPlaying) return;
+                const note = track.notes[noteIndex];
+                const duration = track.durations[noteIndex];
+                
+                playSynthNote(note, duration);
+                
+                noteIndex = (noteIndex + 1) % track.notes.length;
+                playInterval = setTimeout(playLoop, track.tempo);
+            };
+            playLoop();
+        }
+
+        function stopMusic() {
+            isPlaying = false;
+            clearTimeout(playInterval);
+            document.getElementById("now-playing-title").innerText = "Müzik durduruldu";
+            synthNodes.forEach(node => {
+                try { node.stop(); } catch(e) {}
+            });
+            synthNodes = [];
+        }
+
+        function nextTrack() {
+            trackIndex = (trackIndex + 1) % playlist.length;
+            if(isPlaying) {
+                playTrack(trackIndex);
+            } else {
+                document.getElementById("now-playing-title").innerText = playlist[trackIndex].title + " (Hazır)";
+            }
+        }
+
+        function prevTrack() {
+            trackIndex = (trackIndex - 1 + playlist.length) % playlist.length;
+            if(isPlaying) {
+                playTrack(trackIndex);
+            } else {
+                document.getElementById("now-playing-title").innerText = playlist[trackIndex].title + " (Hazır)";
+            }
+        }
+
+        window.onload = () => {
+            loadQuestion();
+        };
+    </script>
+</body>
+</html>
