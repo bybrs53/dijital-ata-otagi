@@ -62,30 +62,25 @@
     <div id="quiz-overlay" class="fixed inset-0 z-50 bg-obaBg flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-obaCard border-2 border-obaGold rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(212,175,55,0.15)] relative">
             
-            <div class="text-center mb-8">
-                <span class="text-4xl mb-2 block">⛺</span>
+            <div class="text-center mb-6">
+                <span class="text-4xl mb-1 block">⛺</span>
                 <h1 class="historical-font text-3xl md:text-4xl font-extrabold text-obaGold tracking-wider text-glow">ATA OBASI</h1>
-                <p class="text-sm text-gray-400 mt-2">Toy Meclisi'ne katılmak ve kutlu otağa geçmek için Oba Kapısı sınavını tamamlamalısın.</p>
-                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-obaGold to-transparent mx-auto mt-4"></div>
+                <p class="text-xs text-gray-400 mt-1">Toy Meclisi'ne katılmak ve kutlu otağa geçmek için Oba Kapısı sınavını tamamlamalısın.</p>
+                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-obaGold to-transparent mx-auto mt-3"></div>
             </div>
 
             <!-- Soru Akışı Konteyneri -->
             <div id="quiz-container" class="space-y-6">
-                <!-- Soru Göstergeci -->
                 <div class="flex justify-between items-center text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                     <span id="question-index">Soru 1 / 4</span>
                     <span id="score-counter" class="text-obaGold">Puan: 0</span>
                 </div>
 
-                <!-- Aktif Soru Kartı -->
                 <div id="question-card" class="bg-black/40 p-5 rounded-xl border border-gray-800">
                     <h3 id="question-text" class="text-lg font-medium text-white mb-4 leading-relaxed">Soru yükleniyor...</h3>
-                    <div id="options-grid" class="grid grid-cols-1 gap-3">
-                        <!-- Seçenekler dinamik yüklenecek -->
-                    </div>
+                    <div id="options-grid" class="grid grid-cols-1 gap-3"></div>
                 </div>
 
-                <!-- Sonuç Bildirimi (Gizli) -->
                 <div id="quiz-feedback" class="hidden text-center p-3 rounded-lg text-sm font-semibold"></div>
 
                 <div class="flex justify-between items-center pt-2">
@@ -93,35 +88,48 @@
                         Sonraki Soru <i class="fa-solid fa-arrow-right"></i>
                     </button>
                     <button id="enter-otag-btn" onclick="showCoronation()" class="hidden w-full py-4 bg-gradient-to-r from-obaBronze to-obaGold text-black font-extrabold text-lg rounded-xl hover:brightness-110 transition-all shadow-lg shadow-obaGold/10 flex justify-center items-center gap-2">
-                        <span>🛡️ Oba Kapısından Geç</span>
+                        <span>🛡️ Testi Bitir ve Devam Et</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Obaya Katılım Konteyneri (Şifre Destekli) -->
-            <div id="coronation-container" class="hidden space-y-6 text-center py-4">
-                <span class="text-6xl animate-bounce block">⛺</span>
-                <h3 class="historical-font text-2xl md:text-3xl font-extrabold text-obaGold tracking-wide text-glow">Kutlu Olsun, Sınavı Tamamladın!</h3>
-                <p class="text-sm md:text-base text-gray-300 max-w-md mx-auto leading-relaxed">
-                    Obamıza hoş geldin yoldaş! Toy Meclisi seni bekler. Unvanını gir, cinsiyetini seç ve kutlu obaya katıl! (Yetkililer şifrelerini yazarak giriş yapabilir).
-                </p>
-                <div class="max-w-md mx-auto space-y-4 pt-2">
-                    <input id="bey-name-input" type="text" placeholder="Unvanın veya Yetkili Şifren..." class="w-full bg-black/60 border-2 border-obaGold rounded-xl px-4 py-3.5 text-center text-xl font-bold text-white focus:outline-none focus:border-obaGoldHover placeholder-gray-600 transition-all shadow-inner" value="Yoldaş">
+            <!-- Obaya Katılım Konteyneri (Bağlılık Andı Parşömeni) -->
+            <div id="coronation-container" class="hidden space-y-5 text-center py-1">
+                <span class="text-5xl animate-pulse block">📜</span>
+                <h3 class="historical-font text-2xl font-extrabold text-obaGold tracking-wide text-glow">Obamıza Hoş Geldin Yoldaş!</h3>
+                
+                <!-- KUTLU ANT METNİ PARŞÖMEN ALANI -->
+                <div class="bg-black/60 border border-obaGold/40 p-4 rounded-xl text-left max-w-lg mx-auto text-xs md:text-sm text-gray-300 leading-relaxed shadow-inner max-h-40 overflow-y-auto space-y-2 border-l-4 border-l-obaGold">
+                    <p class="font-bold text-obaGold text-center tracking-widest uppercase border-b border-gray-800 pb-1 mb-2">⛺ ATA OBASI BAĞLILIK ANDI ⛺</p>
+                    <p>Temeli tam bağımsızlık, harcı akıl ve bilim olan şanlı Ata Obası'na katılırken;</p>
+                    <p>Atalarımızın mirasını koruyacağıma, Gazi Mustafa Kemal Atatürk'ün çizdiği muasır medeniyet yolundan ayrılmayacağıma, hürriyet ve adalet fikirlerini meclis meydanında yaşatacağıma,</p>
+                    <p>Obanın düzenine, birliğine ve yoldaşlık hukukuna sadık kalacağıma gök kubbe altında and içerim!</p>
+                </div>
+
+                <div class="max-w-md mx-auto space-y-4 pt-1">
+                    <input id="bey-name-input" type="text" placeholder="Unvanın veya Adın..." class="w-full bg-black/60 border-2 border-obaGold rounded-xl px-4 py-3 text-center text-lg font-bold text-white focus:outline-none focus:border-obaGoldHover placeholder-gray-600 transition-all shadow-inner" value="Yoldaş">
                     
                     <!-- Cinsiyet Seçimi Paneli -->
-                    <div class="flex justify-center gap-4 text-sm font-semibold">
-                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-3 rounded-xl hover:border-obaGold transition-all select-none">
+                    <div class="flex justify-center gap-4 text-xs font-semibold">
+                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-2.5 rounded-xl hover:border-obaGold transition-all select-none">
                             <input type="radio" name="gender-selection" value="erkek" checked class="accent-obaGold w-4 h-4"> 
                             <span>♂️ Erkek (Alp)</span>
                         </label>
-                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-3 rounded-xl hover:border-obaGold transition-all select-none">
+                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-2.5 rounded-xl hover:border-obaGold transition-all select-none">
                             <input type="radio" name="gender-selection" value="kiz" class="accent-obaGold w-4 h-4"> 
                             <span>♀️ Kız (Asena)</span>
                         </label>
                     </div>
 
+                    <!-- KUTLU ANAHTAR GİRİŞ ALANI -->
+                    <div class="border-t border-gray-800/80 pt-3">
+                        <label class="block text-[11px] font-bold uppercase tracking-widest text-obaGold/80 mb-1.5">🔑 Yetkili Giriş Anahtarı</label>
+                        <input id="yetkili-key-input" type="password" placeholder="Anahtar (Boş bırakabilirsin)" class="w-full bg-black/60 border border-gray-800 focus:border-obaGold rounded-xl px-4 py-2.5 text-center text-sm text-white focus:outline-none transition-all placeholder-gray-700">
+                    </div>
+
+                    <!-- ANT İÇERİM BUTONU -->
                     <button onclick="unlockOtag()" class="w-full py-4 bg-gradient-to-r from-obaGold via-yellow-500 to-obaBronze text-black font-extrabold text-lg rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-obaGold/20 flex justify-center items-center gap-2">
-                        ⛺ Obaya Katıl
+                        <span>🛡️ Ant İçerim ve Obaya Katılırım</span>
                     </button>
                 </div>
             </div>
@@ -196,7 +204,7 @@
                 <!-- Yeni Meclis Kayıt Kartı -->
                 <div class="bg-gradient-to-b from-[#1b1e26] to-obaCard border border-obaGold/30 rounded-2xl p-6 shadow-xl">
                     <h3 class="historical-font text-xl font-bold text-obaGold mb-4 flex items-center gap-2 text-glow">
-                        <i class="fa-solid fa-scroll text-amber-500"></i> Yeni Toy Meclisi Kur ve Kaydet (Yetkili Sadece)
+                        <i class="fa-solid fa-scroll text-amber-500"></i> Yeni Toy Meclisi Kur ve Kaydet (Yetkiliye Özel)
                     </h3>
                     <form onsubmit="handleCreateRoom(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                         <div>
@@ -233,9 +241,7 @@
                 </div>
 
                 <!-- Dinamik Meclis Listesi -->
-                <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Dinamik olarak JS tarafından doldurulacak -->
-                </div>
+                <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             </div>
 
             <!-- 2. AKTİF ODA SİMÜLASYONU -->
@@ -262,9 +268,7 @@
                     </div>
 
                     <!-- Canlı Mesaj Alanı -->
-                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
-                        <!-- Mesajlar dinamik olarak buraya eklenecek -->
-                    </div>
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
 
                     <!-- Mesaj Yazma Paneli -->
                     <form onsubmit="sendUserMessage(event)" class="p-4 border-t border-gray-800 bg-black/20 rounded-b-xl flex gap-3">
@@ -284,9 +288,7 @@
                             <span class="text-xs text-obaGold" id="room-users-count">3 Meclis Canı</span>
                         </h5>
                         
-                        <div id="room-users-list" class="space-y-3 max-h-72 overflow-y-auto mb-4">
-                            <!-- Kullanıcılar listesi dinamik yüklenecek -->
-                        </div>
+                        <div id="room-users-list" class="space-y-3 max-h-72 overflow-y-auto mb-4"></div>
                     </div>
 
                     <!-- Bey Yetki Kürsüsü -->
@@ -298,7 +300,7 @@
                             <button onclick="triggerToyuTopla()" class="px-3 py-2.5 bg-gradient-to-r from-amber-600 to-obaGold text-black font-black text-xs rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 shadow-md shadow-obaGold/15">
                                 🥁 Toyu Topla
                             </button>
-                            <button onclick="triggerFermanSal()" class="px-3 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-500 text-black font-black text-xs rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 shadow-md shadow-amber-500/15">
+                            <button onclick="openFermanModal()" class="px-3 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-500 text-black font-black text-xs rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 shadow-md shadow-amber-500/15">
                                 📜 Ferman Sal
                             </button>
                         </div>
@@ -317,6 +319,18 @@
         <footer class="bg-black/80 border-t border-gray-900 py-6 text-center text-xs text-gray-500">
             <p>© 2026 Ata Obası • "Gelecek, geçmişin bilge köklerinde gizlidir."</p>
         </footer>
+    </div>
+
+    <!-- ÖZEL FERMAN OLUŞTURMA MODALI (PROMPT YERİNE) -->
+    <div id="ferman-modal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-obaCard border-2 border-obaGold rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h4 class="historical-font text-lg font-extrabold text-obaGold mb-4 text-center text-glow">📜 KUTLU FERMAN SAL</h4>
+            <textarea id="ferman-text-input" rows="4" placeholder="Otağ ahalisine duyurmak istediğiniz kutlu buyruğunuzu yazın..." class="w-full bg-black/40 border border-gray-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-obaGold placeholder-gray-600 mb-4"></textarea>
+            <div class="flex gap-3 justify-end">
+                <button onclick="closeFermanModal()" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-bold hover:bg-gray-700 transition-colors">İptal Et</button>
+                <button onclick="submitFerman()" class="px-5 py-2 bg-gradient-to-r from-obaGold to-amber-500 text-black rounded-xl text-xs font-black hover:brightness-110 transition-colors">Fermânı Sal!</button>
+            </div>
+        </div>
     </div>
 
     <!-- OBA KÜTÜPHANESİ MODALI -->
@@ -351,14 +365,9 @@
 
             <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
                 <!-- Sol Panel: Geniş Eser Listesi -->
-                <div class="w-full md:w-96 border-r border-gray-800 overflow-y-auto p-4 space-y-3" id="library-list-container">
-                    <!-- Dinamik doldurulacak -->
-                </div>
-
+                <div class="w-full md:w-96 border-r border-gray-800 overflow-y-auto p-4 space-y-3" id="library-list-container"></div>
                 <!-- Sağ Panel: Eser İçeriği & Seçme Sözler -->
-                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-br from-obaCard to-black/40" id="library-detail-container">
-                    <!-- Seçilen esere göre detaylar yüklenecek -->
-                </div>
+                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-br from-obaCard to-black/40" id="library-detail-container"></div>
             </div>
         </div>
     </div>
@@ -383,14 +392,9 @@
             <!-- Modal Gövdesi -->
             <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
                 <!-- Sol Taraf: Film Seçici Listesi -->
-                <div class="w-full lg:w-80 border-r border-gray-800 overflow-y-auto p-4 space-y-4" id="cinema-list-container">
-                    <!-- Filmler dinamik yüklenecek -->
-                </div>
-
+                <div class="w-full lg:w-80 border-r border-gray-800 overflow-y-auto p-4 space-y-4" id="cinema-list-container"></div>
                 <!-- Sağ Taraf: Sinema Ekranı ve Detaylar -->
-                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-black to-[#0c0d12]" id="cinema-detail-container">
-                    <!-- Aktif sinema içeriği dinamik yüklenecek -->
-                </div>
+                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-black to-[#0c0d12]" id="cinema-detail-container"></div>
             </div>
         </div>
     </div>
@@ -773,33 +777,13 @@
         function showCoronation() {
             document.getElementById("quiz-container").classList.add("hidden");
             document.getElementById("coronation-container").classList.remove("hidden");
-            
-            // "Obaya Katıl" formunun hemen altına şık bir "Yetkili Giriş Anahtarı" ekliyoruz.
-            const container = document.getElementById("coronation-container");
-            const existingForm = container.querySelector(".max-w-md");
-            
-            // Eğer key alanı daha önce eklenmemişse ekle
-            if (!document.getElementById("yetkili-key-input")) {
-                const keySection = document.createElement("div");
-                keySection.className = "border-t border-gray-800/80 pt-4 mt-2";
-                keySection.innerHTML = `
-                    <label class="block text-xs font-bold uppercase tracking-widest text-obaGold/80 mb-2">🔑 Yetkili Giriş Anahtarı</label>
-                    <input id="yetkili-key-input" type="password" placeholder="Anahtar (Boş bırakabilirsin)" class="w-full bg-black/60 border-2 border-gray-800 focus:border-obaGold rounded-xl px-4 py-3 text-center text-sm text-white focus:outline-none transition-all placeholder-gray-700">
-                    <p class="text-[10px] text-gray-500 mt-1.5">Yetkili girişleri için anahtar kutusunu doldurunuz.</p>
-                `;
-                // Butondan hemen önceye ekle
-                const joinBtn = existingForm.querySelector("button");
-                existingForm.insertBefore(keySection, joinBtn);
-            }
         }
 
         // OBAYA GİRİŞ VE ŞİFRE KONTROLÜ
         function unlockOtag() {
             const inputVal = document.getElementById("bey-name-input").value.trim();
-            const keyInput = document.getElementById("yetkili-key-input");
-            const keyVal = keyInput ? keyInput.value.trim() : "";
-            const genderVal = document.querySelector('input[name="gender-selection"]:checked').value;
-            userGender = genderVal;
+            const keyVal = document.getElementById("yetkili-key-input").value.trim();
+            userGender = document.querySelector('input[name="gender-selection"]:checked').value;
 
             if (keyVal === "1283") {
                 // Baybars Han Girişi (Bey)
@@ -809,7 +793,6 @@
                 isBaybars = true;
                 isBortecine = false;
                 
-                // Başlıkları ve açıklamaları güncelle
                 document.getElementById("welcome-title").innerHTML = "👑 Hoş Geldin Baybars Han!";
                 document.getElementById("welcome-desc").innerText = "Obanın şanlı beyi olarak otağına hoş geldin beyim. Tüm meclis kurma, toy toplama ve ferman salma yetkileri senindir. Alplerin ve asenaların buyruklarını bekliyor.";
                 
@@ -1105,15 +1088,23 @@
             }, 1500);
         }
 
-        // FERMAN SALMA YETKİ KONTROLÜ (1283 ve 1881 şifrelere özel)
-        function triggerFermanSal() {
+        // FERMAN MODAL YÖNETİMİ
+        function openFermanModal() {
             if (!isAuthorized) {
                 showNotification("Ferman salma yetkisi yalnızca Baybars Han (1283) ve Börteçine Hatun (1881) yetkililerindedir!");
                 return;
             }
+            document.getElementById("ferman-modal").classList.remove("hidden");
+        }
 
-            const ferman = prompt("Kutlu fermanınızı yazın yoldaşım:");
-            if (!ferman || !ferman.trim()) return;
+        function closeFermanModal() {
+            document.getElementById("ferman-modal").classList.add("hidden");
+            document.getElementById("ferman-text-input").value = "";
+        }
+
+        function submitFerman() {
+            const ferman = document.getElementById("ferman-text-input").value.trim();
+            if (!ferman) return;
 
             const messagesContainer = document.getElementById("chat-messages");
 
@@ -1123,12 +1114,14 @@
                 <div class="bg-black/85 border-2 border-dashed border-obaGold p-6 rounded-xl max-w-lg w-full shadow-[0_0_30px_rgba(212,175,55,0.2)] relative text-center">
                     <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-obaCard px-3 text-obaGold text-xl">📜 BEY FERMANI</span>
                     <p class="text-obaGold text-xs font-bold uppercase tracking-wider mb-2">Buyruk Baş Üstüne!</p>
-                    <p class="text-white text-base font-extrabold italic leading-relaxed">"${ferman.trim()}"</p>
+                    <p class="text-white text-base font-extrabold italic leading-relaxed">"${ferman}"</p>
                     <p class="text-gray-500 text-[10px] mt-4 tracking-widest uppercase">— ${beyName.toUpperCase()}</p>
                 </div>
             `;
             messagesContainer.appendChild(fermanDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            closeFermanModal();
 
             setTimeout(() => {
                 let responder = "";
@@ -1287,6 +1280,7 @@
         }
 
         function copyQuote(btn, text) {
+            // Güvenli clipboard kopyalama
             const el = document.createElement('textarea');
             el.value = text;
             document.body.appendChild(el);
@@ -1326,7 +1320,6 @@
                     reaction = `Börteçine Hatun'un '${workTitle}' eserinden getirdiği bu kutlu alıntı alplerimizin vatan sevgisini bir kez daha harladı! ⚔️`;
                     rColor = "text-amber-500 font-bold";
                 } else {
-                    // Yoldaş sunarsa her ikisi de yorum yapabilir
                     responder = "Börteçine Hatun";
                     reaction = `Meclis yoldaşımız '${workTitle}' içindeki bu şanlı bilge hikmeti ne güzel hatırlattı. Gökten inen ışık gibidir.`;
                     rColor = "text-purple-400 font-bold";
@@ -1389,7 +1382,6 @@
             const container = document.getElementById("cinema-detail-container");
             if (!movie) return;
 
-            // Güvenli YouTube No-Cookie altyapısı (Açılmama problemlerine kesin çözüm)
             const embedUrl = `https://www.youtube-nocookie.com/embed/${movie.youtubeId}?autoplay=0&rel=0&showinfo=0&modestbranding=1`;
             const directUrl = `https://www.youtube.com/watch?v=${movie.youtubeId}`;
 
@@ -1407,7 +1399,7 @@
                         </iframe>
                     </div>
 
-                    <!-- Direkt YouTube Butonu (Yedek Garantili Çözüm) -->
+                    <!-- Direkt YouTube Butonu -->
                     <div class="bg-red-950/20 border border-red-900/30 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
                         <div class="flex items-center gap-3">
                             <span class="text-xl">⚠️</span>
@@ -1476,7 +1468,6 @@
                     }
                     rColor = "text-amber-500 font-bold";
                 } else {
-                    // Yoldaş sunarsa
                     responder = "Baybars Han";
                     reaction = `Yoldaşımız ne güzel sordu. Çanakkale'de 'Ben size taarruzu değil, ölmeyi emrediyorum' diyen dehanın mirasını korumak bizim can borcumuzdur!`;
                     rColor = "text-amber-500 font-bold";
@@ -1502,7 +1493,7 @@
         }
 
         // ==========================================
-        // WEB AUDIO API EZGİ ÇALAR
+        // WEB AUDIO API EZGİ ÇALAR (SYNTHESIZER)
         // ==========================================
         let audioCtx = null;
         let isPlaying = false;
