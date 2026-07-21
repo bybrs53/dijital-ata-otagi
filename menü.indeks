@@ -1,0 +1,1522 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css"  href="/public/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css"  href="/public/css/bussines03.css" />
+        <link href="/public/css/fontawesome.css?v=0.1" rel="stylesheet"/>
+        <link href="/public/css/owl.carousel.min.css" rel="stylesheet"/>
+         <link rel="stylesheet" href="/public/css/owl.theme.default.min.css"/>
+        <script type="text/javascript" src="/public/js/jquery-3.5.1.min.js"> </script>
+        <script type="text/javascript" src="/public/js/bussiness5aed092.js"> </script>
+        <script type="text/javascript" src="/public/js/popper.min.js"> </script>
+        <script type="text/javascript" src="/public/js/bootstrap.min.js"> </script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+<body> 
+    <style>.break{word-break: break-word} .maxw-100{max-width: 100%}</style>    
+<div id="header" class="row"   >
+        <div class="col-md-6 logo">
+            <div id="wrap" onclick="sakla()">
+                <div id="b1" ></div>   
+                <div id="b2" ></div>  
+                <div id="b3" ></div>  
+           </div>
+            <div class="d-flex align-items-end">
+                <img src="/public/img/qr.png" style="padding-top: .6rem;padding-left: 1rem;vertical-align: middle;height: 54px" />
+                <span class="text-white ps-4" style="font-size: 18px;font-weight: 600;text-shadow:1px 1px 2px #000;font-style: italic" >Sarum Çeşme Otel</span>
+            </div>
+           
+        </div>
+                <div id="headerlink" class="col-md-6 justify-content-end text-end" >
+                      
+                    
+                        <div class="btn-group dropstart">
+                                <button type="button" class="btn btn-danger text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                 <i class="fas fa-user fa-lg pe-2"></i>SARUM HOTEL                                </button>
+
+                                <ul class="dropdown-menu" aria-labelledby="dlk" >
+
+                                  <li><a class="dropdown-item" href="https://www.menulistele.com/profil" ><i class="fas fa-user-cog pe-2 fa-lg"></i>Hesap Bilgileri</a></li>
+                                  <li><hr class="dropdown-divider"></hr></li>
+
+                                  <li><a class="dropdown-item" href="/login/out" > <i class="fas fa-sign-out-alt fa-lg pe-2"></i> Çıkış</a></li>
+                                </ul>
+                        </div>
+                </div>
+</div>
+<div class="wait"><center><img src="/public/img/qrloader.gif"/><center></div><script src="/public/js/Sortable.js" >
+ import Sortable, { AutoScroll } from '/public/js/Sortable.js';
+
+    Sortable.mount(new AutoScroll());
+
+</script>
+<style>
+.kategori-img{width: 64px;height: 44px; cursor: pointer; object-fit: cover;padding: 2px}
+.window-h{min-height: calc(100vh - 120px)}
+.bg-l{background-color: #f1f1f1}
+.selected{background-color: #bfc0c0;transition: all ease-in-out .25s;}
+</style>
+<section class="content" >
+    <div class="container shadow-four window-h" style="overflow-x: auto"">
+
+                <div class="row  bg-l">
+                    
+                    <div class="col-lg-6 content-button-end"> 
+
+                         <a class="btn btn-light selected fnt-13 mainbtn m-1 p-1 shadow-sm " href="/menu">
+                             <ul class="list-unstyled mb-0 text-center bg-white text-dark p-1">
+                                 <li>   
+                                     <i class="fas fa-book-open text-success " style="font-size:20px"></i>
+                                 </li>
+                                 <li style="font-size:13px">
+                                      Genel Menü
+                                 </li>
+                             </ul>
+                         </a>
+                       
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center justify-content-end"> 
+                        <div>
+                            <a class="btn btn-light fnt-13 mainbtn m-1 p-1 border-light shadow-sm h38"  href="/busines/pdf" target="_blank">
+                                <ul class="list-inline mb-0 text-center d-flex align-items-center text-dark p-1">
+                                    <li class="list-inline-item pe-1">   
+                                        <i class="far fa-file-pdf fa-lg text-danger"></i>
+                                    </li>
+                                    <li class="list-inline-item bld text-dark pe-2" style="padding-top: 2px">
+                                         İndir
+                                    </li>
+                                </ul>
+                             </a>
+                        </div>
+                        <div>
+                            <a class="btn btn-light fnt-13 mainbtn m-1 p-1 border-light shadow-sm h38" onclick="$('#um').modal('show')">
+                                <ul class="list-inline mb-0 text-center d-flex align-items-center bg-danger text-dark p-1">
+                                    <li class="list-inline-item pe-1">   
+                                        <i class="fas fa-utensils fa-lg text-white"></i>
+                                    </li>
+                                    <li class="list-inline-item bld text-white" style="padding-top: 2px">
+                                         Ürün Ekle
+                                    </li>
+                                </ul>
+                             </a>
+                        </div>
+                        
+                        <div class=" mx-1" >
+
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" id="dk" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-globe fa-lg pe-2"></i> Diller
+                                </a>
+                                <ul class="dropdown-menu fnt-14" aria-labelledby="dk">
+
+                                                                             <li >
+                                            <a class="dropdown-item" href="/busines/lang/2" >ENGLISH</a>
+                                        </li>
+                                         
+                                    <li><hr class="dropdown-divider"></li>
+                                        <li >
+                                            <a class="dropdown-item crs-pointer" onclick="ag()">
+                                               <i class="fas fa-globe text-blue pe-1"></i>  Dil Ekle +
+                                            </a>
+                                        </li>
+                                </ul>
+                            </div>
+                        </div> 
+
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+                
+                
+                
+                <div class="accordion my-3" id="reac">
+                    <div class="sortlist" id="sortableList" >
+                                 
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16710"  data-id="16710">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16710" onclick="cs('ks16710')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16710" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16710', 'Sıcak İçecekler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16710,'Sıcak İçecekler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16710" aria-expanded="true" aria-controls="col16710" onclick="gp(16710)">
+                                            Sıcak İçecekler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16710" onclick="krm('kg16710',16710,'Sıcak İçecekler')" src="https://cdn.menulistele.com/public/image/6a5a6c8ac4dc46.03563390n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16710,'Sıcak İçecekler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16710" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16710" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16709"  data-id="16709">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16709" onclick="cs('ks16709')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16709" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16709', 'Soğuk İçecekler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16709,'Soğuk İçecekler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16709" aria-expanded="true" aria-controls="col16709" onclick="gp(16709)">
+                                            Soğuk İçecekler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16709" onclick="krm('kg16709',16709,'Soğuk İçecekler')" src="https://cdn.menulistele.com/public/image/6a5a6c423c9296.94609054n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16709,'Soğuk İçecekler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16709" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16709" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16712"  data-id="16712">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16712" onclick="cs('ks16712')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16712" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16712', 'Atıştırmalıklar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16712,'Atıştırmalıklar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16712" aria-expanded="true" aria-controls="col16712" onclick="gp(16712)">
+                                            Atıştırmalıklar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16712" onclick="krm('kg16712',16712,'Atıştırmalıklar')" src="https://cdn.menulistele.com/public/image/6a5a6d5b89a4c0.31194399n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16712,'Atıştırmalıklar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16712" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16712" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16713"  data-id="16713">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16713" onclick="cs('ks16713')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16713" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16713', 'Hamburgerler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16713,'Hamburgerler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16713" aria-expanded="true" aria-controls="col16713" onclick="gp(16713)">
+                                            Hamburgerler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16713" onclick="krm('kg16713',16713,'Hamburgerler')" src="https://cdn.menulistele.com/public/image/6a5a65a621d1b3.19364520n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16713,'Hamburgerler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16713" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16713" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16714"  data-id="16714">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16714" onclick="cs('ks16714')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16714" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16714', 'Salatalar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16714,'Salatalar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16714" aria-expanded="true" aria-controls="col16714" onclick="gp(16714)">
+                                            Salatalar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16714" onclick="krm('kg16714',16714,'Salatalar')" src="https://cdn.menulistele.com/public/image/6a5a6dd27d9913.98582952n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16714,'Salatalar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16714" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16714" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16711"  data-id="16711">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16711" onclick="cs('ks16711')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16711" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16711', 'Biralar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16711,'Biralar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16711" aria-expanded="true" aria-controls="col16711" onclick="gp(16711)">
+                                            Biralar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16711" onclick="krm('kg16711',16711,'Biralar')" src="https://cdn.menulistele.com/public/image/6a5a74ea313369.60669289n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16711,'Biralar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16711" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16711" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16715"  data-id="16715">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16715" onclick="cs('ks16715')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16715" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16715', 'Ana Yemekler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16715,'Ana Yemekler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16715" aria-expanded="true" aria-controls="col16715" onclick="gp(16715)">
+                                            Ana Yemekler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16715" onclick="krm('kg16715',16715,'Ana Yemekler')" src="https://cdn.menulistele.com/public/image/6a5a75f3b5c9c7.21259698n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16715,'Ana Yemekler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16715" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16715" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16716"  data-id="16716">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16716" onclick="cs('ks16716')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16716" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16716', 'Tatlılar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16716,'Tatlılar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16716" aria-expanded="true" aria-controls="col16716" onclick="gp(16716)">
+                                            Tatlılar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16716" onclick="krm('kg16716',16716,'Tatlılar')" src="https://cdn.menulistele.com/public/image/6a5a74aa51cc68.69111452n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16716,'Tatlılar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16716" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16716" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                                   
+             
+                    
+                </div>
+            </div>
+            
+    </div>
+
+</section>  
+
+
+<div class="modal fade" id="wrn"  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white" id="uyariLabel"><i class="fas fa-exclamation pe-2"></i> Hata</h5>
+        <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close">
+          
+        </button>
+      </div>
+      <div class="modal-body p-3">
+                  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tamam</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="oy"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white w-100 " id="uyariLabel"><i class="far  fa-trash-alt fa-lg pe-2"></i>Kayıt Sil</h5>
+                <button type="button" class="btn-close btn-close-white text-white" data-bs-dismiss="modal" aria-label="Close">
+                   
+                </button>
+            </div>
+            <div class="modal-body p-3" id="oyb">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button  class="btn btn-danger" id="del_id" >Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="k-e">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content "> 
+            <div class="modal-header bg-success text-white">
+                <h6 class="modal-title"><i class="far fa-edit text-white pe-2"></i>Kategori Düzenle </h6>
+                    <button type="button" class="btn-close btn-close-white text-white" data-bs-dismiss="modal" aria-label="Close">
+                       
+                    </button>
+               
+            </div>
+            <form action="/menu/uc" method="post"> 
+            <div class="modal-body p-3">
+               
+                    <div class="form-group">
+                        <input id="z" class="form-control disabled" value="" type="hidden"  name="kategori_id"/>
+                        <label  for="y">Kategori İsmi</label>
+                        <input id="y" class="form-control" type="text" required name="kategori_ismi"/>
+                    </div>
+
+                  
+
+               
+            </div>
+
+                <div class="modal-footer d-block">
+                  <div class="row mt-3">  
+                            <div class="form-group col-6 ">
+                            <button type="button" class="btn btn-danger form-control" data-bs-dismiss="modal">İptal</button>
+                            </div>
+                        <div class="form-group col-6 ">
+                                <button type="submit" class="btn btn-success form-control" >Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+             </form>
+        </div>
+    </div>    
+</div>
+
+<div class="modal fade" id="u-e">
+    <div class="modal-dialog modal-dialog-scrollable  modal-dialog-centered">
+        <div class="modal-content " style="box-shadow: inset 0 0 2px 2px black"> 
+            <div class="modal-header justify-content-between py-3" style="border-bottom: solid 2px black">
+                <span><i class="far fa-edit fa-lg"></i></span>
+                <h6 class="mb-0 bld">Ürün düzenle</h6> 
+                <button type="button" class="btn-close mx-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form id="editProduct">
+                    
+                    <div class="modal-body py-3 ps-3 pe-4 d-flex align-items-center" >
+                        <div class="d-block w-100">
+                            <div class="toast align-items-center text-end text-white bg-danger border-0" role="alert"  id="editProductToast" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex justify-content-end">
+                                    <div class="toast-body">
+
+                                    </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
+                             <div id="editProductPane">
+                               
+
+                            </div>
+
+                               
+                                <p class="text-start text-secondary mt-3 fnt-15 ps-2">
+                                    <span class="text-danger ms-1 bld"> *</span> Zorunlu Alan
+                                </p> 
+                            
+                        </div>
+                    </div>
+                </form>
+                    <div class="modal-footer justify-content-between px-3">
+                      <button type="button" class="btn btn-outline-danger rounded-0 shadow-sm minw-100" id="closeEdit" data-bs-dismiss="modal">Kapat</button>
+                      
+                      <button type="button" onclick="xr('editProduct',u[7],'#u-e',null)" class="btn btn-outline-success shadow-sm rounded-0 minw-100" > Kaydet <i class="ps-2 fas fa-save "></i></button> 
+                    </div>
+        </div>
+    </div>    
+</div>
+
+
+<div class="modal" id="r-m">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light justify-content-between">
+                <i class="fas fa-camera fa-2x text-secondary"></i>
+                <ul class="nav nav-pills fnt-14" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active rounded-0" id="pills-upload-tab" data-bs-toggle="pill" data-bs-target="#pills-upload" type="button" role="tab" aria-controls="pills-upload" aria-selected="true">
+                          Resim yükle 
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link  rounded-0" id="pills-galery-tab" data-bs-toggle="pill" onclick="getPics();" data-bs-target="#pills-galery" type="button" role="tab" aria-controls="pills-galery" aria-selected="false">
+                          Galeriden seç 
+                      </button>
+                    </li>
+                </ul>
+                <button type="button" class="btn-close bg-light p-2 m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <h6 id="v" class="modal-title w-100 text-start ps-3 text-success bld mt-2">Resim Düzenle</h6>
+            <div class="tab-content" id="pills-tabContent">
+                <!--Car tab-->
+                <div class="tab-pane fade show active" id="pills-upload" role="tabpanel" aria-labelledby="pills-upload-tab">
+                <div class="modal-body p-3">
+                    <form id="uf"  method="POST" enctype="multipart/form-data ">
+                        <div class="form-group text-center border">
+                            <div class="mb-2 bld ">Resim boyutunu seçin</div>   
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+                                    <input type="radio" name="hd" value="md" id="md" checked required onclick="ctrl(this,'')" />
+                                    <label for="md" class="text-center  border border-light pe-2 pb-0 ">Standart (540 x 540) </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="hd"  value="hd" id="hd" required onclick="ctrl(this,'')"/>
+                                    <label for="hd" class="text-center  border border-light pe-2 pb-0 ">HD (1080 x 1080) </label>
+                                </div>
+                                <div class=" mb-2  text-center">
+                                    <input type="radio" name="hd"  value="uhd" id="uhd" required onclick="ctrl(this,'')"/>
+                                    <label for="uhd" class="text-center  border border-light pe-2 pb-0 ">UHD (2160 x 2160) </label>
+                                </div>
+                            </div>
+                            <div class="mb-2 border-top bld ">Resmin genişliği ve yüksekliği eşit değilse</div>
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+
+                                    <input type="radio" name="crop" value="1" id="crop" checked  />
+                                    <label for="crop" class="text-center  border border-light pe-2 pb-0 ">Merkeze odaklan ve kırp </label>
+                                </div>
+                                <div class=" mb-2 text-center ">
+                                    <input type="radio" name="crop"  value="0" id="nocrop"/>
+                                    <label for="nocrop" class="text-center  border border-light pe-2 pb-0 ">Uzun kenarda orantıyı koru  </label>
+                                </div>
+                            </div>
+                            <div class="mb-2 border-top bld">Resim sıkıştırma formatı seçin</div>
+                            <div class="d-flex justify-content-between px-2 border-bottom">
+                                <div class=" mb-2 text-center p-1 border">
+                                    <input type="radio" name="format"  value="jpeg" id="jpeg"/>
+                                    <label for="jpeg" class="text-center  border border-light pe-2 pb-0 alert-success">Jpeg (standart sıkıştırma)  </label>
+                                </div>
+                                <div class=" mb-2 text-center p-1 border">
+                                    <input type="radio" name="format"  value="webp" id="webp" checked/>
+                                    <label for="webp" class="text-center border border-light pe-2 pb-0 alert-warning" >Webp (yüksek sıkıştırma)</label>
+                                </div>
+                                <div class=" mb-2 text-center p-1 border">
+                                    <input type="radio" name="format"  value="avif" id="avif"/>
+                                    <label for="avif" class="text-center border border-light pe-2 pb-0 alert-danger">Avif (çok yüksek sıkıştırma)</label>
+                                </div>
+                            </div>
+                            <img id="r-p" src="" class="text-center" style='width:50%' />
+                        </div>
+                        <div class="w-100 py-1 d-flex">      
+                            <input type="file" accept="image/* , image/avif" onchange="pw('r-p')" name="do" id="do" class="btn btn-outline-primary form-control me-1 text-start" multiple  />
+                            <input type="button" value="Yükle" onclick="uf('do', 'uf', 'r-p', 'pb', 'ss')" class="btn btn-outline-primary"/> 
+                        </div>
+                        <div>      
+                            <progress id="pb" value="0" max="100" style="width: 100%;margin-top: 8px;height:20px" > </progress>
+                        </div>
+                        <div class="form-control" id="ss" >
+                        </div>
+                        <input id='h' type="hidden" name="id" value="1"/>
+                        <input id='showimg' type="hidden" name="showimg" value=""/>
+                        <input id="tx" type="hidden" name="tx" value="0ddu2981x1h9"/>
+                    </form>
+                </div>
+                </div>
+                <div class="tab-pane fade " id="pills-galery" role="tabpanel" aria-labelledby="pills-galery-tab">
+                    <div class="modal-body py-3 justify-content-center tab-h d-flex" >
+                        <div class='old-images text-center ' style="height: 100% !important">
+                            <label>Yüklü resmleri kullanmak için butona tıklayın</label>
+                            <div style='overflow-x:hidden;overflow-y: scroll;height: 600px'>
+                                <div class='d-flex flex-wrap justify-content-center'  id="img-list">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+<div class="modal" id="r-m2">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <div class="modal-header bg-light justify-content-between">
+                <i class="fas fa-camera fa-2x text-secondary"></i>
+                <ul class="nav nav-pills fnt-14" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active rounded-0" id="pills-car-tab" data-bs-toggle="pill" data-bs-target="#pills-car" type="button" role="tab" aria-controls="pills-car" aria-selected="true">
+                          Resim yükle 
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link  rounded-0" id="pills-customer-tab" data-bs-toggle="pill" onclick="getPics2()" data-bs-target="#pills-customer" type="button" role="tab" aria-controls="pills-customer" aria-selected="false">
+                          Galeriden seç 
+                      </button>
+                    </li>
+                </ul>
+                <button type="button" class="btn-close bg-light p-2 m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <h6 id="v2" class="modal-title w-100 text-start ps-3 text-success bld mt-2">Resim Düzenle</h6>
+             <div class="tab-content" id="pills-tabContent">
+                
+                <div class="tab-pane fade show active" id="pills-car" role="tabpanel" aria-labelledby="pills-car-tab">
+                <div class="modal-body p-3">
+                    <form id="uf2"  method="POST" enctype="multipart/form-data ">
+                        <div class="form-group text-center border">
+                            <div class="mb-2 bld">Resim boyutunu seçin</div>   
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+                                    <input type="radio" name="hd" value="md" id="md2" checked  onclick="ctrl(this,'2')"/>
+                                    <label for="md2" class="text-center  border border-light pe-2 pb-0 ">Standart (540 x 540) </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="hd"  value="hd" id="hd2" onclick="ctrl(this,'2')"/>
+                                    <label for="hd2" class="text-center  border border-light pe-2 pb-0 ">HD (1080 x 1080) </label>
+                                </div>
+                                <div class=" mb-2  text-center">
+                                    <input type="radio" name="hd"  value="uhd" id="uhd2" onclick="ctrl(this,'2')"/>
+                                    <label for="uhd2" class="text-center  border border-light pe-2 pb-0 ">UHD (2160 x 2160) </label>
+                                </div>
+                            </div>
+                            <div class="mb-2 border-top bld ">Resmin genişliği ve yüksekliği eşit değilse</div>
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+                                    <input type="radio" name="crop" value="1" id="crop2" checked  />
+                                    <label for="crop2" class="text-center  border border-light pe-2 pb-0 a">Merkeze odaklan ve kırp </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="crop"  value="0" id="nocrop2"/>
+                                    <label for="nocrop2" class="text-center  border border-light pe-2 pb-0 ">Uzun kenarda orantıyı koru  </label>
+                                </div>
+                            </div>
+                            <div class="mb-1 border-top bld">Resim sıkıştırma formatı seçin</div>
+                            <div class="d-flex justify-content-between px-2 border-bottom">
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="format"  value="jpeg" id="jpeg2"/>
+                                    <label for="jpeg2" class="text-center  border border-light pe-2 pb-0 alert-success">Jpeg (standart sıkıştırma)  </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="format"  value="webp" id="webp2" checked/>
+                                    <label for="webp2" class="text-center border border-light pe-2 pb-0 alert-warning" >Webp (yüksek sıkıştırma)</label>
+                                </div>
+                                <div class=" mb-2 text-center ">
+                                    <input type="radio" name="format"  value="avif" id="avif2"/>
+                                    <label for="avif2" class="text-center border border-light pe-2 pb-0 alert-danger">Avif (çok yüksek sıkıştırma)</label>
+                                </div>
+                            </div>
+                            <img id="r-p2" src="" class="text-center" style='width:50%' />
+                        </div>
+                        <div class="w-100 d-flex py-1">      
+                            <input type="file" accept="image/*, image/avif" onchange="pw('r-p2')" name="do" id="do2" class="btn btn-outline-primary form-control me-1 text-start" multiple  />
+                            <input type="button" value="Yükle" onclick="uf('do2', 'uf2', 'r-p2', 'pb2', 'ss2')" class="btn btn-outline-primary"/> 
+                        </div>
+                        <div>      
+                            <progress id="pb2" value="0" max="100" style="width: 100%;margin-top: 8px;height:20px" > </progress>
+                        </div>
+                        <div class="form-control" id="ss2" >
+                        </div>
+                        <input id='h2' type="hidden" name="id" value="1"/>
+                        <input id='showimg2' type="hidden" name="showimg" value=""/>
+                        <input id="tx2" type="hidden" name="tx" value="0ddu2981x1h2"/>
+                    </form>
+                </div>
+                </div>
+                <div class="tab-pane fade " id="pills-customer" role="tabpanel" aria-labelledby="pills-customer-tab">
+                    <div class="modal-body py-3 justify-content-center tab-h d-flex" >
+                        <div class='old-images text-center ' style="height: 100% !important">
+                            <label>Yüklü resmleri kullanmak için butona tıklayın</label>
+                            <div style='overflow-x:hidden;overflow-y: scroll;height: 600px'>
+                                <div class='d-flex flex-wrap justify-content-center'  id="img-list2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+
+<div class="modal fade" id="um">
+    <div class="modal-dialog modal-dialog-scrollable  modal-dialog-centered">
+        <div class="modal-content " style="box-shadow: inset 0 0 2px 2px black"> 
+            <form id="createProduct" action="/menu/np" method="post">
+            <div class="modal-header justify-content-between py-3" style="border-bottom: solid 2px black">
+                <span class="ms-2"><i class="fas fa-utensils fa-lg text-success"></i></span>
+                <ul class="nav nav-pills fnt-14" id="pills-tab" role="tablist">
+                    
+                    <li class="nav-item" role="presentation">
+                      <p class="nav-link active rounded-0 mb-0 fnt-14 bld"  id="pills-kategori-tab"  data-bs-target="#pills-kategori"  role="tab" aria-controls="pills-kategori" aria-selected="true">
+                          Kategori Seç
+                      </p>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <p class="nav-link  rounded-0 mb-0 fnt-14 bld"  id="pills-product-tab"  data-bs-target="#pills-product"  role="tab" aria-controls="pills-product" aria-selected="false">
+                          Ürün Ekle 
+                      </p>
+                    </li>
+                    
+                </ul>   
+                <button type="button" class="btn-close mx-0" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+             
+            <div class="tab-content" id="pills-tabContent">
+                <!--Car tab-->
+                <div class="tab-pane fade show active" id="pills-kategori" role="tabpanel" aria-labelledby="pills-kategori-tab">
+                     
+                     <div class="modal-body py-5 justify-content-center tab-h d-flex" >
+                         <div class="d-block ">
+                          
+                           
+                           <div class="input-group mb-3">
+
+                               <select  type="text" class="form-select" alias="Hazır ktegori" onchange="skat(this)" >
+                                   <option value="0">Seçin</option>
+                                                                          <option value="16710">Sıcak İçecekler</option>
+
+                                                                          <option value="16709">Soğuk İçecekler</option>
+
+                                                                          <option value="16712">Atıştırmalıklar</option>
+
+                                                                          <option value="16713">Hamburgerler</option>
+
+                                                                          <option value="16714">Salatalar</option>
+
+                                                                          <option value="16711">Biralar</option>
+
+                                                                          <option value="16715">Ana Yemekler</option>
+
+                                                                          <option value="16716">Tatlılar</option>
+
+                                                                  </select>
+                           </div>    
+                           
+                           <div class="input-group mb-3">
+                               <span class="input-group-text  border-0 bld" style="min-width: 110px">Kategori</span>
+                               <input type="text" class="form-control" id="kname" name="kategori_ismi" value="" required alias="Kategori"  />
+                           </div>
+
+                         </div>
+                    </div>
+                     
+                    <div class="modal-footer d-flex justify-content-between">
+                      <button type="button" class="btn btn-outline-danger rounded-0 shadow-sm" data-bs-dismiss="modal"> <i class="ps-2 fas fa-times"></i> İptal</button>
+                      
+                      <button type="button" onclick="toTab('#pills-product-tab')" class="btn btn-outline-success rounded-0 shadow-sm" > İleri <i class="fas fa-chevron-right ps-2 fa-lg"></i></button> 
+                    </div> 
+                     
+                 </div>
+                <!-- SaCustomer Tab -->
+                
+                <div class="tab-pane fade " id="pills-product" role="tabpanel" aria-labelledby="pills-product-tab">
+                    
+                    <div class="modal-body py-4 justify-content-center tab-h d-flex" >
+                        <div class="d-block" >
+                            
+                            
+                            
+                            
+                            <div id="customerPane">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-transparent border-0 bld fnt-15" style="min-width: 130px">Ürün ismi <span class="text-danger ms-1 bld"> *</span></span>
+                                    <input type="text" class="form-control" name="urun_ismi" value="" alias="Ürün ismi" required />
+                                </div>
+                                <div class="input-group mb-3 ">
+                                    <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px">Açıklama</span>
+                                    <textarea type="text" class="form-control" name="aciklama" value="" alias="Açıklama"  rows="3"></textarea>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px">Fiyat <span class="text-danger ms-1 bld"> *</span></span>
+                                    <input type="text" class="form-control" name="fiyati" value="" alias="Fiyat" required />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px" >Haz.Süresi (dk)</span> 
+                                    <input type="text" class="form-control" name="prepare" value="" alias="Hazırlıksüresi"  />
+                                </div>
+                                <div class="input-group mb-3">
+                                  <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px">Kalori</span>
+                                    <input type="text" class="form-control" name="kalori" value="" alias="Kalori"  />
+                                    <input type="hidden" name="tkn" value="9da04a940af3ee909995e57acea9cbcb15a878728b742fdb244d4ce198d282dd" />
+                                    
+                                </div> 
+                                <p class="text-start text-secondary mt-3 fnt-15 ps-2">
+                                    <span class="text-danger ms-1 bld"> *</span> Zorunlu Alan
+                                </p> 
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between ">
+                      <button type="button" class="btn btn-outline-primary rounded-0 shadow-sm" onclick="toTab('#pills-kategori-tab')"> <i class="fas fa-chevron-left "></i> Geri</button>
+                      <button type="submit"  class="btn btn-outline-success rounded-0 shadow-sm" ><i class="fas fa-save fa-lg pe-2 "></i> Oluştur</button> 
+                     </div>
+                    
+                 </div>
+                
+
+                <!-- Save Tab -->
+                
+                 
+             </div>
+            </form>    
+        </div>
+    </div>    
+</div>
+
+
+<div class="modal" id="brm">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <div class="modal-header bg-light text-dark d-flex py-3 justify-content-between align-items-center">
+                <i class="fas fa-photo-video text-dark me-2 fa-lg"></i>
+                <h6 id="v3" class="modal-title bld">Resim yükle </h6>
+                <button type="button" class="btn-close text-dark m-0" data-bs-dismiss="modal" aria-label="Close">  </button>
+            </div>
+            <form id="upload_form"  method="POST" enctype="multipart/form-data ">   
+                <div class="modal-body px-3">
+                    <div class="">
+                        <p class="fnt-13 text-center"> <i class="fas fa-info-circle me-1"></i> yüklediğiniz resim kısa kenada 400 pixel, uzun kenarda ise orantı korunarak yüklenir. Arka planınız bu resim kullanılarak fayans şeklinde döşenecektir. </p>
+                    </div>
+                    <div class="form-group text-center" id="mediaPane">
+                        <img id='kbg' src="" class='text-center show' style='width:100%;max-height: 300px;object-fit: contain' />
+                    </div>
+                    <div class="w-100 justify-content-between d-flex">      
+                        <input type="file" accept="image/*, image/avif, video/*" onchange="pw('kbg')" name="dosya" id="dosya" class="form-control text-start btn btn-outline-primary" multiple  />
+                        <input type="button" value="Yükle" onclick="uf('dosya', 'upload_form', 'kbg', 'progressBar', 'status')" class="ms-2 btn btn-outline-primary"/> 
+                    </div>
+                    <div>      
+                        <progress id="progressBar" value="0" max="100" style="width: 100%;margin-top: 8px;height:20px" > </progress>
+                    </div>
+                    <div class="form-control" id="status" >
+                    </div>
+                    <input id='h3' type="hidden" name="id" value=""/>
+                    <input id='showimg3' type="hidden" name="showimg" value=""/>
+                    <input id="tx3" type="hidden" name="tx" value="kbg"/>
+                </div>
+            </form> 
+        </div>
+    </div>    
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+    function group(i,n){
+        $('#ug').modal('show');
+        _("grp-head").innerHTML=n;
+        _("grid").value=i;
+    }
+    function addAlergy(uid){
+        let i=_("alergy").value;
+        xr(null,'/menu/addalergen',null,{k:i,l:uid});
+    }
+function ctrl(e,s){
+    if(e.value==="md"){
+        _("jpeg"+s).disabled=false;
+        _("webp"+s).disabled=false;
+        _("avif"+s).disabled=false;
+    }else if(e.value==="hd"){
+        _("jpeg"+s).disabled=true;
+        _("webp"+s).disabled=false;
+        _("webp"+s).checked=true;
+        _("avif"+s).disabled=false;
+        _("jpeg"+s).checked=false;
+    }else if(e.value==="uhd"){
+        _("avif"+s).checked=true;
+        _("jpeg"+s).disabled=true;
+        _("webp"+s).disabled=true;
+    }
+}
+function gu(){
+let kt=$("#kategori-select option:selected");
+let i=kt.attr("data-kategori-ismi");
+let d=kt.attr("data-kategori-id");
+_('kategori-id').value=d;
+_('kategori-isim').value=i;
+_("product-price").value="";
+_("product-detail").value="";
+_("product-name").value="";
+if(i==="0"){_('kategori-isim').value="";}else{ _('kategori-isim').value=i;xr('nf',u[4],null,null);}}
+function sf(){
+    let opt=$('#uo option:selected');
+    let f=opt.attr("data-price");
+    let d=opt.attr("data-detail");
+    var i=opt.attr("data-isim");
+    if(i!=="0"){_("product-price").value=f;_("product-detail").value=d;_("product-name").value=i;
+    }else{_("product-price").value="";_("product-detail").value="";_("product-name").value="";}}
+    const u=['/menu/sc','/menu/sd','/menu/pup','/menu/gp','/menu/gu','/menu/uc','/menu/up','/menu/ud','/menu/si','/menu/cd','/menu/prc'];
+    function ek(k, i) {$('#k-e').modal('show');_("z").value=k;_("y").value=i;}
+    function et(k, a, i, f, d,h,e) {$('#u-e').modal('show');
+        var o= _("kn").options;for (j=0;j<o.length;j++){if(o[j].value==k){o[j].selected=true;}}
+        _("a").value=a;_("i").value=i;_("f").value=f;_("d").value=d+" ";
+        _("prepare-edit").value=h;_("kalori-edit").value=e;
+    
+    } 
+ function closeAll(){
+            $('#col16710').removeClass('show');
+            $('#col16709').removeClass('show');
+            $('#col16712').removeClass('show');
+            $('#col16713').removeClass('show');
+            $('#col16714').removeClass('show');
+            $('#col16711').removeClass('show');
+            $('#col16715').removeClass('show');
+            $('#col16716').removeClass('show');
+         
+ }  
+   function rm(g,i,u) {
+        $("#pills-galery-tab").attr("onclick","getPics("+i+")");
+        $('#r-m').modal('show');
+        $('#r-p').attr("src", $("#"+g).attr("src"));
+        $('#v').html(u);$('#h').attr('value', i);
+        $('#showimg').attr('value',g);
+        $('#tx').attr('value','0ddu2981x1h9');
+        $('.tab').attr('value','u');}
+    function getPics(i){
+        
+        xr(null,'/menu/getpics',null,{k:i,l:'u'});
+       
+    }
+    function getKPics(i){
+        
+        xr(null,'/menu/getpics',null,{k:i,l:'k'});
+       
+    }
+    function getPics2(i){
+        
+        xr(null,'/menu/getpics2',null,{k:i,l:'u'});
+    
+    }
+    function rm2(g,i,u) {
+        
+        $("#pills-customer-tab").attr("onclick","getPics2("+i+")");
+        $('#r-m2').modal('show');
+        $('#r-p2').attr("src", $("#"+g).attr("src"));
+        $('#v2').html(u);$('#h2').attr('value', i);
+        $('#showimg2').attr('value',g);
+        $('#tx2').attr('value','0ddu2981x1h2');
+    }
+   
+    function krm(g,i,u) {
+        $('#r-m').modal('show');
+        $("#pills-galery-tab").attr("onclick","getKPics("+i+")");
+        $('#r-p').attr("src", $("#"+g).attr("src"));
+        $('#v').html(u);
+        $('#h').attr('value', i);
+        //$('.newid').attr('value', i);
+        $('#showimg').attr('value',g);
+        $('#tx').attr('value','0agx0io3872xah');
+        //$('.tab').attr('value','k');
+    }
+function brm(g,i,u) {
+        $('#brm').modal('show');
+        $('#kbg').attr("src", $("#"+g).attr("src"));
+        $('#v3').html(u+" - arka plan");
+        $('#h3').attr('value', i);
+        $('#showimg3').attr('value',g);
+        
+    }
+    function ag(){$('#lng').modal('show');}
+    function pw(e) {_(e).src=URL.createObjectURL(event.target.files[0]);}  
+    
+    let ps=null;
+    function pup(i){xr(null,u[2],null,i);};
+        function gp(k){let s=_("col"+k);if(ps!==s){xr(null,u[3],null,{k:k,l:2}); ps=s;}}
+    function cs(f){xr(f,u[0],null,null);}
+    function us(f){xr(f,u[1],null,null);}
+    function dc(i,d,l){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu kayıt kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun/Kategori: "+d);
+        $("#del_id").attr("onclick","xr(null,'"+l+"','#oy',"+i+")");
+    }
+    function katreset(i,d){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu Resim kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Kategori: "+d);
+        $("#del_id").attr("onclick","xr(null,'/upload/katreset','#oy',"+i+")");
+    }
+    function urunreset(i,d){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu Resim kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun: "+d);
+        $("#del_id").attr("onclick","xr(null,'/upload/urunreset','#oy',"+i+")");
+    }
+    function urunreset2(i,d){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu Resim kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun: "+d);
+        $("#del_id").attr("onclick","xr(null,'/upload/urunreset2','#oy',"+i+")");
+    }
+function dcc(i,d,l){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu kayıt kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun/Kategori: "+d);
+        $("#del_id").attr("onclick","window.location='"+l+"/"+i+"'");
+}
+function getProduct(i,kid){
+     $('#u-e').modal('show');
+     ps=null;
+     $("#closeEdit").attr('onclick', 'gp('+kid+')');
+    xr(null,"/menu/getproduct",null,{k:i});
+}
+//  var tt=document.querySelectorAll('.item'); tt.forEach(x=>{ x.addEventListener('click',function(){ JS.move();  }); });
+    //Sortable.mount(new AutoScroll());
+    
+    
+    var el = document.getElementById('sortableList');
+    
+    var sortable =  Sortable.create(el, {
+    handle: ".handle", dragClass:'dragg',chosenClass:'dragging',animation: 150,
+       scroll: true, // Enable the plugin. Can be HTMLElement.
+	forceAutoScrollFallback: true, // force autoscroll plugin to enable even when native browser autoscroll is available
+//	scrollFn: function(offsetX, offsetY, originalEvent, touchEvt, hoverTargetEl) { ... }, // if you have custom scrollbar scrollFn may be used for autoscrolling
+	scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
+	scrollSpeed: 50, // px, speed of the scrolling
+//	bubbleScroll: false, // apply autoscroll to all parent elements, allowing for easier movement
+    onEnd: function (evt) {
+	if(evt.oldIndex!==evt.newIndex){  
+           var srtlist=sortable.toArray();
+           xr(null,'/menu/ksort',null,{l:JSON.stringify(srtlist)});
+        }                
+    }
+});
+
+function skat(e){
+    console.log(e.options[e.selectedIndex].text);
+    let text=e.options[e.selectedIndex].text;
+    if(e.value>0){$('#kname').val(text);}
+    else{ $('#kname').val(""); }
+}
+function toTab(id){
+   
+    let kategori=_('kname').value;
+    if(kategori.length>1){
+       
+        _('kname').style="border:1px solid #ced4da";
+        var mytab= document.querySelector(id);
+
+        var tab = new bootstrap.Tab(mytab);
+        tab.show();
+    }else{
+       _('kname').style="border:1px solid red";
+     
+    }
+        
+        
+   
+}
+
+
+
+</script>
+
+
+
+
+
+
+
+
+<div class="modal  modal-md fade" id="lng" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content ">
+        <div class="modal-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                <i class="fas fa-lg fa-globe text-white pe-2"></i>
+                <h6 class="modal-title">Dil Ekle </h6>
+                <button type="button" class="btn-close btn-close-white text-white m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="newfrm" method="post" action="/busines/nl"> 
+        <div class="modal-body px-4">
+            <div class="form-group  border-secondary  rounded">
+                  <label for="product-name" class="col-form-label float-start">Dil Seçin: </label>
+                  <select class="form-control selection" name="lid" >
+                  <option value="0">Seçiniz</option>
+                  
+                    <option value="1">TÜRKÇE </option>
+
+                  
+                    <option value="2">ENGLISH </option>
+
+                  
+                    <option value="3">DEUTSCH </option>
+
+                  
+                    <option value="4">عربي </option>
+
+                  
+                    <option value="5">SPANISH </option>
+
+                  
+                    <option value="6">FRENCH </option>
+
+                  
+                    <option value="7">Русский </option>
+
+                  
+                    <option value="8">中國人 </option>
+
+                  
+                    <option value="9">ITALIANO </option>
+
+                  
+                    <option value="10">日本 </option>
+
+                   
+
+                  </select>
+            </div>
+            <div class="form-group  border-primary rounded">
+                <label for="product-name" class="col-form-label ">Para Birimi</label>
+                <select class="form-control selection"  name="cid">
+                 
+                    <option value="1">TL </option>
+
+                  
+                    <option value="2">DOLAR </option>
+
+                  
+                    <option value="3">EURO </option>
+
+                  
+                    <option value="4">SAR </option>
+
+                  
+                    <option value="5">POUND </option>
+
+                  
+                    <option value="6">RUBLE </option>
+
+                  
+                    <option value="7">YEN </option>
+
+                  
+                    <option value="8">YUAN </option>
+
+                   
+
+              </select>
+            </div>
+            <p class=' px-3 fnt-14 text-secondary' style="text-align:justify;font-weight: 300">
+             <i>  <strong>Not: </strong>Mevcut Menünün bir kopyası oluşturularak, yeni dil seçeneği için size sunulur, kategori isimleri, ürün isimleri ve açıklamalarda yeni dile göre
+                 gerekli düzenlemeleri yapmalısınız <strong class='text-blue'>(Çeviri asistanımız size yardımcı olacaktır)</strong> Ürün fiyatı belirlediğiniz para birimine göre güncel kur üzernden otomatik hesaplanır,  Resimler tekrar eklenmez, ürün reytingleri etkilenmez, ana dilde ürün eklediğinizde ürün diğer dillere kendiliğinden eklenir ancak dile göre değişik yapmayı unutmayın.
+             </i>
+            </p>
+            <div class="row flex-nowrap mt-2">  
+                <div class="form-group col-6 ">
+                <button type="button" class="btn btn-outline-danger shadow-sm rounded-0 form-control" data-bs-dismiss="modal">İptal</button>
+                </div>
+                <div class="form-group col-6 ">
+                    <button type="submit" class="btn btn-outline-success form-control shadow-sm rounded-0" >Ekle +</button>
+                </div>
+            </div>
+        </div> 
+        </form>
+      <div class="modal-footer">
+        
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+<div class="modal  modal-md fade" id="ug" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content bg-light">
+      
+            <div class="modal-header bg-warning ">
+                <h6 class="modal-title"><i class="far fa-object-group  fa-lg pe-2"></i>Benzer ürün Guruplama </h6>
+                    <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+        
+     <form  method="post" action="/menu/grp"> 
+        <div class="modal-body py-1 px-3">
+         
+          <div class="form-group border border-warning p-2 rounded">
+          <p>Benzer ürünleri gruplayarak menünüzü hızlandırın, örneğin bir üründe, porsiyon, birbuçuk (1,5) porsiyon, kg, iki kişilik vb.. gibi benzer seçenekler bulunuyorsa bu ürünleri aynı grup altında birleştirin. Ayrıca <strong>açıklama ve resim </strong> eklemenize gerek kalmaz.   </p>
+          </div>
+            
+          <div class="form-group border border-warning p-2 rounded">
+              <label for="product-name" class="col-form-label text-secondary">Ürün Adı (Çeşitlendirilen ürün) </label>
+               <input type="hidden" id="grid" name="grid"  />
+              <p class="form-control fnt-15" id="grp-head"></p>
+          </div>
+            <div class="form-group px-2">
+            <label for="product-detail" class="col-form-label">Benzer Ürün (Örn. Birbuçuk)</label>
+            <input class="form-control" name="name"  />
+          </div>
+          <div class="form-group px-2">
+              
+            <label for="product-price" class="col-form-label">Ürün Fiyatı ( TL ):</label> 
+            <input type="text" required class="form-control"  name="fiyat">
+          </div>  
+          
+        </div> 
+        <div class="modal-footer d-block">
+           <div class="row  mt-3">  
+               <div class="form-group col-6 ">
+               <button type="button" class="btn btn-danger form-control" data-bs-dismiss="modal">İptal</button>
+               </div>
+               <div class="form-group col-6 ">
+                   <button type="submit" class="btn btn-success form-control" >Ekle +</button>
+               </div>
+           </div>
+        </div>
+     </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div id="menu" class="menu-in"  >
+    
+    <ul>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/menu" title="menü"> 
+                        <span>Menü</span> 
+                        <span class="fa-wcenter"><i class="fas fa-utensils fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/camp" title="kampanya"> 
+                        <span>Slayt Oluştur</span> 
+                        <span class="fa-wcenter"><i class="far fa-caret-square-right fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/tema" title="Tema"> 
+                        <span>Tema</span> 
+                        <span class="fa-wcenter"><i class="fas fa-palette fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/profil/menu" title="profil"> 
+                        <span>Menü Ayarları</span> 
+                        <span class="fa-wcenter"><i class="fas fa-sliders-h fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/busines/like" title="beğeni mesajları"> 
+                        <span>Beğeni Mesajları</span> 
+                        <span class="fa-wcenter"><i class="fas fa-star-half-alt fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+       <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/istatistik" title="istatistik"> 
+                        <span>İstatistikler</span> 
+                        <span class="fa-wcenter"><i class="fas fa-chart-bar fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" target="_blank" href="https://www.menulistele.com/busines/karekod" title="karekod"> 
+                        <span>Karekod Yazdır</span> 
+                        <span class="fa-wcenter"><i class="fas fa-qrcode fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+                <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/profil" title="profil"> 
+                        <span>Genel Ayarlar</span> 
+                        <span class="fa-wcenter"><i class="fas fa-user-cog fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+         
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/msg" title="Destek"> 
+                        <span>Destek </span>
+                        <span class="text-end ">
+                        
+                                <i class="far fa-envelope fa-lg" style="position: relative;right: -11px"></i>
+                            
+                                <sup class="badge bg-warning text-black" style="padding: 1px;position: relative;top:-10px;right: -4px">0</sup>
+                          
+                        
+                        </span>  
+                    </a>
+                
+            </div> 
+        </li>
+        <li>            
+                            
+                    <div>
+                            <a class=" d-flex justify-content-between" href="https://www.menulistele.com/login/out" title="dashboard"> 
+                                <span>SARUM HOTEL çıkış</span> 
+                                <span class="fa-wcenter"><i class="fas fa-sign-out-alt fa-lg"></i></span>
+                            </a>
+                    </div>
+            
+                        </li>
+       
+    </ul>
+    
+</div>
+
+   
