@@ -1,1628 +1,1522 @@
+
 <!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ata Obası - Dijital Kültür ve Bilgi Platformu</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons for Historical & Modern Vibe -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        obaBg: '#0b0d10',
-                        obaCard: '#12151c',
-                        obaGold: '#d4af37',
-                        obaGoldHover: '#f3e5ab',
-                        obaBronze: '#cd7f32',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght=500;700;900&family=Plus+Jakarta+Sans:wght=300;400;600;700&display=swap');
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0b0d10;
-        }
-        .historical-font {
-            font-family: 'Cinzel', serif;
-        }
-        /* Özel Kaydırma Çubuğu */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #090b0e;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #d4af37;
-            border-radius: 3px;
-        }
-        /* Işıma Efektleri */
-        .glow-gold {
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
-        }
-        .glow-red {
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
-        }
-        .text-glow {
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-    </style>
-</head>
-<body class="text-gray-100 min-h-screen flex flex-col justify-between overflow-x-hidden">
-
-    <!-- 1. GİRİŞ SINAVI VE KATILIM EKRANI (OVERLAY) -->
-    <div id="quiz-overlay" class="fixed inset-0 z-50 bg-obaBg flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-obaCard border-2 border-obaGold rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(212,175,55,0.15)] relative">
-            
-            <div class="text-center mb-6">
-                <span class="text-4xl mb-1 block">⛺</span>
-                <h1 class="historical-font text-3xl md:text-4xl font-extrabold text-obaGold tracking-wider text-glow">ATA OBASI</h1>
-                <p class="text-xs text-gray-400 mt-1">Toy Meclisi'ne katılmak ve kutlu otağa geçmek için Oba Kapısı sınavını tamamlamalısın.</p>
-                <div class="h-1 w-32 bg-gradient-to-r from-transparent via-obaGold to-transparent mx-auto mt-3"></div>
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css"  href="/public/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css"  href="/public/css/bussines03.css" />
+        <link href="/public/css/fontawesome.css?v=0.1" rel="stylesheet"/>
+        <link href="/public/css/owl.carousel.min.css" rel="stylesheet"/>
+         <link rel="stylesheet" href="/public/css/owl.theme.default.min.css"/>
+        <script type="text/javascript" src="/public/js/jquery-3.5.1.min.js"> </script>
+        <script type="text/javascript" src="/public/js/bussiness5aed092.js"> </script>
+        <script type="text/javascript" src="/public/js/popper.min.js"> </script>
+        <script type="text/javascript" src="/public/js/bootstrap.min.js"> </script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+<body> 
+    <style>.break{word-break: break-word} .maxw-100{max-width: 100%}</style>    
+<div id="header" class="row"   >
+        <div class="col-md-6 logo">
+            <div id="wrap" onclick="sakla()">
+                <div id="b1" ></div>   
+                <div id="b2" ></div>  
+                <div id="b3" ></div>  
+           </div>
+            <div class="d-flex align-items-end">
+                <img src="/public/img/qr.png" style="padding-top: .6rem;padding-left: 1rem;vertical-align: middle;height: 54px" />
+                <span class="text-white ps-4" style="font-size: 18px;font-weight: 600;text-shadow:1px 1px 2px #000;font-style: italic" >Sarum Çeşme Otel</span>
             </div>
-
-            <!-- Soru Akışı Konteyneri -->
-            <div id="quiz-container" class="space-y-6">
-                <div class="flex justify-between items-center text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                    <span id="question-index">Soru 1 / 4</span>
-                    <span id="score-counter" class="text-obaGold">Puan: 0</span>
-                </div>
-
-                <div id="question-card" class="bg-black/40 p-5 rounded-xl border border-gray-800">
-                    <h3 id="question-text" class="text-lg font-medium text-white mb-4 leading-relaxed">Soru yükleniyor...</h3>
-                    <div id="options-grid" class="grid grid-cols-1 gap-3"></div>
-                </div>
-
-                <div id="quiz-feedback" class="hidden text-center p-3 rounded-lg text-sm font-semibold"></div>
-
-                <div class="flex justify-between items-center pt-2">
-                    <button id="next-btn" onclick="nextQuestion()" class="hidden ml-auto px-6 py-2.5 bg-obaGold text-black font-bold rounded-lg hover:bg-obaGoldHover transition-all flex items-center gap-2">
-                        Sonraki Soru <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                    <button id="enter-otag-btn" onclick="showCoronation()" class="hidden w-full py-4 bg-gradient-to-r from-obaBronze to-obaGold text-black font-extrabold text-lg rounded-xl hover:brightness-110 transition-all shadow-lg shadow-obaGold/10 flex justify-center items-center gap-2">
-                        <span>🛡️ Testi Bitir ve Devam Et</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Obaya Katılım Konteyneri (Bağlılık Andı Parşömeni) -->
-            <div id="coronation-container" class="hidden space-y-5 text-center py-1">
-                <span class="text-5xl animate-pulse block">📜</span>
-                <h3 class="historical-font text-2xl font-extrabold text-obaGold tracking-wide text-glow">Obamıza Hoş Geldin Yoldaş!</h3>
-                
-                <!-- KUTLU ANT METNİ PARŞÖMEN ALANI -->
-                <div class="bg-black/60 border border-obaGold/40 p-4 rounded-xl text-left max-w-lg mx-auto text-xs md:text-sm text-gray-300 leading-relaxed shadow-inner max-h-40 overflow-y-auto space-y-2 border-l-4 border-l-obaGold">
-                    <p class="font-bold text-obaGold text-center tracking-widest uppercase border-b border-gray-800 pb-1 mb-2">⛺ ATA OBASI BAĞLILIK ANDI ⛺</p>
-                    <p>Temeli tam bağımsızlık, harcı akıl ve bilim olan şanlı Ata Obası'na katılırken;</p>
-                    <p>Akıl ve bilim rehberliğinde kurduğumuz bu obada; Gazi Mustafa Kemal Atatürk'ün açtığı çağdaş medeniyet yolunda yürümeye, Cumhuriyet'in devrimlerini bir meşale gibi taşımaya, Özgür düşüncenin, laikliğin ve tam bağımsızlığın yılmaz savunucusuolmaya, Obamızın her ferdini kardeş bilip, birlik ve dayanışma içinde karanlığa karşı aydınlığı savunmaya; Atamızın miras bıraktığı 'muasır medeniyetler' seviyesine ulaşmak için durmaksızın çalışmaya, Söylediğimiz her sözün, attığımız her adımın hakikat ve adalet ışığında olmasına, Birliğimizi daim, davamızı aydınlık tutmaya and içerim, NE MUTLU TÜRKÜM DİYENE!</p>
-                    <p>Obanın düzenine, birliğine ve yoldaşlık hukukuna sadık kalacağıma gök kubbe altında and içerim!</p>
-                </div>
-
-                <div class="max-w-md mx-auto space-y-4 pt-1">
-                    <input id="bey-name-input" type="text" placeholder="Unvanın veya Adın..." class="w-full bg-black/60 border-2 border-obaGold rounded-xl px-4 py-3 text-center text-lg font-bold text-white focus:outline-none focus:border-obaGoldHover placeholder-gray-600 transition-all shadow-inner" value="Yoldaş">
+           
+        </div>
+                <div id="headerlink" class="col-md-6 justify-content-end text-end" >
+                      
                     
-                    <!-- Cinsiyet Seçimi Paneli -->
-                    <div class="flex justify-center gap-4 text-xs font-semibold">
-                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-2.5 rounded-xl hover:border-obaGold transition-all select-none">
-                            <input type="radio" name="gender-selection" value="erkek" checked class="accent-obaGold w-4 h-4"> 
-                            <span>♂️ Erkek (Alp)</span>
-                        </label>
-                        <label class="flex items-center gap-2.5 cursor-pointer bg-black/40 border-2 border-gray-800 px-5 py-2.5 rounded-xl hover:border-obaGold transition-all select-none">
-                            <input type="radio" name="gender-selection" value="kiz" class="accent-obaGold w-4 h-4"> 
-                            <span>♀️ Kız (Asena)</span>
-                        </label>
-                    </div>
+                        <div class="btn-group dropstart">
+                                <button type="button" class="btn btn-danger text-white dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                 <i class="fas fa-user fa-lg pe-2"></i>SARUM HOTEL                                </button>
 
-                    <!-- KUTLU ANAHTAR GİRİŞ ALANI -->
-                    <div class="border-t border-gray-800/80 pt-3">
-                        <label class="block text-[11px] font-bold uppercase tracking-widest text-obaGold/80 mb-1.5">🔑 Yetkili Giriş Anahtarı</label>
-                        <input id="yetkili-key-input" type="password" placeholder="Anahtar (Boş bırakabilirsin)" class="w-full bg-black/60 border border-gray-800 focus:border-obaGold rounded-xl px-4 py-2.5 text-center text-sm text-white focus:outline-none transition-all placeholder-gray-700">
-                    </div>
+                                <ul class="dropdown-menu" aria-labelledby="dlk" >
 
-                    <!-- ANT İÇERİM BUTONU -->
-                    <button onclick="unlockOtag()" class="w-full py-4 bg-gradient-to-r from-obaGold via-yellow-500 to-obaBronze text-black font-extrabold text-lg rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-obaGold/20 flex justify-center items-center gap-2">
-                        <span>🛡️ Ant İçerim ve Obaya Katılırım</span>
-                    </button>
+                                  <li><a class="dropdown-item" href="https://www.menulistele.com/profil" ><i class="fas fa-user-cog pe-2 fa-lg"></i>Hesap Bilgileri</a></li>
+                                  <li><hr class="dropdown-divider"></hr></li>
+
+                                  <li><a class="dropdown-item" href="/login/out" > <i class="fas fa-sign-out-alt fa-lg pe-2"></i> Çıkış</a></li>
+                                </ul>
+                        </div>
                 </div>
-            </div>
-        </div>
-    </div>
+</div>
+<div class="wait"><center><img src="/public/img/qrloader.gif"/><center></div><script src="/public/js/Sortable.js" >
+ import Sortable, { AutoScroll } from '/public/js/Sortable.js';
 
-    <!-- MAIN PLATFORM (BAŞLANGIÇTA GİZLİ) -->
-    <div id="main-platform" class="hidden flex-1 flex flex-col">
-        <!-- ÜST NAVİGASYON -->
-        <header class="bg-black/60 border-b border-gray-800 backdrop-blur-md sticky top-0 z-40">
-            <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex flex-col items-start gap-1.5 w-full md:w-auto">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">⛺</span>
-                        <span class="historical-font text-xl md:text-2xl font-bold text-obaGold tracking-wider text-glow">ATA OBASI</span>
-                    </div>
-                    <!-- Sabit Oba Yetkilileri Rozeti -->
-                    <div class="flex items-center gap-2 text-[10px] text-gray-300 font-semibold tracking-wider bg-black/40 px-2.5 py-1 rounded-lg border border-obaGold/30 shadow-inner">
-                        <span class="text-obaGold flex items-center gap-1"><i class="fa-solid fa-shield-halved"></i> Oba Yetkilileri:</span>
-                        <span class="text-amber-500 font-bold">Baybars Han</span>
-                        <span class="text-gray-600">&</span>
-                        <span class="text-purple-400 font-bold">Börteçine Hatun</span>
-                    </div>
-                </div>
-                
-                <!-- OBA KOPUZ/DOMBRA MÜZİK ÇALARI -->
-                <div class="bg-black/40 border border-obaGold/30 rounded-xl px-4 py-2 flex items-center gap-3 w-full md:w-auto">
-                    <div class="text-xs">
-                        <p class="text-obaGold font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-music animate-pulse"></i> <span>Kopuz Ezgileri</span>
-                        </p>
-                        <p id="now-playing-title" class="text-[10px] text-gray-400 max-w-[150px] truncate">Müzik durduruldu</p>
-                    </div>
-                    <div class="flex items-center gap-2 ml-auto">
-                        <button onclick="prevTrack()" class="text-gray-400 hover:text-obaGold text-xs px-1.5 py-1 transition-colors"><i class="fa-solid fa-backward"></i></button>
-                        <button id="play-pause-btn" onclick="togglePlayMusic()" class="bg-obaGold text-black text-xs font-bold rounded-full w-7 h-7 flex items-center justify-center hover:brightness-110 transition-all"><i class="fa-solid fa-play"></i></button>
-                        <button onclick="nextTrack()" class="text-gray-400 hover:text-obaGold text-xs px-1.5 py-1 transition-colors"><i class="fa-solid fa-forward"></i></button>
-                    </div>
-                </div>
+    Sortable.mount(new AutoScroll());
 
-                <!-- SAĞ ÜST KÖŞE: GÖRKEMLİ OBA KÜTÜPHANESİ VE SİNEMA MERKEZİ -->
-                <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                    <button onclick="openLibrary()" class="bg-gradient-to-r from-amber-600 via-obaGold to-yellow-500 text-black text-xs md:text-sm px-5 py-3 rounded-xl flex items-center gap-2 glow-gold font-extrabold transition-all hover:scale-105 active:scale-95" title="Oba Kütüphanesi">
-                        <i class="fa-solid fa-book-open text-base"></i> <span>📖 OBA KÜTÜPHANESİ</span>
-                    </button>
-                    <button onclick="openCinema()" class="bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs md:text-sm px-5 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-red-600/25 font-extrabold transition-all hover:scale-105 active:scale-95" title="Oba Sineması">
-                        <i class="fa-solid fa-film text-base"></i> <span>🎥 OBA SİNEMASI</span>
-                    </button>
-                    <button onclick="relockOtag()" class="text-gray-400 hover:text-red-400 transition-colors p-2" title="Obadan Çık">
-                        <i class="fa-solid fa-right-from-bracket text-lg"></i>
-                    </button>
-                </div>
-            </div>
-        </header>
+</script>
+<style>
+.kategori-img{width: 64px;height: 44px; cursor: pointer; object-fit: cover;padding: 2px}
+.window-h{min-height: calc(100vh - 120px)}
+.bg-l{background-color: #f1f1f1}
+.selected{background-color: #bfc0c0;transition: all ease-in-out .25s;}
+</style>
+<section class="content" >
+    <div class="container shadow-four window-h" style="overflow-x: auto"">
 
-        <!-- MERKEZİ PANEL -->
-        <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full flex flex-col gap-8">
-            <!-- Karşılama Banner'ı -->
-            <div class="bg-gradient-to-r from-obaCard to-black/30 border border-obaGold/20 rounded-2xl p-6 md:p-8 relative overflow-hidden shadow-2xl">
-                <div class="absolute -right-10 -bottom-10 opacity-5 text-9xl historical-font pointer-events-none text-obaGold">🏹</div>
-                <div class="relative z-10 max-w-3xl">
-                    <span class="text-xs uppercase tracking-widest text-obaGold font-semibold">Toy Kurultayı</span>
-                    <h2 id="welcome-title" class="historical-font text-3xl font-extrabold text-white mt-1">Ata Obası Meclis Meydanı</h2>
-                    <p id="welcome-desc" class="text-gray-400 mt-2 text-sm md:text-base leading-relaxed">
-                        Kutlu obamıza hoş geldin yoldaş. Aşağıdaki meclis kayıt panelinden yeni meclis odaları oluşturabilir, yanındaki sadık oba yetkililerin **Baybars Han** ve **Börteçine Hatun** ile meclis kurabilir, fermanlar salabilirsin.
-                    </p>
-                </div>
-            </div>
+                <div class="row  bg-l">
+                    
+                    <div class="col-lg-6 content-button-end"> 
 
-            <!-- MECLİS ODALARI PANELİ VE YENİ MECLİS FORMU -->
-            <div id="lobby-view" class="space-y-8">
-                <!-- Yeni Meclis Kayıt Kartı -->
-                <div class="bg-gradient-to-b from-[#1b1e26] to-obaCard border border-obaGold/30 rounded-2xl p-6 shadow-xl">
-                    <h3 class="historical-font text-xl font-bold text-obaGold mb-4 flex items-center gap-2 text-glow">
-                        <i class="fa-solid fa-scroll text-amber-500"></i> Yeni Toy Meclisi Kur ve Kaydet (Yetkiliye Özel)
-                    </h3>
-                    <form onsubmit="handleCreateRoom(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                         <a class="btn btn-light selected fnt-13 mainbtn m-1 p-1 shadow-sm " href="/menu">
+                             <ul class="list-unstyled mb-0 text-center bg-white text-dark p-1">
+                                 <li>   
+                                     <i class="fas fa-book-open text-success " style="font-size:20px"></i>
+                                 </li>
+                                 <li style="font-size:13px">
+                                      Genel Menü
+                                 </li>
+                             </ul>
+                         </a>
+                       
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center justify-content-end"> 
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Meclis Adı (Oda İsmi)</label>
-                            <input id="new-room-name" type="text" placeholder="Örn: Göktürk İnanışları ve Kültürü" required class="w-full bg-black/40 border border-gray-700 focus:border-obaGold rounded-xl px-4 py-3 text-white text-sm focus:outline-none transition-all">
+                            <a class="btn btn-light fnt-13 mainbtn m-1 p-1 border-light shadow-sm h38"  href="/busines/pdf" target="_blank">
+                                <ul class="list-inline mb-0 text-center d-flex align-items-center text-dark p-1">
+                                    <li class="list-inline-item pe-1">   
+                                        <i class="far fa-file-pdf fa-lg text-danger"></i>
+                                    </li>
+                                    <li class="list-inline-item bld text-dark pe-2" style="padding-top: 2px">
+                                         İndir
+                                    </li>
+                                </ul>
+                             </a>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Kategori</label>
-                            <select id="new-room-category" class="w-full bg-black/40 border border-gray-700 focus:border-obaGold rounded-xl px-4 py-3 text-white text-sm focus:outline-none transition-all">
-                                <option value="Cumhuriyet Tarihi">Cumhuriyet Tarihi</option>
-                                <option value="İlk Çağlar ve Bozkır">İlk Çağlar ve Bozkır</option>
-                                <option value="Yakın Dönem">Yakın Dönem</option>
-                                <option value="Kültür & Sanat">Kültür & Sanat</option>
-                            </select>
+                            <a class="btn btn-light fnt-13 mainbtn m-1 p-1 border-light shadow-sm h38" onclick="$('#um').modal('show')">
+                                <ul class="list-inline mb-0 text-center d-flex align-items-center bg-danger text-dark p-1">
+                                    <li class="list-inline-item pe-1">   
+                                        <i class="fas fa-utensils fa-lg text-white"></i>
+                                    </li>
+                                    <li class="list-inline-item bld text-white" style="padding-top: 2px">
+                                         Ürün Ekle
+                                    </li>
+                                </ul>
+                             </a>
                         </div>
-                        <div>
-                            <button type="submit" class="w-full py-3 bg-gradient-to-r from-obaGold to-amber-500 text-black font-extrabold text-sm rounded-xl hover:brightness-110 active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg shadow-obaGold/10">
-                                <i class="fa-solid fa-circle-plus"></i> Meclis Kaydet ve Aç
-                            </button>
-                        </div>
-                        <div class="md:col-span-3">
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Meclis Konusu (Kısa Açıklama)</label>
-                            <input id="new-room-desc" type="text" placeholder="Örn: Bilgeler meclisinde Bozkır kültürünü ve kadim adetlerimizi tartışıyoruz." required class="w-full bg-black/40 border border-gray-700 focus:border-obaGold rounded-xl px-4 py-3 text-white text-sm focus:outline-none transition-all">
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Aktif Meclisler Başlığı -->
-                <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                    <h3 class="historical-font text-2xl font-bold text-gray-200 flex items-center gap-2">
-                        <i class="fa-solid fa-users text-obaGold text-xl"></i> Aktif Toy Meclisleri
-                    </h3>
-                    <span class="text-sm text-gray-400" id="total-rooms-indicator">Henüz kurulan meclis yok</span>
-                </div>
-
-                <!-- Dinamik Meclis Listesi -->
-                <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-            </div>
-
-            <!-- 2. AKTİF ODA SİMÜLASYONU -->
-            <div id="room-view" class="hidden flex-1 flex flex-col lg:flex-row gap-6">
-                <!-- Sol Panel: Sohbet & Konferans Akışı -->
-                <div class="flex-1 bg-obaCard border border-gray-800 rounded-xl flex flex-col justify-between h-[650px] shadow-2xl">
-                    <!-- Oda Başlığı -->
-                    <div class="p-4 border-b border-gray-800 flex items-center justify-between bg-black/20 rounded-t-xl">
-                        <div class="flex items-center gap-3">
-                            <button onclick="leaveRoom()" class="text-gray-400 hover:text-white mr-2">
-                                <i class="fa-solid fa-arrow-left text-lg"></i>
-                            </button>
-                            <div>
-                                <h4 id="active-room-title" class="text-lg font-bold text-obaGold historical-font text-glow">Oda İsmi</h4>
-                                <p class="text-xs text-green-400 flex items-center gap-1 mt-0.5">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping"></span>
-                                    <span>Toy Meclisi Kuruldu • Oba Yetkilileri Obada</span>
-                                </p>
-                            </div>
-                        </div>
-                        <button onclick="leaveRoom()" class="px-3 py-1.5 bg-red-950/40 text-red-400 border border-red-900/40 text-xs rounded-lg hover:bg-red-900/50 transition-colors">
-                            Meclisten Ayrıl
-                        </button>
-                    </div>
-
-                    <!-- Canlı Mesaj Alanı -->
-                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
-
-                    <!-- Mesaj Yazma Paneli -->
-                    <form onsubmit="sendUserMessage(event)" class="p-4 border-t border-gray-800 bg-black/20 rounded-b-xl flex gap-3">
-                        <input id="chat-input" type="text" placeholder="Kutlu buyruğunuzu veya fikrinizi iletin..." class="flex-1 bg-black/40 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-obaGold placeholder-gray-500" required autocomplete="off">
-                        <button type="submit" class="px-5 py-3 bg-gradient-to-r from-obaGold to-amber-500 text-black font-extrabold rounded-lg hover:brightness-110 transition-colors flex items-center gap-2">
-                            <span>Ferman Gönder</span>
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Sağ Panel: Odadaki Katılımcılar & Bey Kürsüsü -->
-                <div class="w-full lg:w-80 bg-obaCard border border-gray-800 rounded-xl p-4 flex flex-col justify-between shadow-2xl">
-                    <div>
-                        <h5 class="font-bold text-gray-300 text-sm tracking-wider uppercase mb-4 pb-2 border-b border-gray-800 flex items-center justify-between">
-                            <span>Toyda Olanlar</span>
-                            <span class="text-xs text-obaGold" id="room-users-count">3 Meclis Canı</span>
-                        </h5>
                         
-                        <div id="room-users-list" class="space-y-3 max-h-72 overflow-y-auto mb-4"></div>
-                    </div>
+                        <div class=" mx-1" >
 
-                    <!-- Bey Yetki Kürsüsü -->
-                    <div class="border-t border-gray-800 pt-4 mt-auto">
-                        <h6 class="text-xs font-extrabold text-obaGold uppercase tracking-widest mb-3 flex items-center gap-2 text-glow">
-                            <i class="fa-solid fa-crown text-amber-400"></i> BEY KÜRSÜSÜ YETKİLERİ
-                        </h6>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="triggerToyuTopla()" class="px-3 py-2.5 bg-gradient-to-r from-amber-600 to-obaGold text-black font-black text-xs rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 shadow-md shadow-obaGold/15">
-                                🥁 Toyu Topla
-                            </button>
-                            <button onclick="openFermanModal()" class="px-3 py-2.5 bg-gradient-to-r from-yellow-600 to-amber-500 text-black font-black text-xs rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-1 shadow-md shadow-amber-500/15">
-                                📜 Ferman Sal
-                            </button>
-                        </div>
-                        <div class="mt-4 p-2.5 bg-black/40 rounded-lg border border-obaGold/20 text-[11px] text-gray-400 space-y-1">
-                            <p class="font-semibold text-obaGold flex items-center gap-1">
-                                <i class="fa-solid fa-circle-info"></i> Kutlu Beylik Yetkisi
-                            </p>
-                            <p id="auth-info-text">Oba yetkilisi olarak sisteme 1283 veya 1881 şifresiyle giriş yaptığında buradaki ferman yetkilerini kullanabilirsin kanka.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" id="dk" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-globe fa-lg pe-2"></i> Diller
+                                </a>
+                                <ul class="dropdown-menu fnt-14" aria-labelledby="dk">
 
-        <!-- FOOTER -->
-        <footer class="bg-black/80 border-t border-gray-900 py-6 text-center text-xs text-gray-500">
-            <p>© 2026 Ata Obası • "Gelecek, geçmişin bilge köklerinde gizlidir."</p>
-        </footer>
-    </div>
+                                                                             <li >
+                                            <a class="dropdown-item" href="/busines/lang/2" >ENGLISH</a>
+                                        </li>
+                                         
+                                    <li><hr class="dropdown-divider"></li>
+                                        <li >
+                                            <a class="dropdown-item crs-pointer" onclick="ag()">
+                                               <i class="fas fa-globe text-blue pe-1"></i>  Dil Ekle +
+                                            </a>
+                                        </li>
+                                </ul>
+                            </div>
+                        </div> 
 
-    <!-- ÖZEL FERMAN OLUŞTURMA MODALI (PROMPT YERİNE) -->
-    <div id="ferman-modal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-obaCard border-2 border-obaGold rounded-2xl max-w-md w-full p-6 shadow-2xl">
-            <h4 class="historical-font text-lg font-extrabold text-obaGold mb-4 text-center text-glow">📜 KUTLU FERMAN SAL</h4>
-            <textarea id="ferman-text-input" rows="4" placeholder="Otağ ahalisine duyurmak istediğiniz kutlu buyruğunuzu yazın..." class="w-full bg-black/40 border border-gray-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-obaGold placeholder-gray-600 mb-4"></textarea>
-            <div class="flex gap-3 justify-end">
-                <button onclick="closeFermanModal()" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-bold hover:bg-gray-700 transition-colors">İptal Et</button>
-                <button onclick="submitFerman()" class="px-5 py-2 bg-gradient-to-r from-obaGold to-amber-500 text-black rounded-xl text-xs font-black hover:brightness-110 transition-colors">Fermânı Sal!</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- OBA KÜTÜPHANESİ MODALI -->
-    <div id="library-modal" class="hidden fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 backdrop-blur-md overflow-y-auto">
-        <div class="bg-obaCard border border-obaGold rounded-2xl max-w-6xl w-full h-[90vh] flex flex-col shadow-[0_0_60px_rgba(212,175,55,0.25)]">
-            <!-- Modal Başlığı -->
-            <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-black/30 rounded-t-2xl">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl">📚</span>
-                    <div>
-                        <h3 class="historical-font text-xl md:text-2xl font-extrabold text-obaGold text-glow">Oba Kütüphanesi</h3>
-                        <p class="text-xs text-gray-400">Tarihimizin, edebiyatımızın ve kutlu devlet felsefemizin tüm başyapıtları tek bir mecliste</p>
+                        
+                        
+                        
+                        
                     </div>
                 </div>
-                <button onclick="closeLibrary()" class="text-gray-400 hover:text-white transition-colors text-xl p-2">
-                    <i class="fa-solid fa-xmark"></i>
+                
+                
+                
+                <div class="accordion my-3" id="reac">
+                    <div class="sortlist" id="sortableList" >
+                                 
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16710"  data-id="16710">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16710" onclick="cs('ks16710')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16710" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16710', 'Sıcak İçecekler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16710,'Sıcak İçecekler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16710" aria-expanded="true" aria-controls="col16710" onclick="gp(16710)">
+                                            Sıcak İçecekler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16710" onclick="krm('kg16710',16710,'Sıcak İçecekler')" src="https://cdn.menulistele.com/public/image/6a5a6c8ac4dc46.03563390n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16710,'Sıcak İçecekler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16710" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16710" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16709"  data-id="16709">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16709" onclick="cs('ks16709')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16709" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16709', 'Soğuk İçecekler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16709,'Soğuk İçecekler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16709" aria-expanded="true" aria-controls="col16709" onclick="gp(16709)">
+                                            Soğuk İçecekler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16709" onclick="krm('kg16709',16709,'Soğuk İçecekler')" src="https://cdn.menulistele.com/public/image/6a5a6c423c9296.94609054n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16709,'Soğuk İçecekler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16709" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16709" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16712"  data-id="16712">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16712" onclick="cs('ks16712')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16712" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16712', 'Atıştırmalıklar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16712,'Atıştırmalıklar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16712" aria-expanded="true" aria-controls="col16712" onclick="gp(16712)">
+                                            Atıştırmalıklar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16712" onclick="krm('kg16712',16712,'Atıştırmalıklar')" src="https://cdn.menulistele.com/public/image/6a5a6d5b89a4c0.31194399n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16712,'Atıştırmalıklar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16712" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16712" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16713"  data-id="16713">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16713" onclick="cs('ks16713')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16713" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16713', 'Hamburgerler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16713,'Hamburgerler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16713" aria-expanded="true" aria-controls="col16713" onclick="gp(16713)">
+                                            Hamburgerler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16713" onclick="krm('kg16713',16713,'Hamburgerler')" src="https://cdn.menulistele.com/public/image/6a5a65a621d1b3.19364520n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16713,'Hamburgerler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16713" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16713" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16714"  data-id="16714">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16714" onclick="cs('ks16714')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16714" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16714', 'Salatalar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16714,'Salatalar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16714" aria-expanded="true" aria-controls="col16714" onclick="gp(16714)">
+                                            Salatalar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16714" onclick="krm('kg16714',16714,'Salatalar')" src="https://cdn.menulistele.com/public/image/6a5a6dd27d9913.98582952n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16714,'Salatalar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16714" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16714" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16711"  data-id="16711">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16711" onclick="cs('ks16711')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16711" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16711', 'Biralar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16711,'Biralar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16711" aria-expanded="true" aria-controls="col16711" onclick="gp(16711)">
+                                            Biralar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16711" onclick="krm('kg16711',16711,'Biralar')" src="https://cdn.menulistele.com/public/image/6a5a74ea313369.60669289n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16711,'Biralar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16711" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16711" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16715"  data-id="16715">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16715" onclick="cs('ks16715')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16715" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16715', 'Ana Yemekler')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16715,'Ana Yemekler',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16715" aria-expanded="true" aria-controls="col16715" onclick="gp(16715)">
+                                            Ana Yemekler<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16715" onclick="krm('kg16715',16715,'Ana Yemekler')" src="https://cdn.menulistele.com/public/image/6a5a75f3b5c9c7.21259698n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16715,'Ana Yemekler')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16715" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16715" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                              
+                        <div class="bg-mylight px-2 d-flex justify-content-between w-100 rounded-top py-0 my-1 item" id="k16716"  data-id="16716">
+                           
+                            <div style="display: flex;align-self: center;box-shadow: 1px 1px 3px darkgray;">
+                                <ul class="property   bg-light rounded mb-0" >
+                                    <li class="">
+                                        <a class="upbtn border-light border text-center handle d-flex align-items-center" onmousedown="closeAll()"  title="yukarı taşı" draggable="false" draggable="false"  oncontextmenu='{(e) => e.preventDefault()}' ontouchstart='{(e) => e.preventDefault()}'>
+                                            <img src="/public/img/move.svg" /> 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form id="ks16716" onclick="cs('ks16716')" title="Aç/Kapat"> <input type='checkbox' checked name='d'/><input  type="hidden" value="16716" name="ki"/>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class='btn-outline-light prbtn edit btn-sm' title="düzenle" onclick="ek('16716', 'Tatlılar')"></a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a  onclick="dcc(16716,'Tatlılar',u[9])" class='prbtn  delete' title="sil"></a>
+                                    </li>
+                                    
+                                   
+                                </ul>
+                            </div>
+                            
+                            
+                            <div class='clps' style="padding: 3px 0">
+                                <div class="d-flex justify-content-between align-items-baseline" style="box-shadow: 1px 1px 3px darkgray">
+                                     <div class="w-310">
+                                            <a class="btn crs-pointer text-darkblue text-start w-100"  data-bs-toggle="collapse" data-bs-target="#col16716" aria-expanded="true" aria-controls="col16716" onclick="gp(16716)">
+                                            Tatlılar<i class="fas fa-angle-down ps-1 pt-2 float-end"></i>
+                                            </a> 
+                                    </div>
+                                    <div class=" position-relative" style="min-width:80px !important;padding: 2px 0">
+                                        <img class="kategori-img rounded" id="kg16716" onclick="krm('kg16716',16716,'Tatlılar')" src="https://cdn.menulistele.com/public/image/6a5a74aa51cc68.69111452n.webp"/>
+                                                                                <span class="position-absolute" style="top: -7px;right: -3px">
+                                            <a class="btn p-0 fnt-14" onclick="katreset(16716,'Tatlılar')" title="resim sil"><i class=" text-dark fas fa-times"></i></a>
+                                        </span>
+                                                                            </div>
+                                </div>
+                                
+                               
+                            </div>
+                               
+                           
+                        </div>
+                            
+                        <div  id="col16716" class="collapse justify-content-center w-100 px-2 table-responsive" aria-labelledby="head16716" data-bs-parent="#reac">
+
+                        </div>    
+                        
+                            
+                                   
+             
+                    
+                </div>
+            </div>
+            
+    </div>
+
+</section>  
+
+
+<div class="modal fade" id="wrn"  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white" id="uyariLabel"><i class="fas fa-exclamation pe-2"></i> Hata</h5>
+        <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close">
+          
+        </button>
+      </div>
+      <div class="modal-body p-3">
+                  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tamam</button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="oy"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white w-100 " id="uyariLabel"><i class="far  fa-trash-alt fa-lg pe-2"></i>Kayıt Sil</h5>
+                <button type="button" class="btn-close btn-close-white text-white" data-bs-dismiss="modal" aria-label="Close">
+                   
                 </button>
             </div>
+            <div class="modal-body p-3" id="oyb">
 
-            <!-- Modal Gövdesi (Arama ve Filtreler) -->
-            <div class="p-4 bg-black/20 border-b border-gray-800 flex flex-col md:flex-row gap-4 items-center justify-between">
-                <div class="relative w-full md:max-w-md">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input id="library-search-input" type="text" oninput="filterLibrary()" placeholder="Eser adı, yazar veya dönem arayın..." class="w-full bg-black/60 border border-gray-700 focus:border-obaGold rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none transition-all placeholder-gray-500">
-                </div>
-                <span id="library-count-badge" class="text-xs font-semibold px-3 py-1.5 bg-obaGold/10 border border-obaGold/30 text-obaGold rounded-lg">
-                    15 Eser Kayıtlı
-                </span>
             </div>
-
-            <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
-                <!-- Sol Panel: Geniş Eser Listesi -->
-                <div class="w-full md:w-96 border-r border-gray-800 overflow-y-auto p-4 space-y-3" id="library-list-container"></div>
-                <!-- Sağ Panel: Eser İçeriği & Seçme Sözler -->
-                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-br from-obaCard to-black/40" id="library-detail-container"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button  class="btn btn-danger" id="del_id" >Sil</button>
             </div>
         </div>
     </div>
+</div>
+<div class="modal" id="k-e">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content "> 
+            <div class="modal-header bg-success text-white">
+                <h6 class="modal-title"><i class="far fa-edit text-white pe-2"></i>Kategori Düzenle </h6>
+                    <button type="button" class="btn-close btn-close-white text-white" data-bs-dismiss="modal" aria-label="Close">
+                       
+                    </button>
+               
+            </div>
+            <form action="/menu/uc" method="post"> 
+            <div class="modal-body p-3">
+               
+                    <div class="form-group">
+                        <input id="z" class="form-control disabled" value="" type="hidden"  name="kategori_id"/>
+                        <label  for="y">Kategori İsmi</label>
+                        <input id="y" class="form-control" type="text" required name="kategori_ismi"/>
+                    </div>
 
-    <!-- OBA SİNEMA ODASI MODALI -->
-    <div id="cinema-modal" class="hidden fixed inset-0 z-50 bg-black/98 flex items-center justify-center p-4 backdrop-blur-lg overflow-y-auto">
-        <div class="bg-obaCard border border-red-500/40 rounded-2xl max-w-6xl w-full h-[90vh] flex flex-col shadow-[0_0_60px_rgba(239,68,68,0.15)]">
-            <!-- Modal Başlığı -->
-            <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-black/30 rounded-t-2xl">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl animate-pulse">🍿</span>
-                    <div>
-                        <h3 class="historical-font text-xl md:text-2xl font-extrabold text-red-500 text-glow">Oba Sinema Odası</h3>
-                        <p class="text-xs text-gray-400">Atalarımızın ve tarihimizin şanlı sahneleri beyaz perdede</p>
+                  
+
+               
+            </div>
+
+                <div class="modal-footer d-block">
+                  <div class="row mt-3">  
+                            <div class="form-group col-6 ">
+                            <button type="button" class="btn btn-danger form-control" data-bs-dismiss="modal">İptal</button>
+                            </div>
+                        <div class="form-group col-6 ">
+                                <button type="submit" class="btn btn-success form-control" >Kaydet</button>
+                        </div>
                     </div>
                 </div>
-                <button onclick="closeCinema()" class="text-gray-400 hover:text-white transition-colors text-xl p-2">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
+             </form>
+        </div>
+    </div>    
+</div>
 
-            <!-- Modal Gövdesi -->
-            <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-                <!-- Sol Taraf: Film Seçici Listesi -->
-                <div class="w-full lg:w-80 border-r border-gray-800 overflow-y-auto p-4 space-y-4" id="cinema-list-container"></div>
-                <!-- Sağ Taraf: Sinema Ekranı ve Detaylar -->
-                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-black to-[#0c0d12]" id="cinema-detail-container"></div>
+<div class="modal fade" id="u-e">
+    <div class="modal-dialog modal-dialog-scrollable  modal-dialog-centered">
+        <div class="modal-content " style="box-shadow: inset 0 0 2px 2px black"> 
+            <div class="modal-header justify-content-between py-3" style="border-bottom: solid 2px black">
+                <span><i class="far fa-edit fa-lg"></i></span>
+                <h6 class="mb-0 bld">Ürün düzenle</h6> 
+                <button type="button" class="btn-close mx-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form id="editProduct">
+                    
+                    <div class="modal-body py-3 ps-3 pe-4 d-flex align-items-center" >
+                        <div class="d-block w-100">
+                            <div class="toast align-items-center text-end text-white bg-danger border-0" role="alert"  id="editProductToast" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex justify-content-end">
+                                    <div class="toast-body">
+
+                                    </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
+                             <div id="editProductPane">
+                               
+
+                            </div>
+
+                               
+                                <p class="text-start text-secondary mt-3 fnt-15 ps-2">
+                                    <span class="text-danger ms-1 bld"> *</span> Zorunlu Alan
+                                </p> 
+                            
+                        </div>
+                    </div>
+                </form>
+                    <div class="modal-footer justify-content-between px-3">
+                      <button type="button" class="btn btn-outline-danger rounded-0 shadow-sm minw-100" id="closeEdit" data-bs-dismiss="modal">Kapat</button>
+                      
+                      <button type="button" onclick="xr('editProduct',u[7],'#u-e',null)" class="btn btn-outline-success shadow-sm rounded-0 minw-100" > Kaydet <i class="ps-2 fas fa-save "></i></button> 
+                    </div>
+        </div>
+    </div>    
+</div>
+
+
+<div class="modal" id="r-m">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light justify-content-between">
+                <i class="fas fa-camera fa-2x text-secondary"></i>
+                <ul class="nav nav-pills fnt-14" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active rounded-0" id="pills-upload-tab" data-bs-toggle="pill" data-bs-target="#pills-upload" type="button" role="tab" aria-controls="pills-upload" aria-selected="true">
+                          Resim yükle 
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link  rounded-0" id="pills-galery-tab" data-bs-toggle="pill" onclick="getPics();" data-bs-target="#pills-galery" type="button" role="tab" aria-controls="pills-galery" aria-selected="false">
+                          Galeriden seç 
+                      </button>
+                    </li>
+                </ul>
+                <button type="button" class="btn-close bg-light p-2 m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <h6 id="v" class="modal-title w-100 text-start ps-3 text-success bld mt-2">Resim Düzenle</h6>
+            <div class="tab-content" id="pills-tabContent">
+                <!--Car tab-->
+                <div class="tab-pane fade show active" id="pills-upload" role="tabpanel" aria-labelledby="pills-upload-tab">
+                <div class="modal-body p-3">
+                    <form id="uf"  method="POST" enctype="multipart/form-data ">
+                        <div class="form-group text-center border">
+                            <div class="mb-2 bld ">Resim boyutunu seçin</div>   
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+                                    <input type="radio" name="hd" value="md" id="md" checked required onclick="ctrl(this,'')" />
+                                    <label for="md" class="text-center  border border-light pe-2 pb-0 ">Standart (540 x 540) </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="hd"  value="hd" id="hd" required onclick="ctrl(this,'')"/>
+                                    <label for="hd" class="text-center  border border-light pe-2 pb-0 ">HD (1080 x 1080) </label>
+                                </div>
+                                <div class=" mb-2  text-center">
+                                    <input type="radio" name="hd"  value="uhd" id="uhd" required onclick="ctrl(this,'')"/>
+                                    <label for="uhd" class="text-center  border border-light pe-2 pb-0 ">UHD (2160 x 2160) </label>
+                                </div>
+                            </div>
+                            <div class="mb-2 border-top bld ">Resmin genişliği ve yüksekliği eşit değilse</div>
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+
+                                    <input type="radio" name="crop" value="1" id="crop" checked  />
+                                    <label for="crop" class="text-center  border border-light pe-2 pb-0 ">Merkeze odaklan ve kırp </label>
+                                </div>
+                                <div class=" mb-2 text-center ">
+                                    <input type="radio" name="crop"  value="0" id="nocrop"/>
+                                    <label for="nocrop" class="text-center  border border-light pe-2 pb-0 ">Uzun kenarda orantıyı koru  </label>
+                                </div>
+                            </div>
+                            <div class="mb-2 border-top bld">Resim sıkıştırma formatı seçin</div>
+                            <div class="d-flex justify-content-between px-2 border-bottom">
+                                <div class=" mb-2 text-center p-1 border">
+                                    <input type="radio" name="format"  value="jpeg" id="jpeg"/>
+                                    <label for="jpeg" class="text-center  border border-light pe-2 pb-0 alert-success">Jpeg (standart sıkıştırma)  </label>
+                                </div>
+                                <div class=" mb-2 text-center p-1 border">
+                                    <input type="radio" name="format"  value="webp" id="webp" checked/>
+                                    <label for="webp" class="text-center border border-light pe-2 pb-0 alert-warning" >Webp (yüksek sıkıştırma)</label>
+                                </div>
+                                <div class=" mb-2 text-center p-1 border">
+                                    <input type="radio" name="format"  value="avif" id="avif"/>
+                                    <label for="avif" class="text-center border border-light pe-2 pb-0 alert-danger">Avif (çok yüksek sıkıştırma)</label>
+                                </div>
+                            </div>
+                            <img id="r-p" src="" class="text-center" style='width:50%' />
+                        </div>
+                        <div class="w-100 py-1 d-flex">      
+                            <input type="file" accept="image/* , image/avif" onchange="pw('r-p')" name="do" id="do" class="btn btn-outline-primary form-control me-1 text-start" multiple  />
+                            <input type="button" value="Yükle" onclick="uf('do', 'uf', 'r-p', 'pb', 'ss')" class="btn btn-outline-primary"/> 
+                        </div>
+                        <div>      
+                            <progress id="pb" value="0" max="100" style="width: 100%;margin-top: 8px;height:20px" > </progress>
+                        </div>
+                        <div class="form-control" id="ss" >
+                        </div>
+                        <input id='h' type="hidden" name="id" value="1"/>
+                        <input id='showimg' type="hidden" name="showimg" value=""/>
+                        <input id="tx" type="hidden" name="tx" value="0ddu2981x1h9"/>
+                    </form>
+                </div>
+                </div>
+                <div class="tab-pane fade " id="pills-galery" role="tabpanel" aria-labelledby="pills-galery-tab">
+                    <div class="modal-body py-3 justify-content-center tab-h d-flex" >
+                        <div class='old-images text-center ' style="height: 100% !important">
+                            <label>Yüklü resmleri kullanmak için butona tıklayın</label>
+                            <div style='overflow-x:hidden;overflow-y: scroll;height: 600px'>
+                                <div class='d-flex flex-wrap justify-content-center'  id="img-list">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </div>    
+</div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        const quizQuestions = [
-            {
-                text: "1. Hangisi Atatürk İlkelerinden biri değildir?",
-                options: ["A) Aristokrasi", "B) Cumhuriyetçilik", "C) Milliyetçilik", "D) Halkçılık"],
-                correct: 0 
-            },
-            {
-                text: "2. Tarihte bilinen ilk Türk kadın hükümdar kimdir?",
-                options: ["A) Terken Hatun", "B) Malhun Hatun", "C) Tomris Hatun", "D) Altacan Hatun"],
-                correct: 2
-            },
-            {
-                text: "3. Türkiye'nin ve dünyanın ilk kadın savaş pilotu kimdir?",
-                options: ["A) Sabiha Gökçen", "B) Bedriye Tahir Gökmen", "C) Sabiha Bengütaş", "D) Nene Hatun"],
-                correct: 0
-            },
-            {
-                text: "4. Mustafa Kemal Atatürk'ün Harp Okulu'ndaki apolet numarası kaçtır?",
-                options: ["A) 1919", "B) 1881", "C) 1453", "D) 1283"],
-                correct: 3
-            }
-        ];
+<div class="modal" id="r-m2">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <div class="modal-header bg-light justify-content-between">
+                <i class="fas fa-camera fa-2x text-secondary"></i>
+                <ul class="nav nav-pills fnt-14" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active rounded-0" id="pills-car-tab" data-bs-toggle="pill" data-bs-target="#pills-car" type="button" role="tab" aria-controls="pills-car" aria-selected="true">
+                          Resim yükle 
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link  rounded-0" id="pills-customer-tab" data-bs-toggle="pill" onclick="getPics2()" data-bs-target="#pills-customer" type="button" role="tab" aria-controls="pills-customer" aria-selected="false">
+                          Galeriden seç 
+                      </button>
+                    </li>
+                </ul>
+                <button type="button" class="btn-close bg-light p-2 m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <h6 id="v2" class="modal-title w-100 text-start ps-3 text-success bld mt-2">Resim Düzenle</h6>
+             <div class="tab-content" id="pills-tabContent">
+                
+                <div class="tab-pane fade show active" id="pills-car" role="tabpanel" aria-labelledby="pills-car-tab">
+                <div class="modal-body p-3">
+                    <form id="uf2"  method="POST" enctype="multipart/form-data ">
+                        <div class="form-group text-center border">
+                            <div class="mb-2 bld">Resim boyutunu seçin</div>   
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+                                    <input type="radio" name="hd" value="md" id="md2" checked  onclick="ctrl(this,'2')"/>
+                                    <label for="md2" class="text-center  border border-light pe-2 pb-0 ">Standart (540 x 540) </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="hd"  value="hd" id="hd2" onclick="ctrl(this,'2')"/>
+                                    <label for="hd2" class="text-center  border border-light pe-2 pb-0 ">HD (1080 x 1080) </label>
+                                </div>
+                                <div class=" mb-2  text-center">
+                                    <input type="radio" name="hd"  value="uhd" id="uhd2" onclick="ctrl(this,'2')"/>
+                                    <label for="uhd2" class="text-center  border border-light pe-2 pb-0 ">UHD (2160 x 2160) </label>
+                                </div>
+                            </div>
+                            <div class="mb-2 border-top bld ">Resmin genişliği ve yüksekliği eşit değilse</div>
+                            <div class="d-flex justify-content-between px-2">
+                                <div class=" mb-2  text-center ">
+                                    <input type="radio" name="crop" value="1" id="crop2" checked  />
+                                    <label for="crop2" class="text-center  border border-light pe-2 pb-0 a">Merkeze odaklan ve kırp </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="crop"  value="0" id="nocrop2"/>
+                                    <label for="nocrop2" class="text-center  border border-light pe-2 pb-0 ">Uzun kenarda orantıyı koru  </label>
+                                </div>
+                            </div>
+                            <div class="mb-1 border-top bld">Resim sıkıştırma formatı seçin</div>
+                            <div class="d-flex justify-content-between px-2 border-bottom">
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="format"  value="jpeg" id="jpeg2"/>
+                                    <label for="jpeg2" class="text-center  border border-light pe-2 pb-0 alert-success">Jpeg (standart sıkıştırma)  </label>
+                                </div>
+                                <div class=" mb-2 text-center">
+                                    <input type="radio" name="format"  value="webp" id="webp2" checked/>
+                                    <label for="webp2" class="text-center border border-light pe-2 pb-0 alert-warning" >Webp (yüksek sıkıştırma)</label>
+                                </div>
+                                <div class=" mb-2 text-center ">
+                                    <input type="radio" name="format"  value="avif" id="avif2"/>
+                                    <label for="avif2" class="text-center border border-light pe-2 pb-0 alert-danger">Avif (çok yüksek sıkıştırma)</label>
+                                </div>
+                            </div>
+                            <img id="r-p2" src="" class="text-center" style='width:50%' />
+                        </div>
+                        <div class="w-100 d-flex py-1">      
+                            <input type="file" accept="image/*, image/avif" onchange="pw('r-p2')" name="do" id="do2" class="btn btn-outline-primary form-control me-1 text-start" multiple  />
+                            <input type="button" value="Yükle" onclick="uf('do2', 'uf2', 'r-p2', 'pb2', 'ss2')" class="btn btn-outline-primary"/> 
+                        </div>
+                        <div>      
+                            <progress id="pb2" value="0" max="100" style="width: 100%;margin-top: 8px;height:20px" > </progress>
+                        </div>
+                        <div class="form-control" id="ss2" >
+                        </div>
+                        <input id='h2' type="hidden" name="id" value="1"/>
+                        <input id='showimg2' type="hidden" name="showimg" value=""/>
+                        <input id="tx2" type="hidden" name="tx" value="0ddu2981x1h2"/>
+                    </form>
+                </div>
+                </div>
+                <div class="tab-pane fade " id="pills-customer" role="tabpanel" aria-labelledby="pills-customer-tab">
+                    <div class="modal-body py-3 justify-content-center tab-h d-flex" >
+                        <div class='old-images text-center ' style="height: 100% !important">
+                            <label>Yüklü resmleri kullanmak için butona tıklayın</label>
+                            <div style='overflow-x:hidden;overflow-y: scroll;height: 600px'>
+                                <div class='d-flex flex-wrap justify-content-center'  id="img-list2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
 
-        // OBA KÜTÜPHANESİ 15 BÜYÜK ESER VERİTABANI
-        const libraryWorks = [
-            {
-                id: "nutuk",
-                title: "Nutuk",
-                author: "Mustafa Kemal Atatürk",
-                era: "20. Yüzyıl (Cumhuriyet Dönemi)",
-                desc: "Türkiye Cumhuriyeti'nin kuruluş sürecini, Kurtuluş Savaşı'nı ve yapılan inkılapları bizzat liderinin ağzından anlatan, Türk milletinin en önemli tarihi ve siyasi başyapıtıdır.",
-                significance: "Cumhuriyetin kuruluş felsefesini, karşılaşılan zorlukları ve egemenliğin kayıtsız şartsız millete ait olduğunu gösteren kutlu rehberdir.",
-                quotes: [
-                    "Ey Türk gençliği! Birinci vazifen; Türk istiklalini, Türk cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.",
-                    "Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!",
-                    "Temel ilke, Türk milletinin haysiyetli ve şerefli bir millet olarak yaşamasıdır. Bu ilke, ancak tam bağımsızlığa sahip olmakla sağlanabilir."
-                ]
-            },
-            {
-                id: "orhun",
-                title: "Orhun Abideleri",
-                author: "Yollıg Tigin",
-                era: "8. Yüzyıl (Göktürk Kağanlığı)",
-                desc: "Türk adının geçtiği ilk Türkçe metinler olan Kül Tigin, Bilge Kağan ve Vezir Tonyukuk yazıtlarıdır. Türk devlet geleneğini ve millete verilen öğütleri barındırır.",
-                significance: "Türk yazı dilinin ve edebiyatının ilk yazılı örnekleridir. Kağanların halka hesap vermesini ve milletin birliğini öğütler.",
-                quotes: [
-                    "Ey Türk, oğuz beyleri, milleti, işitin: Üstte mavi gök çökmedikçe, altta yağız yer delinmedikçe, senin ilini ve töreni kim bozabilir?",
-                    "Türk milleti! Titre ve kendine dön!",
-                    "Aç milleti doyurdum, çıplak milleti giydirdim. Fakir milleti zengin kıldım."
-                ]
-            },
-            {
-                id: "divan",
-                title: "Divânu Lügati't-Türk",
-                author: "Kaşgarlı Mahmud",
-                era: "11. Yüzyıl (Karahanlılar Dönemi)",
-                desc: "Türkçenin Arapçadan daha üstün ve zengin bir dil olduğunu kanıtlamak amacıyla yazılmış, ilk Türkçe sözlük, ansiklopedi ve coğrafi haritayı barındıran eşsiz bir eserdir.",
-                significance: "Sadece bir sözlük değil; Türk boylarının dillerini, coğrafyasını, edebiyatını ve folklorunu günümüze taşıyan en büyük kültür hazinesidir.",
-                quotes: [
-                    "Dil ile düğümlenen şey, diş ile çözülmez. Türkçeyi öğreniniz, çünkü Türkler için uzun sürecek bir saltanat vardır.",
-                    "Erdem başı dildir. Kişi dilini korursa, başını korumuş olur.",
-                    "Kuş kanadı ile, insan gücü ile uçar. Dil ise ruhun kanatlarıdır."
-                ]
-            },
-            {
-                id: "kutadgu",
-                title: "Kutadgu Bilig",
-                author: "Yusuf Has Hacib",
-                era: "11. Yüzyıl (Karahanlılar Dönemi)",
-                desc: "İdeal devlet yönetimini, adaleti, mutluluğu ve ahlakı anlatan, Türkçe yazılmış ilk siyasetname ve didaktik şiir formundaki başyapıttır.",
-                significance: "Adalet, Mutluluk, Akıl ve Akıbet adındaki dört sembolik karakter üzerinden insanlığa kutlu yaşam yollarını sunar.",
-                quotes: [
-                    "Memleketi tutmak için çok asker gerekir. Askeri beslemek için çok mal lazımdır. Bu malı elde etmek için halkın zengin olması gerekir. Halkın zengin olması için ise adaletin tam olması şarttır.",
-                    "Akıl senin için sarsılmaz bir dosttur. Bilgi ise seni her türlü kötülükten koruyan bir kaledir.",
-                    "Halkı yönetenlerin gözü tok, gönlü adil and yüreği şefkatli olmalıdır."
-                ]
-            },
-            {
-                id: "dedekorkut",
-                title: "Dede Korkut Hikayeleri",
-                author: "Kolektif / Anonim Destanlar",
-                era: "15. Yüzyıl (Yazıya Geçiş Dönemi)",
-                desc: "Oğuz Türklerinin kahramanlıklarını, savaşlarını, aile bağlarını, doğa üstü varlıklarla mücadelelerini ve törelerini bilgece anlatan destansı anlatılardır.",
-                significance: "Türk milletinin sözlü kültürünün, geleneklerinin, değerlerinin ve yaşayış tarzının en canlı ve sanatsal ifadesidir.",
-                quotes: [
-                    "Güleç yüzlü hatunun ölene dek solmasın, ulu çınarın devrilmesin, kutlu yurdun bozulmasın.",
-                    "Yalancı dünyaya konup göçenler, ecel geldiğinde bir gün sessizce giderler. Kara taş altında yatan yiğitler unutulmaz.",
-                    "Gönlü açık olmayanın eli açık olmaz. Töre bilmeyenin devleti baki kalmaz."
-                ]
-            },
-            {
-                id: "siyasetname",
-                title: "Siyasetnâme",
-                author: "Nizamülmülk",
-                era: "11. Yüzyıl (Büyük Selçuklu Dönemi)",
-                desc: "Büyük Selçuklu Veziri Nizamülmülk tarafından kaleme alınan, hükümdarlara devlet yönetimini, askeri nizam, liyakat ve adalet konularında rehberlik eden siyasi başyapıttır.",
-                significance: "Türk-İslam devlet geleneğinin işleyişini, adalet kurallarını ve devletin bekası için gereken liyakat esaslarını ortaya koyar.",
-                quotes: [
-                    "Devlet küfür ile yaşar ama adaletsizlik ve zulüm ile yaşayamaz.",
-                    "Hükümdar her zaman liyakat sahibi, gözü tok kişileri devlet makamlarına atamalıdır.",
-                    "Geceleri tebaasının derdiyle uyuyamayan lider, adaletin ta kendisini kurmuştur."
-                ]
-            },
-            {
-                id: "divanihikmet",
-                title: "Divân-ı Hikmet",
-                author: "Hoca Ahmed Yesevî",
-                era: "12. Yüzyıl (Karahanlılar / Tasavvuf)",
-                desc: "Pir-i Türkistan Hoca Ahmed Yesevî'nin sade bir Türkçe ile söylediği, İslamiyet'i ve güzel ahlakı bozkırın her yanına yayan manevi manzumeler bütünüdür.",
-                significance: "Türk tasavvuf tarihinin kurucu eseri olup Anadolu'daki hoşgörü kültürünün manevi temel taşıdır.",
-                quotes: [
-                    "Nerede görsen gönlü kırık, merhem ol sen; Öyle mazlum yolda kalsa, yoldaşı ol sen.",
-                    "Cahil ile yoldaş olma, başın gider; Alim ile yoldaş olursan, aşın gelir.",
-                    "Gönlünde aşk ateşi yanmayan kul, canlı bir cenazeden farksızdır."
-                ]
-            },
-            {
-                id: "seyahatname",
-                title: "Seyahatnâme",
-                author: "Evliya Çelebi",
-                era: "17. Yüzyıl (Osmanlı Dönemi)",
-                desc: "Evliya Çelebi'nin 50 yılı aşkın süre boyunca Osmanlı coğrafyasında, Avrupa'da ve Orta Doğu'da yaptığı seyahatleri 10 dev cilt halinde kaydettiği devasa gezi ansiklopedisidir.",
-                significance: "Türk kültürünü, dillerini, şehir mimarisini, folklörünü ve günlük yaşantıyı en gerçekçi ve renkli haliyle günümüze ulaştırır.",
-                quotes: [
-                    "Şefaat ya Resulallah diyecek yerde 'Seyahat ya Resulallah' dedim, böylece yola revan outm.",
-                    "Türk boylarının olduğu her diyarda bir samimiyet, cömertlik ve kutlu misafirperverlik gördüm.",
-                    "Seyahat, insanın aklını zenginleştiren, ruhunu arındıran en büyük bilgi meclisidir."
-                ]
-            },
-            {
-                id: "risale",
-                title: "Risaletü'n-Nushiyye",
-                author: "Yunus Emre",
-                era: "14. Yüzyıl (Anadolu Selçuklu / Beylikler)",
-                desc: "Yunus Emre'nin insan nefsini, ruh gelişimini, hoşgörü, kibir ve öfke gibi ahlaki kavramları savaş allegorileriyle nasihat şeklinde anlattığı eşsiz eseri.",
-                significance: "Anadolu Türkçesinin tasavvufi zenginliğini, aşk ve barış felsefesini en saf haliyle inşa etmiştir.",
-                quotes: [
-                    "Cümle yaratılmışa bir göz ile bakmayan, halka müderris ise hakikatte asidir.",
-                    "Sevelim, sevilelim, bu dünya kimseye kalmaz.",
-                    "Gönül Çalab'ın tahtı, Çalap gönüle baktı. İki cihan bedbahtı, kim gönül yıktı ise."
-                ]
-            },
-            {
-                id: "atestengomlek",
-                title: "Ateşten Gömlek",
-                author: "Halide Edib Adıvar",
-                era: "20. Yüzyıl (Kurtuluş Savaşı Dönemi)",
-                desc: "Kurtuluş Savaşı döneminde cephede bizzat görev alan Halide Edib'in kaleminden çıkan, İzmir'in işgalinden Ankara'daki bağımsızlık ateşine kadar uzanan destansı Milli Mücadele romanıdır.",
-                significance: "Milletimizin bağımsızlık aşkını ve vatan için giydiği o 'ateşten gömleği' en sarsıcı şekilde belgeleyen ilk romandır.",
-                quotes: [
-                    "Vatan bir aşk gibidir, insan onun için her acıya katlanır ve bu gömlek ateşten olsa bile severek giyer.",
-                    "Bizim kalbimiz milli bağımsızlık inancıyla doluydu, orada şahsi korkulara yer yoktu.",
-                    "Türk milleti bağımsızlığını kendi kanıyla yazarak her türlü esareti reddetmiştir."
-                ]
-            },
-            {
-                id: "republic_calikusu",
-                title: "Çalıkuşu",
-                author: "Reşat Nuri Güntekin",
-                era: "20. Yüzyıl (Cumhuriyet / Anadolu Aydınlanması)",
-                desc: "Genç, idealist ve İstanbullu bir öğretmen olan Feride'nin, Anadolu'nun çeşitli kasaba ve köylerinde karşılaştığı zorluklara karşı duruşunu anlatan başyapıttır.",
-                significance: "Cumhuriyet aydınlanmasının ve Anadolu kadınının eğitim mücadelesinin en asil simgesidir.",
-                quotes: [
-                    "İnsan, acılarını biriktirdikçe büyür ve sevgisiyle dünyayı iyileştirir.",
-                    "Anadolu'nun her bir köşesi, cehaletin karanlığından ilmin ışığına kavuşmayı bekleyen tertemiz yüreklerle doludur.",
-                    "Umut, ruhun hiç sönmeyen feneridir."
-                ]
-            },
-            {
-                id: "world_republic_institute",
-                title: "Saatleri Ayarlama Enstitüsü",
-                author: "Ahmet Hamdi Tanpınar",
-                era: "20. Yüzyıl (Modern Cumhuriyet Dönemi)",
-                desc: "Türk toplumunun Doğu-Batı arasında sıkışmışlığını, modernleşme sancılarını ve bürokrasiyi muazzam bir mizahla ve derin bir felsefeyle eleştiren zirve romandır.",
-                significance: "Zaman bilincini, insan ruhunu ve toplumsal dönüşümü en özgün üslupla inceleyen modern Türk klasiğidir.",
-                quotes: [
-                    "Zamanın kendisi bir nizamdır. Saati ayarlamak, hayatı ve insanı düzene koymaktır.",
-                    "İnsan neyi severse, zaman onunla akar.",
-                    "Doğu ile Batı, insanın içinde barışmadıkça, dışarıda asla uzlaşamaz."
-                ]
-            },
-            {
-                id: "world_republic_republic",
-                title: "Devlet (Politeia)",
-                author: "Platon (Eflatun)",
-                era: "İlk Çağ Antik Felsefe (Dünya Klasikleri)",
-                desc: "İdeal bir devlet düzeninin nasıl olması gerektiğini, adaletin, erdemin, liyakatin ve bilgeliğin yönetimdeki mutlak yerini ele alan insanlık tarihinin kurucu siyaset felsefesi eseridir.",
-                significance: "Filozofların kral, kralların filozof olması gerektiği teziyle adalet kavramını ölümsüzleştirmiştir.",
-                quotes: [
-                    "Devletin başına bilgeler geçmezse, halkın acıları asla son bulmaz.",
-                    "Liyakatli olmayanların iktidar olduğu yerde adalet, sadece güçlünün çıkarına hizmet eder.",
-                    "Eğitim, ruhu doğru yöne çevirme sanatıdır."
-                ]
-            },
-            {
-                id: "world_crime_punishment",
-                title: "Suç ve Ceza",
-                author: "Fyodor Dostoyevski",
-                era: "19. Yüzyıl Realizm (Dünya Klasikleri)",
-                desc: "Raskolnikov adlı yoksul bir öğrencinin, 'üstün insan' teorisini kanıtlamak için işlediği cinayet sonrasında yaşadığı vicdan azabını ve ruhsal arınmasını anlatan psikolojik deha eseridir.",
-                significance: "İnsanın iç dünyasını, vicdanını, günahı ve kefareti en sarsıcı şekilde işleyen roman sanatının zirvesidir.",
-                quotes: [
-                    "Acı çekmek, büyük bir akıl ve derin bir yürek için her zaman zorunludur.",
-                    "İnsanların en çok korktuğu şey, yeni bir adım atmak ve yeni bir kelime söylemektir.",
-                    "Vicdanı olan bir insan, hatasını anladığı an zaten kendi cezasını kendisi kesmiştir."
-                ]
-            },
-            {
-                id: "world_war_peace",
-                title: "Savaş ve Barış",
-                author: "Lev Tolstoy",
-                era: "19. Yüzyıl Realizm (Dünya Klasikleri)",
-                desc: "Napolyon Savaşları gölgesinde Rus aristokrasisinin, halkın ve askerlerin kaderlerini muhteşem bir panorama ve felsefi zenginlikle sunan dev destandır.",
-                significance: "Tarihin akışını, bireyin iradesini ve insanlık onurunu sarsıcı bir dille ele alan gelmiş geçmiş en büyük romanlardan biridir.",
-                quotes: [
-                    "En güçlü iki savaşçı, zaman ve sabırdır.",
-                    "Tarih, tek tek bireylerin ortak iradesinin yarattığı kaçınılmaz bir nehir gibidir.",
-                    "Başkalarının acılarını da kendi acın gibi hissedebildiğinde insansın."
-                ]
-            }
-        ];
 
-        // OBA SİNEMA ODASI FİLMLERİ VERİTABANI
-        const cinemaMovies = [
-            {
-                id: "tomris_movie",
-                title: "Tomris Hatun",
-                director: "Akan Satayev",
-                year: "2019",
-                youtubeId: "lAre1tvM6Do", 
-                poster: "🏹",
-                desc: "MÖ 6. yüzyılda Saka Türklerinin kadın hakanı Tomris Hatun'un, yaşadığı dönemin en güçlü devleti olan Pers İmparatorluğu'na boyun eğmeyerek kazandığı şanlı zaferi destansı bir dille anlatır.",
-                background: "Tomris Hatun, ordularını birleştirerek tarihin en büyük cenklerinden birinde Pers Kralı Kuruş'u yenmiş ve Türk kadınının ve askeri dehasının gücünü dünyaya ilan etmiştir."
-            },
-            {
-                id: "ataturk_1_movie",
-                title: "Atatürk 1: 1881 - 1919",
-                director: "Mehmet Ada Öztekin",
-                year: "2023",
-                youtubeId: "J6YdxsvH9j4", 
-                poster: "🎖️",
-                desc: "Mustafa Kemal Atatürk'ün çocukluğundan başlayarak, askeri okullardaki parıltılı dehasını, Trablusgarp ve Gelibolu cephelerindeki kahramanlıklarını ve 1919'da Samsun'a çıkışına kadar olan kutlu yolculuğunu işler.",
-                background: "Aras Bulut İynemli'nin başrolünde olduğu film, bir yetimin nasıl bir ulusun kurtarıcısına dönüştüğünü ve içindeki o sönmeyen bağımsızlık ateşini sarsıcı bir dille beyaz perdeye taşımıştır."
-            },
-            {
-                id: "ataturk_2_movie",
-                title: "Atatürk 2: 1919 - 1923",
-                director: "Mehmet Ada Öztekin",
-                year: "2024",
-                youtubeId: "4Uc10KOh6fA", 
-                poster: "👑",
-                desc: "Çanakkale Savaşı'nın o cehennem andıran cephelerinden, Doğu ve Suriye cephelerindeki büyük mücadelelere kadar uzanan; Atatürk'ün askeri dehasını ve Milli Mücadele'yi örgütleyişini doruk noktasına ulaştıran şaheserdir.",
-                background: "Gelibolu'da 'Ben size taarruzu değil, ölmeyi emrediyorum' buyruğunun arkasındaki tarihi kararlılığı ve cumhuriyete giden asil ve sancılı adımları belgeler nitelikte sunmaktadır."
-            }
-        ];
+<div class="modal fade" id="um">
+    <div class="modal-dialog modal-dialog-scrollable  modal-dialog-centered">
+        <div class="modal-content " style="box-shadow: inset 0 0 2px 2px black"> 
+            <form id="createProduct" action="/menu/np" method="post">
+            <div class="modal-header justify-content-between py-3" style="border-bottom: solid 2px black">
+                <span class="ms-2"><i class="fas fa-utensils fa-lg text-success"></i></span>
+                <ul class="nav nav-pills fnt-14" id="pills-tab" role="tablist">
+                    
+                    <li class="nav-item" role="presentation">
+                      <p class="nav-link active rounded-0 mb-0 fnt-14 bld"  id="pills-kategori-tab"  data-bs-target="#pills-kategori"  role="tab" aria-controls="pills-kategori" aria-selected="true">
+                          Kategori Seç
+                      </p>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <p class="nav-link  rounded-0 mb-0 fnt-14 bld"  id="pills-product-tab"  data-bs-target="#pills-product"  role="tab" aria-controls="pills-product" aria-selected="false">
+                          Ürün Ekle 
+                      </p>
+                    </li>
+                    
+                </ul>   
+                <button type="button" class="btn-close mx-0" data-bs-dismiss="modal" aria-label="Close"></button>
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let answered = false;
+            </div>
+             
+            <div class="tab-content" id="pills-tabContent">
+                <!--Car tab-->
+                <div class="tab-pane fade show active" id="pills-kategori" role="tabpanel" aria-labelledby="pills-kategori-tab">
+                     
+                     <div class="modal-body py-5 justify-content-center tab-h d-flex" >
+                         <div class="d-block ">
+                          
+                           
+                           <div class="input-group mb-3">
+
+                               <select  type="text" class="form-select" alias="Hazır ktegori" onchange="skat(this)" >
+                                   <option value="0">Seçin</option>
+                                                                          <option value="16710">Sıcak İçecekler</option>
+
+                                                                          <option value="16709">Soğuk İçecekler</option>
+
+                                                                          <option value="16712">Atıştırmalıklar</option>
+
+                                                                          <option value="16713">Hamburgerler</option>
+
+                                                                          <option value="16714">Salatalar</option>
+
+                                                                          <option value="16711">Biralar</option>
+
+                                                                          <option value="16715">Ana Yemekler</option>
+
+                                                                          <option value="16716">Tatlılar</option>
+
+                                                                  </select>
+                           </div>    
+                           
+                           <div class="input-group mb-3">
+                               <span class="input-group-text  border-0 bld" style="min-width: 110px">Kategori</span>
+                               <input type="text" class="form-control" id="kname" name="kategori_ismi" value="" required alias="Kategori"  />
+                           </div>
+
+                         </div>
+                    </div>
+                     
+                    <div class="modal-footer d-flex justify-content-between">
+                      <button type="button" class="btn btn-outline-danger rounded-0 shadow-sm" data-bs-dismiss="modal"> <i class="ps-2 fas fa-times"></i> İptal</button>
+                      
+                      <button type="button" onclick="toTab('#pills-product-tab')" class="btn btn-outline-success rounded-0 shadow-sm" > İleri <i class="fas fa-chevron-right ps-2 fa-lg"></i></button> 
+                    </div> 
+                     
+                 </div>
+                <!-- SaCustomer Tab -->
+                
+                <div class="tab-pane fade " id="pills-product" role="tabpanel" aria-labelledby="pills-product-tab">
+                    
+                    <div class="modal-body py-4 justify-content-center tab-h d-flex" >
+                        <div class="d-block" >
+                            
+                            
+                            
+                            
+                            <div id="customerPane">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-transparent border-0 bld fnt-15" style="min-width: 130px">Ürün ismi <span class="text-danger ms-1 bld"> *</span></span>
+                                    <input type="text" class="form-control" name="urun_ismi" value="" alias="Ürün ismi" required />
+                                </div>
+                                <div class="input-group mb-3 ">
+                                    <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px">Açıklama</span>
+                                    <textarea type="text" class="form-control" name="aciklama" value="" alias="Açıklama"  rows="3"></textarea>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px">Fiyat <span class="text-danger ms-1 bld"> *</span></span>
+                                    <input type="text" class="form-control" name="fiyati" value="" alias="Fiyat" required />
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px" >Haz.Süresi (dk)</span> 
+                                    <input type="text" class="form-control" name="prepare" value="" alias="Hazırlıksüresi"  />
+                                </div>
+                                <div class="input-group mb-3">
+                                  <span class="input-group-text minw-120 bg-transparent border-0 bld fnt-15" style="min-width: 130px">Kalori</span>
+                                    <input type="text" class="form-control" name="kalori" value="" alias="Kalori"  />
+                                    <input type="hidden" name="tkn" value="9da04a940af3ee909995e57acea9cbcb15a878728b742fdb244d4ce198d282dd" />
+                                    
+                                </div> 
+                                <p class="text-start text-secondary mt-3 fnt-15 ps-2">
+                                    <span class="text-danger ms-1 bld"> *</span> Zorunlu Alan
+                                </p> 
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between ">
+                      <button type="button" class="btn btn-outline-primary rounded-0 shadow-sm" onclick="toTab('#pills-kategori-tab')"> <i class="fas fa-chevron-left "></i> Geri</button>
+                      <button type="submit"  class="btn btn-outline-success rounded-0 shadow-sm" ><i class="fas fa-save fa-lg pe-2 "></i> Oluştur</button> 
+                     </div>
+                    
+                 </div>
+                
+
+                <!-- Save Tab -->
+                
+                 
+             </div>
+            </form>    
+        </div>
+    </div>    
+</div>
+
+
+<div class="modal" id="brm">
+    <div class="modal-dialog">
+        <div class="modal-content"> 
+            <div class="modal-header bg-light text-dark d-flex py-3 justify-content-between align-items-center">
+                <i class="fas fa-photo-video text-dark me-2 fa-lg"></i>
+                <h6 id="v3" class="modal-title bld">Resim yükle </h6>
+                <button type="button" class="btn-close text-dark m-0" data-bs-dismiss="modal" aria-label="Close">  </button>
+            </div>
+            <form id="upload_form"  method="POST" enctype="multipart/form-data ">   
+                <div class="modal-body px-3">
+                    <div class="">
+                        <p class="fnt-13 text-center"> <i class="fas fa-info-circle me-1"></i> yüklediğiniz resim kısa kenada 400 pixel, uzun kenarda ise orantı korunarak yüklenir. Arka planınız bu resim kullanılarak fayans şeklinde döşenecektir. </p>
+                    </div>
+                    <div class="form-group text-center" id="mediaPane">
+                        <img id='kbg' src="" class='text-center show' style='width:100%;max-height: 300px;object-fit: contain' />
+                    </div>
+                    <div class="w-100 justify-content-between d-flex">      
+                        <input type="file" accept="image/*, image/avif, video/*" onchange="pw('kbg')" name="dosya" id="dosya" class="form-control text-start btn btn-outline-primary" multiple  />
+                        <input type="button" value="Yükle" onclick="uf('dosya', 'upload_form', 'kbg', 'progressBar', 'status')" class="ms-2 btn btn-outline-primary"/> 
+                    </div>
+                    <div>      
+                        <progress id="progressBar" value="0" max="100" style="width: 100%;margin-top: 8px;height:20px" > </progress>
+                    </div>
+                    <div class="form-control" id="status" >
+                    </div>
+                    <input id='h3' type="hidden" name="id" value=""/>
+                    <input id='showimg3' type="hidden" name="showimg" value=""/>
+                    <input id="tx3" type="hidden" name="tx" value="kbg"/>
+                </div>
+            </form> 
+        </div>
+    </div>    
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+    function group(i,n){
+        $('#ug').modal('show');
+        _("grp-head").innerHTML=n;
+        _("grid").value=i;
+    }
+    function addAlergy(uid){
+        let i=_("alergy").value;
+        xr(null,'/menu/addalergen',null,{k:i,l:uid});
+    }
+function ctrl(e,s){
+    if(e.value==="md"){
+        _("jpeg"+s).disabled=false;
+        _("webp"+s).disabled=false;
+        _("avif"+s).disabled=false;
+    }else if(e.value==="hd"){
+        _("jpeg"+s).disabled=true;
+        _("webp"+s).disabled=false;
+        _("webp"+s).checked=true;
+        _("avif"+s).disabled=false;
+        _("jpeg"+s).checked=false;
+    }else if(e.value==="uhd"){
+        _("avif"+s).checked=true;
+        _("jpeg"+s).disabled=true;
+        _("webp"+s).disabled=true;
+    }
+}
+function gu(){
+let kt=$("#kategori-select option:selected");
+let i=kt.attr("data-kategori-ismi");
+let d=kt.attr("data-kategori-id");
+_('kategori-id').value=d;
+_('kategori-isim').value=i;
+_("product-price").value="";
+_("product-detail").value="";
+_("product-name").value="";
+if(i==="0"){_('kategori-isim').value="";}else{ _('kategori-isim').value=i;xr('nf',u[4],null,null);}}
+function sf(){
+    let opt=$('#uo option:selected');
+    let f=opt.attr("data-price");
+    let d=opt.attr("data-detail");
+    var i=opt.attr("data-isim");
+    if(i!=="0"){_("product-price").value=f;_("product-detail").value=d;_("product-name").value=i;
+    }else{_("product-price").value="";_("product-detail").value="";_("product-name").value="";}}
+    const u=['/menu/sc','/menu/sd','/menu/pup','/menu/gp','/menu/gu','/menu/uc','/menu/up','/menu/ud','/menu/si','/menu/cd','/menu/prc'];
+    function ek(k, i) {$('#k-e').modal('show');_("z").value=k;_("y").value=i;}
+    function et(k, a, i, f, d,h,e) {$('#u-e').modal('show');
+        var o= _("kn").options;for (j=0;j<o.length;j++){if(o[j].value==k){o[j].selected=true;}}
+        _("a").value=a;_("i").value=i;_("f").value=f;_("d").value=d+" ";
+        _("prepare-edit").value=h;_("kalori-edit").value=e;
+    
+    } 
+ function closeAll(){
+            $('#col16710').removeClass('show');
+            $('#col16709').removeClass('show');
+            $('#col16712').removeClass('show');
+            $('#col16713').removeClass('show');
+            $('#col16714').removeClass('show');
+            $('#col16711').removeClass('show');
+            $('#col16715').removeClass('show');
+            $('#col16716').removeClass('show');
+         
+ }  
+   function rm(g,i,u) {
+        $("#pills-galery-tab").attr("onclick","getPics("+i+")");
+        $('#r-m').modal('show');
+        $('#r-p').attr("src", $("#"+g).attr("src"));
+        $('#v').html(u);$('#h').attr('value', i);
+        $('#showimg').attr('value',g);
+        $('#tx').attr('value','0ddu2981x1h9');
+        $('.tab').attr('value','u');}
+    function getPics(i){
         
-        // Rol ve Kimlik Değişkenleri
-        let beyName = "Yoldaş"; 
-        let userGender = "erkek"; 
-        let isAuthorized = false; // Sadece 1283 ve 1881 girenlerde true olacak
-        let isBaybars = false;
-        let isBortecine = false;
+        xr(null,'/menu/getpics',null,{k:i,l:'u'});
+       
+    }
+    function getKPics(i){
+        
+        xr(null,'/menu/getpics',null,{k:i,l:'k'});
+       
+    }
+    function getPics2(i){
+        
+        xr(null,'/menu/getpics2',null,{k:i,l:'u'});
+    
+    }
+    function rm2(g,i,u) {
+        
+        $("#pills-customer-tab").attr("onclick","getPics2("+i+")");
+        $('#r-m2').modal('show');
+        $('#r-p2').attr("src", $("#"+g).attr("src"));
+        $('#v2').html(u);$('#h2').attr('value', i);
+        $('#showimg2').attr('value',g);
+        $('#tx2').attr('value','0ddu2981x1h2');
+    }
+   
+    function krm(g,i,u) {
+        $('#r-m').modal('show');
+        $("#pills-galery-tab").attr("onclick","getKPics("+i+")");
+        $('#r-p').attr("src", $("#"+g).attr("src"));
+        $('#v').html(u);
+        $('#h').attr('value', i);
+        //$('.newid').attr('value', i);
+        $('#showimg').attr('value',g);
+        $('#tx').attr('value','0agx0io3872xah');
+        //$('.tab').attr('value','k');
+    }
+function brm(g,i,u) {
+        $('#brm').modal('show');
+        $('#kbg').attr("src", $("#"+g).attr("src"));
+        $('#v3').html(u+" - arka plan");
+        $('#h3').attr('value', i);
+        $('#showimg3').attr('value',g);
+        
+    }
+    function ag(){$('#lng').modal('show');}
+    function pw(e) {_(e).src=URL.createObjectURL(event.target.files[0]);}  
+    
+    let ps=null;
+    function pup(i){xr(null,u[2],null,i);};
+        function gp(k){let s=_("col"+k);if(ps!==s){xr(null,u[3],null,{k:k,l:2}); ps=s;}}
+    function cs(f){xr(f,u[0],null,null);}
+    function us(f){xr(f,u[1],null,null);}
+    function dc(i,d,l){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu kayıt kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun/Kategori: "+d);
+        $("#del_id").attr("onclick","xr(null,'"+l+"','#oy',"+i+")");
+    }
+    function katreset(i,d){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu Resim kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Kategori: "+d);
+        $("#del_id").attr("onclick","xr(null,'/upload/katreset','#oy',"+i+")");
+    }
+    function urunreset(i,d){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu Resim kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun: "+d);
+        $("#del_id").attr("onclick","xr(null,'/upload/urunreset','#oy',"+i+")");
+    }
+    function urunreset2(i,d){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu Resim kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun: "+d);
+        $("#del_id").attr("onclick","xr(null,'/upload/urunreset2','#oy',"+i+")");
+    }
+function dcc(i,d,l){$("#oy").modal("show");
+        $("#oyb").html("<b>İşlemi Onaylayın<br>Bu kayıt kalıcı olarak silinecektir!</b><br> Kayıt no: "+i+"<br> Urun/Kategori: "+d);
+        $("#del_id").attr("onclick","window.location='"+l+"/"+i+"'");
+}
+function getProduct(i,kid){
+     $('#u-e').modal('show');
+     ps=null;
+     $("#closeEdit").attr('onclick', 'gp('+kid+')');
+    xr(null,"/menu/getproduct",null,{k:i});
+}
+//  var tt=document.querySelectorAll('.item'); tt.forEach(x=>{ x.addEventListener('click',function(){ JS.move();  }); });
+    //Sortable.mount(new AutoScroll());
+    
+    
+    var el = document.getElementById('sortableList');
+    
+    var sortable =  Sortable.create(el, {
+    handle: ".handle", dragClass:'dragg',chosenClass:'dragging',animation: 150,
+       scroll: true, // Enable the plugin. Can be HTMLElement.
+	forceAutoScrollFallback: true, // force autoscroll plugin to enable even when native browser autoscroll is available
+//	scrollFn: function(offsetX, offsetY, originalEvent, touchEvt, hoverTargetEl) { ... }, // if you have custom scrollbar scrollFn may be used for autoscrolling
+	scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
+	scrollSpeed: 50, // px, speed of the scrolling
+//	bubbleScroll: false, // apply autoscroll to all parent elements, allowing for easier movement
+    onEnd: function (evt) {
+	if(evt.oldIndex!==evt.newIndex){  
+           var srtlist=sortable.toArray();
+           xr(null,'/menu/ksort',null,{l:JSON.stringify(srtlist)});
+        }                
+    }
+});
 
-        let selectedWorkId = "nutuk";
-        let selectedMovieId = "tomris_movie";
+function skat(e){
+    console.log(e.options[e.selectedIndex].text);
+    let text=e.options[e.selectedIndex].text;
+    if(e.value>0){$('#kname').val(text);}
+    else{ $('#kname').val(""); }
+}
+function toTab(id){
+   
+    let kategori=_('kname').value;
+    if(kategori.length>1){
+       
+        _('kname').style="border:1px solid #ced4da";
+        var mytab= document.querySelector(id);
 
-        // DİNAMİK MECLİSLERİN TUTULACAĞI VERİ TABANI (3 SABİT MECLİS İLE BAŞLAR)
-        const simulatedChats = {
-            "Bilim": {
-                category: "Kültür & Sanat",
-                desc: "Bilimin ışığında, göklerin ve yerin sırlarını, kadim bilgileri tartıştığımız akıl meclisi.",
-                users: [], 
-                messages: [
-                    { sender: "System", color: "text-gray-500", text: "Bilim meclisine hoş geldiniz. Akıl ve fen ile obamızı ileri taşıyacağız." }
-                ],
-                randomReplies: []
-            },
-            "Atatürk'ün İzinde": {
-                category: "Cumhuriyet Tarihi",
-                desc: "Atatürk ilke ve inkılapları kılavuzluğunda, muasır medeniyetler seviyesine giden kutlu yolu yürüyoruz.",
-                users: [],
-                messages: [
-                    { sender: "System", color: "text-gray-500", text: "Atatürk'ün çizdiği yolda, tam bağımsızlık inancıyla buradayız!" }
-                ],
-                randomReplies: []
-            },
-            "Özgürlük": {
-                category: "Yakın Dönem",
-                desc: "Tam bağımsızlık, hürriyet ve adalet fikirlerinin yankılandığı hür düşünce meydanı.",
-                users: [],
-                messages: [
-                    { sender: "System", color: "text-gray-500", text: "Hür doğduk, hür yaşarız. Özgürlük meclisi adalet dağıtsın." }
-                ],
-                randomReplies: []
-            }
-        };
+        var tab = new bootstrap.Tab(mytab);
+        tab.show();
+    }else{
+       _('kname').style="border:1px solid red";
+     
+    }
+        
+        
+   
+}
 
-        // SINAV SİSTEMİ ÇALIŞTIRMA
-        function loadQuestion() {
-            answered = false;
-            const currentQ = quizQuestions[currentQuestionIndex];
+
+
+</script>
+
+
+
+
+
+
+
+
+<div class="modal  modal-md fade" id="lng" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+    <div class="modal-content ">
+        <div class="modal-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                <i class="fas fa-lg fa-globe text-white pe-2"></i>
+                <h6 class="modal-title">Dil Ekle </h6>
+                <button type="button" class="btn-close btn-close-white text-white m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="newfrm" method="post" action="/busines/nl"> 
+        <div class="modal-body px-4">
+            <div class="form-group  border-secondary  rounded">
+                  <label for="product-name" class="col-form-label float-start">Dil Seçin: </label>
+                  <select class="form-control selection" name="lid" >
+                  <option value="0">Seçiniz</option>
+                  
+                    <option value="1">TÜRKÇE </option>
+
+                  
+                    <option value="2">ENGLISH </option>
+
+                  
+                    <option value="3">DEUTSCH </option>
+
+                  
+                    <option value="4">عربي </option>
+
+                  
+                    <option value="5">SPANISH </option>
+
+                  
+                    <option value="6">FRENCH </option>
+
+                  
+                    <option value="7">Русский </option>
+
+                  
+                    <option value="8">中國人 </option>
+
+                  
+                    <option value="9">ITALIANO </option>
+
+                  
+                    <option value="10">日本 </option>
+
+                   
+
+                  </select>
+            </div>
+            <div class="form-group  border-primary rounded">
+                <label for="product-name" class="col-form-label ">Para Birimi</label>
+                <select class="form-control selection"  name="cid">
+                 
+                    <option value="1">TL </option>
+
+                  
+                    <option value="2">DOLAR </option>
+
+                  
+                    <option value="3">EURO </option>
+
+                  
+                    <option value="4">SAR </option>
+
+                  
+                    <option value="5">POUND </option>
+
+                  
+                    <option value="6">RUBLE </option>
+
+                  
+                    <option value="7">YEN </option>
+
+                  
+                    <option value="8">YUAN </option>
+
+                   
+
+              </select>
+            </div>
+            <p class=' px-3 fnt-14 text-secondary' style="text-align:justify;font-weight: 300">
+             <i>  <strong>Not: </strong>Mevcut Menünün bir kopyası oluşturularak, yeni dil seçeneği için size sunulur, kategori isimleri, ürün isimleri ve açıklamalarda yeni dile göre
+                 gerekli düzenlemeleri yapmalısınız <strong class='text-blue'>(Çeviri asistanımız size yardımcı olacaktır)</strong> Ürün fiyatı belirlediğiniz para birimine göre güncel kur üzernden otomatik hesaplanır,  Resimler tekrar eklenmez, ürün reytingleri etkilenmez, ana dilde ürün eklediğinizde ürün diğer dillere kendiliğinden eklenir ancak dile göre değişik yapmayı unutmayın.
+             </i>
+            </p>
+            <div class="row flex-nowrap mt-2">  
+                <div class="form-group col-6 ">
+                <button type="button" class="btn btn-outline-danger shadow-sm rounded-0 form-control" data-bs-dismiss="modal">İptal</button>
+                </div>
+                <div class="form-group col-6 ">
+                    <button type="submit" class="btn btn-outline-success form-control shadow-sm rounded-0" >Ekle +</button>
+                </div>
+            </div>
+        </div> 
+        </form>
+      <div class="modal-footer">
+        
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+<div class="modal  modal-md fade" id="ug" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content bg-light">
+      
+            <div class="modal-header bg-warning ">
+                <h6 class="modal-title"><i class="far fa-object-group  fa-lg pe-2"></i>Benzer ürün Guruplama </h6>
+                    <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+        
+     <form  method="post" action="/menu/grp"> 
+        <div class="modal-body py-1 px-3">
+         
+          <div class="form-group border border-warning p-2 rounded">
+          <p>Benzer ürünleri gruplayarak menünüzü hızlandırın, örneğin bir üründe, porsiyon, birbuçuk (1,5) porsiyon, kg, iki kişilik vb.. gibi benzer seçenekler bulunuyorsa bu ürünleri aynı grup altında birleştirin. Ayrıca <strong>açıklama ve resim </strong> eklemenize gerek kalmaz.   </p>
+          </div>
             
-            document.getElementById("question-index").innerText = `Soru ${currentQuestionIndex + 1} / ${quizQuestions.length}`;
-            document.getElementById("question-text").innerText = currentQ.text;
-            
-            const optionsGrid = document.getElementById("options-grid");
-            optionsGrid.innerHTML = "";
-            
-            currentQ.options.forEach((opt, idx) => {
-                const btn = document.createElement("button");
-                btn.className = "option-btn w-full bg-[#12161f] text-left p-4 rounded-xl border border-gray-700 hover:border-obaGold hover:bg-[#181e2b] transition-all duration-200 text-sm md:text-base font-medium";
-                btn.innerText = opt;
-                btn.onclick = () => selectOption(btn, idx);
-                optionsGrid.appendChild(btn);
-            });
+          <div class="form-group border border-warning p-2 rounded">
+              <label for="product-name" class="col-form-label text-secondary">Ürün Adı (Çeşitlendirilen ürün) </label>
+               <input type="hidden" id="grid" name="grid"  />
+              <p class="form-control fnt-15" id="grp-head"></p>
+          </div>
+            <div class="form-group px-2">
+            <label for="product-detail" class="col-form-label">Benzer Ürün (Örn. Birbuçuk)</label>
+            <input class="form-control" name="name"  />
+          </div>
+          <div class="form-group px-2">
+              
+            <label for="product-price" class="col-form-label">Ürün Fiyatı ( TL ):</label> 
+            <input type="text" required class="form-control"  name="fiyat">
+          </div>  
+          
+        </div> 
+        <div class="modal-footer d-block">
+           <div class="row  mt-3">  
+               <div class="form-group col-6 ">
+               <button type="button" class="btn btn-danger form-control" data-bs-dismiss="modal">İptal</button>
+               </div>
+               <div class="form-group col-6 ">
+                   <button type="submit" class="btn btn-success form-control" >Ekle +</button>
+               </div>
+           </div>
+        </div>
+     </form>
+    </div>
+  </div>
+</div>
 
-            document.getElementById("next-btn").classList.add("hidden");
-            document.getElementById("quiz-feedback").classList.add("hidden");
-        }
 
-        function selectOption(selectedBtn, optionIndex) {
-            if (answered) return; 
-            answered = true;
-            
-            const currentQ = quizQuestions[currentQuestionIndex];
-            const feedbackDiv = document.getElementById("quiz-feedback");
-            const optionsGrid = document.getElementById("options-grid");
-            const buttons = optionsGrid.querySelectorAll("button");
 
-            buttons.forEach((btn, idx) => {
-                btn.disabled = true;
-                if (idx === currentQ.correct) {
-                    btn.classList.remove("bg-[#12161f]", "border-gray-700");
-                    btn.classList.add("bg-green-900/40", "border-green-500", "text-green-200");
-                }
-            });
-
-            if (optionIndex === currentQ.correct) {
-                selectedBtn.classList.remove("bg-[#12161f]", "border-gray-700");
-                selectedBtn.classList.add("bg-green-900/60", "border-green-400", "text-green-100");
-                score += 25;
-                document.getElementById("score-counter").innerText = `Puan: ${score}`;
+<div id="menu" class="menu-in"  >
+    
+    <ul>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/menu" title="menü"> 
+                        <span>Menü</span> 
+                        <span class="fa-wcenter"><i class="fas fa-utensils fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/camp" title="kampanya"> 
+                        <span>Slayt Oluştur</span> 
+                        <span class="fa-wcenter"><i class="far fa-caret-square-right fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/tema" title="Tema"> 
+                        <span>Tema</span> 
+                        <span class="fa-wcenter"><i class="fas fa-palette fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/profil/menu" title="profil"> 
+                        <span>Menü Ayarları</span> 
+                        <span class="fa-wcenter"><i class="fas fa-sliders-h fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/busines/like" title="beğeni mesajları"> 
+                        <span>Beğeni Mesajları</span> 
+                        <span class="fa-wcenter"><i class="fas fa-star-half-alt fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+       <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/istatistik" title="istatistik"> 
+                        <span>İstatistikler</span> 
+                        <span class="fa-wcenter"><i class="fas fa-chart-bar fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" target="_blank" href="https://www.menulistele.com/busines/karekod" title="karekod"> 
+                        <span>Karekod Yazdır</span> 
+                        <span class="fa-wcenter"><i class="fas fa-qrcode fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+                <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/profil" title="profil"> 
+                        <span>Genel Ayarlar</span> 
+                        <span class="fa-wcenter"><i class="fas fa-user-cog fa-lg"></i></span>
+                    </a>
+            </div> 
+        </li>
+         
+        <li>
+            <div>
+                    <a class=" d-flex justify-content-between" href="https://www.menulistele.com/msg" title="Destek"> 
+                        <span>Destek </span>
+                        <span class="text-end ">
+                        
+                                <i class="far fa-envelope fa-lg" style="position: relative;right: -11px"></i>
+                            
+                                <sup class="badge bg-warning text-black" style="padding: 1px;position: relative;top:-10px;right: -4px">0</sup>
+                          
+                        
+                        </span>  
+                    </a>
                 
-                feedbackDiv.className = "mt-4 text-center p-3 rounded-lg text-sm font-semibold bg-green-950/40 text-green-400 border border-green-900/50";
-                feedbackDiv.innerHTML = "<i class='fa-solid fa-circle-check'></i> Doğru yanıt yoldaş! Bilgelerin yolundasın.";
-            } else {
-                selectedBtn.classList.remove("bg-[#12161f]", "border-gray-700");
-                selectedBtn.classList.add("bg-red-900/60", "border-red-400", "text-red-100");
-                
-                feedbackDiv.className = "mt-4 text-center p-3 rounded-lg text-sm font-semibold bg-red-950/40 text-red-400 border border-red-900/50";
-                feedbackDiv.innerHTML = "<i class='fa-solid fa-circle-xmark'></i> Yanlış cevap yoldaş, doğrusunu yeşille belirttim.";
-            }
-            feedbackDiv.classList.remove("hidden");
-
-            if (currentQuestionIndex === quizQuestions.length - 1) {
-                document.getElementById("next-btn").classList.add("hidden");
-                document.getElementById("enter-otag-btn").classList.remove("hidden");
-            } else {
-                document.getElementById("next-btn").classList.remove("hidden");
-            }
-        }
-
-        function nextQuestion() {
-            if (currentQuestionIndex < quizQuestions.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion();
-            }
-        }
-
-        function showCoronation() {
-            document.getElementById("quiz-container").classList.add("hidden");
-            document.getElementById("coronation-container").classList.remove("hidden");
-        }
-
-        // OBAYA GİRİŞ VE ŞİFRE KONTROLÜ
-        function unlockOtag() {
-            const inputVal = document.getElementById("bey-name-input").value.trim();
-            const keyVal = document.getElementById("yetkili-key-input").value.trim();
-            userGender = document.querySelector('input[name="gender-selection"]:checked').value;
-
-            if (keyVal === "1283") {
-                // Baybars Han Girişi (Bey)
-                beyName = "Baybars Han";
-                userGender = "erkek";
-                isAuthorized = true;
-                isBaybars = true;
-                isBortecine = false;
-                
-                document.getElementById("welcome-title").innerHTML = "👑 Hoş Geldin Baybars Han!";
-                document.getElementById("welcome-desc").innerText = "Obanın şanlı beyi olarak otağına hoş geldin beyim. Tüm meclis kurma, toy toplama ve ferman salma yetkileri senindir. Alplerin ve asenaların buyruklarını bekliyor.";
-                
-                showNotification("Beyim hoşgeldin! 👑");
-            } else if (keyVal === "1881") {
-                // Börteçine Hatun Girişi (Asena Yetkili)
-                beyName = "Börteçine Hatun";
-                userGender = "kiz";
-                isAuthorized = true;
-                isBaybars = false;
-                isBortecine = true;
-
-                document.getElementById("welcome-title").innerHTML = "🔮 Hoş Geldin Börteçine Hatun!";
-                document.getElementById("welcome-desc").innerText = "Obanın bilge asenası ve yetkilisi olarak otağına şeref verdiniz hanımım. Meclis kurma, toy meclisini toplama ve asil fermanlar salma yetkileri sizindir.";
-
-                showNotification("Hanımım otağımıza şeref verdiniz! 🔮");
-            } else {
-                // Normal Yoldaş Girişi
-                beyName = inputVal || "Yoldaş";
-                isAuthorized = false;
-                isBaybars = false;
-                isBortecine = false;
-
-                document.getElementById("welcome-title").innerText = "Ata Obası Meclis Meydanı";
-                document.getElementById("welcome-desc").innerHTML = `Kutlu obaya hoş geldin <b>${beyName} yoldaş</b>. Yetkililerin <b>Baybars Han</b> ve <b>Börteçine Hatun</b> meclisi yönetirken sen de fikirlerini sunabilir ve kütüphaneyi inceleyebilirsin kanka.`;
-
-                showNotification(`Obaya hoş geldin, ${beyName} yoldaş! ⛺`);
-            }
-
-            // Bey kürsüsü bilgi metnini yetki durumuna göre düzenle
-            if (isAuthorized) {
-                document.getElementById("auth-info-text").innerHTML = "Sisteme yetkili olarak giriş yaptın beyim/hanımım. <b>Toyu Topla</b> ve <b>Ferman Sal</b> yetkilerini dilediğin gibi kullanabilirsin.";
-            } else {
-                document.getElementById("auth-info-text").innerHTML = "Toyu toplama ve Ferman salma yetkisi yalnızca <b>Baybars Han (1283)</b> ve <b>Börteçine Hatun (1881)</b> yetkililerindedir.";
-            }
-
-            document.getElementById("quiz-overlay").classList.add("hidden");
-            document.getElementById("main-platform").classList.remove("hidden");
-            
-            renderRooms();
-        }
-
-        function relockOtag() {
-            currentQuestionIndex = 0;
-            score = 0;
-            document.getElementById("score-counter").innerText = `Puan: ${score}`;
-            document.getElementById("enter-otag-btn").classList.add("hidden");
-            
-            document.getElementById("quiz-container").classList.remove("hidden");
-            document.getElementById("coronation-container").classList.add("hidden");
-            
-            document.getElementById("main-platform").classList.add("hidden");
-            document.getElementById("quiz-overlay").classList.remove("hidden");
-            loadQuestion();
-        }
-
-        // YENİ ODA KAYDETME (YETKİ KONTROLÜ)
-        function handleCreateRoom(e) {
-            e.preventDefault();
-
-            if (!isAuthorized) {
-                showNotification("Bu kutlu yetki (Meclis Kurma) yalnızca Baybars Han (1283) veya Börteçine Hatun'a (1881) aittir!");
-                return;
-            }
-
-            const nameInput = document.getElementById("new-room-name");
-            const descInput = document.getElementById("new-room-desc");
-            const categorySelect = document.getElementById("new-room-category");
-
-            const rName = nameInput.value.trim();
-            const rDesc = descInput.value.trim();
-            const rCat = categorySelect.value;
-
-            if (!rName || !rDesc) return;
-
-            simulatedChats[rName] = {
-                category: rCat,
-                desc: rDesc,
-                users: [], 
-                messages: [
-                    { sender: "System", color: "text-gray-500", text: `Yetkilimiz tarafından '${rName}' meclis odası başarıyla açıldı!` }
-                ],
-                randomReplies: []
-            };
-
-            nameInput.value = "";
-            descInput.value = "";
-
-            renderRooms();
-            showNotification(`"${rName}" meclisi başarıyla kaydedildi!`);
-        }
-
-        function renderRooms() {
-            const grid = document.getElementById("rooms-grid");
-            const totalIndicator = document.getElementById("total-rooms-indicator");
-            grid.innerHTML = "";
-
-            const keys = Object.keys(simulatedChats);
-            totalIndicator.innerText = `${keys.length} Meclis Kayıtlı`;
-
-            keys.forEach(roomName => {
-                const room = simulatedChats[roomName];
-                const card = document.createElement("div");
-                card.onclick = () => joinRoom(roomName);
-                card.className = "group bg-obaCard border border-gray-800 hover:border-obaGold/50 rounded-xl p-6 cursor-pointer transition-all hover:-translate-y-1 shadow-lg hover:shadow-obaGold/5 flex flex-col justify-between h-64";
-                
-                card.innerHTML = `
+            </div> 
+        </li>
+        <li>            
+                            
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-amber-500/10 text-obaGold text-xs px-2.5 py-1 rounded-md font-semibold border border-obaGold/20">${room.category}</span>
-                            <span class="text-gray-500 text-xs flex items-center gap-1"><i class="fa-solid fa-user"></i> Aktif</span>
-                        </div>
-                        <h4 class="text-xl font-bold text-white group-hover:text-obaGold transition-colors truncate">${roomName}</h4>
-                        <p class="text-gray-400 text-sm mt-2 line-clamp-3">${room.desc}</p>
+                            <a class=" d-flex justify-content-between" href="https://www.menulistele.com/login/out" title="dashboard"> 
+                                <span>SARUM HOTEL çıkış</span> 
+                                <span class="fa-wcenter"><i class="fas fa-sign-out-alt fa-lg"></i></span>
+                            </a>
                     </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-800/60 mt-4">
-                        <span class="text-xs text-obaGold font-semibold">Meclise Giriş Yap ➔</span>
-                        <div class="flex -space-x-2">
-                            <div class="w-6 h-6 rounded-full bg-amber-600 border border-obaCard flex items-center justify-center text-[8px] font-bold text-white">B</div>
-                            <div class="w-6 h-6 rounded-full bg-purple-600 border border-obaCard flex items-center justify-center text-[8px] font-bold text-white">BÖ</div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        let activeRoom = null;
-
-        function joinRoom(roomName) {
-            activeRoom = roomName;
-            document.getElementById("lobby-view").classList.add("hidden");
-            document.getElementById("room-view").classList.remove("hidden");
             
-            document.getElementById("active-room-title").innerText = `⛺ ${roomName} Meclisi`;
-            
-            loadRoomData();
-        }
-
-        function leaveRoom() {
-            activeRoom = null;
-            document.getElementById("room-view").classList.add("hidden");
-            document.getElementById("lobby-view").classList.remove("hidden");
-            renderRooms();
-        }
-
-        function loadRoomData() {
-            const data = simulatedChats[activeRoom];
-            if (!data) return;
-
-            const messagesContainer = document.getElementById("chat-messages");
-            messagesContainer.innerHTML = "";
-            data.messages.forEach(msg => {
-                appendMessage(msg.sender, msg.text, msg.color);
-            });
-
-            updateUsersList();
-        }
-
-        // ODA İÇİNDEKİ KULLANICI LİSTESİ (YETKİYE GÖRE DİNAMİK YAPILANDIRILIYOR)
-        function updateUsersList() {
-            const data = simulatedChats[activeRoom];
-            const usersContainer = document.getElementById("room-users-list");
-            usersContainer.innerHTML = "";
-            
-            // Mevcut kullanıcıyı listeye ekle
-            const meRole = isAuthorized ? (isBaybars ? "YETKİLİ (ALP)" : "YETKİLİ (ASENA)") : (userGender === 'erkek' ? 'ALP' : 'ASENA');
-            const meColor = isBaybars ? "text-amber-500 font-bold" : (isBortecine ? "text-purple-400 font-bold" : "text-obaGold");
-            const meDiv = document.createElement("div");
-            meDiv.className = "flex items-center justify-between p-2 rounded-lg bg-gradient-to-r from-amber-500/10 to-obaGold/10 border-2 border-obaGold/60 shadow-[0_0_10px_rgba(212,175,55,0.1)]";
-            meDiv.innerHTML = `
-                <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-                    <span class="text-sm font-extrabold ${meColor}">👑 ${beyName}</span>
-                </div>
-                <span class="text-[9px] bg-obaGold text-black font-black px-1.5 py-0.5 rounded shadow">${meRole}</span>
-            `;
-            usersContainer.appendChild(meDiv);
-
-            // Botlar silindi. Sadece sabit ve tek yetkililer kalacak.
-            const staticAuthorities = [];
-            if (!isBaybars) {
-                staticAuthorities.push({ name: "Baybars Han", role: "Oba Yetkilisi (Alp)", color: "text-amber-500 font-bold" });
-            }
-            if (!isBortecine) {
-                staticAuthorities.push({ name: "Börteçine Hatun", role: "Oba Yetkilisi (Asena)", color: "text-purple-400 font-bold" });
-            }
-
-            document.getElementById("room-users-count").innerText = `${staticAuthorities.length + 1} Meclis Canı`;
-
-            staticAuthorities.forEach(user => {
-                const userDiv = document.createElement("div");
-                userDiv.className = "flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors";
-                
-                let roleBadge = "";
-                if(user.name === "Baybars Han") {
-                    roleBadge = `<span class="text-[9px] bg-amber-600/20 text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded font-extrabold">YETKİLİ (ALP)</span>`;
-                } else if(user.name === "Börteçine Hatun") {
-                    roleBadge = `<span class="text-[9px] bg-purple-600/20 text-purple-400 border border-purple-500/30 px-1.5 py-0.5 rounded font-extrabold">YETKİLİ (ASENA)</span>`;
-                }
-
-                userDiv.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-gray-600"></span>
-                        <span class="text-sm font-medium ${user.color}">${user.name}</span>
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                        ${roleBadge}
-                    </div>
-                `;
-                usersContainer.appendChild(userDiv);
-            });
-        }
-
-        function appendMessage(sender, text, colorClass = "text-obaGold", isUser = false) {
-            const messagesContainer = document.getElementById("chat-messages");
-            const msgDiv = document.createElement("div");
-            
-            if (isUser) {
-                msgDiv.className = "flex flex-col items-end space-y-1";
-                msgDiv.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-obaGold font-extrabold">👑 ${sender}</span>
-                        <span class="text-[10px] text-gray-500">Buyruğunuz</span>
-                    </div>
-                    <div class="bg-gradient-to-r from-amber-500 to-obaGold text-black text-sm px-4 py-2.5 rounded-2xl rounded-tr-none max-w-md shadow-[0_0_15px_rgba(212,175,55,0.3)] font-bold border border-obaGold/50">
-                        ${text}
-                    </div>
-                `;
-            } else {
-                msgDiv.className = "flex flex-col items-start space-y-1";
-                msgDiv.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold ${colorClass}">${sender}</span>
-                        <span class="text-[10px] text-gray-500">Az önce</span>
-                    </div>
-                    <div class="bg-[#12161f] border border-gray-800 text-gray-100 text-sm px-4 py-2.5 rounded-2xl rounded-tl-none max-w-md shadow-md leading-relaxed">
-                        ${text}
-                    </div>
-                `;
-            }
-
-            messagesContainer.appendChild(msgDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function sendUserMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById("chat-input");
-            const messageText = input.value.trim();
-            if (!messageText) return;
-
-            appendMessage(beyName, messageText, isBaybars ? "text-amber-500" : (isBortecine ? "text-purple-400" : "text-obaGold"), true);
-            input.value = "";
-        }
-
-        // TOYU TOPLAMA YETKİ KONTROLÜ (1283 ve 1881 şifrelere özel)
-        function triggerToyuTopla() {
-            if (!isAuthorized) {
-                showNotification("Toyu toplama yetkisi yalnızca Baybars Han (1283) ve Börteçine Hatun (1881) yetkililerindedir!");
-                return;
-            }
-
-            const messagesContainer = document.getElementById("chat-messages");
-            
-            const sysDiv = document.createElement("div");
-            sysDiv.className = "flex justify-center my-4";
-            sysDiv.innerHTML = `
-                <div class="bg-gradient-to-r from-amber-600/20 via-obaGold/20 to-amber-600/20 border-y border-obaGold/40 text-obaGold px-6 py-2.5 rounded-md text-xs font-bold tracking-widest text-center shadow-lg animate-pulse">
-                    🥁 KUTLU DAVULLAR ÇALIYOR! OBA YETKİLİSİ ${beyName.toUpperCase()} TOYU TOPLADI! 🥁
-                </div>
-            `;
-            messagesContainer.appendChild(sysDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            // Yanındaki diğer yetkili selam verir
-            setTimeout(() => {
-                let responder = "";
-                let rText = "";
-                let rColor = "";
-
-                if (isBaybars) {
-                    responder = "Börteçine Hatun";
-                    rText = "Kutlu davul seslerini işittim Baybars Han! Toy meclisimize baş üstüne katılıyorum, fikirlerimiz şanlı olsun! 🔮";
-                    rColor = "text-purple-400 font-bold";
-                } else if (isBortecine) {
-                    responder = "Baybars Han";
-                    rText = "Bilge Börteçine Hatun'un daveti başımız üstüne! Cenk alpleri ve yetkililer her daim hizmetinizdedir! ⚔️";
-                    rColor = "text-amber-500 font-bold";
-                }
-
-                appendMessage(responder, rText, rColor);
-            }, 1500);
-        }
-
-        // FERMAN MODAL YÖNETİMİ
-        function openFermanModal() {
-            if (!isAuthorized) {
-                showNotification("Ferman salma yetkisi yalnızca Baybars Han (1283) ve Börteçine Hatun (1881) yetkililerindedir!");
-                return;
-            }
-            document.getElementById("ferman-modal").classList.remove("hidden");
-        }
-
-        function closeFermanModal() {
-            document.getElementById("ferman-modal").classList.add("hidden");
-            document.getElementById("ferman-text-input").value = "";
-        }
-
-        function submitFerman() {
-            const ferman = document.getElementById("ferman-text-input").value.trim();
-            if (!ferman) return;
-
-            const messagesContainer = document.getElementById("chat-messages");
-
-            const fermanDiv = document.createElement("div");
-            fermanDiv.className = "flex justify-center my-6 w-full";
-            fermanDiv.innerHTML = `
-                <div class="bg-black/85 border-2 border-dashed border-obaGold p-6 rounded-xl max-w-lg w-full shadow-[0_0_30px_rgba(212,175,55,0.2)] relative text-center">
-                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-obaCard px-3 text-obaGold text-xl">📜 BEY FERMANI</span>
-                    <p class="text-obaGold text-xs font-bold uppercase tracking-wider mb-2">Buyruk Baş Üstüne!</p>
-                    <p class="text-white text-base font-extrabold italic leading-relaxed">"${ferman}"</p>
-                    <p class="text-gray-500 text-[10px] mt-4 tracking-widest uppercase">— ${beyName.toUpperCase()}</p>
-                </div>
-            `;
-            messagesContainer.appendChild(fermanDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-            closeFermanModal();
-
-            setTimeout(() => {
-                let responder = "";
-                let rText = "";
-                let rColor = "";
-
-                if (isBaybars) {
-                    responder = "Börteçine Hatun";
-                    rText = "Fermanınız başımız üstünedir Baybars Han! Asenalarımız ve bilgelerimiz buyruğu hemen yayacaktır! 🔮";
-                    rColor = "text-purple-400 font-bold";
-                } else if (isBortecine) {
-                    responder = "Baybars Han";
-                    rText = "Kutlu fermanınız canımızdır Börteçine Hatun! Alplerimiz emirlerinizi yerine getirmeye hazırdır! ⚔️";
-                    rColor = "text-amber-500 font-bold";
-                }
-
-                appendMessage(responder, rText, rColor);
-            }, 1500);
-        }
-
-        // ==========================================
-        // OBA KÜTÜPHANESİ FONKSİYONLARI 
-        // ==========================================
-        function openLibrary() {
-            document.getElementById("library-modal").classList.remove("hidden");
-            document.body.style.overflow = "hidden"; 
-            renderLibraryList();
-            selectLibraryWork(selectedWorkId);
-        }
-
-        function closeLibrary() {
-            document.getElementById("library-modal").classList.add("hidden");
-            document.body.style.overflow = "auto";
-        }
-
-        function renderLibraryList(filteredWorks = libraryWorks) {
-            const container = document.getElementById("library-list-container");
-            container.innerHTML = "";
-
-            const countBadge = document.getElementById("library-count-badge");
-            countBadge.innerText = `${filteredWorks.length} Eser Listeleniyor`;
-
-            if (filteredWorks.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8 text-gray-500 text-sm">
-                        <p>Aranan kriterde bir eser bulunamadı yoldaş.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filteredWorks.forEach(work => {
-                const btn = document.createElement("button");
-                btn.className = `w-full text-left p-4 rounded-xl border transition-all duration-200 flex flex-col gap-1.5 hover:border-obaGold/60 ${selectedWorkId === work.id ? 'border-obaGold bg-obaGold/5 shadow-md shadow-obaGold/5' : 'border-gray-800 bg-black/30'}`;
-                btn.onclick = () => selectLibraryWork(work.id);
-                btn.innerHTML = `
-                    <div class="flex justify-between items-center w-full">
-                        <span class="text-[9px] text-obaGold font-semibold uppercase tracking-wider bg-obaGold/10 px-2 py-0.5 rounded">${work.era}</span>
-                        <i class="fa-solid fa-scroll text-obaGold/40 text-xs"></i>
-                    </div>
-                    <span class="text-sm font-bold text-white group-hover:text-obaGold">${work.title}</span>
-                    <span class="text-xs text-gray-400 truncate"><i class="fa-solid fa-feather-pointed text-[10px] text-gray-500"></i> ${work.author}</span>
-                `;
-                container.appendChild(btn);
-            });
-        }
-
-        function selectLibraryWork(id) {
-            selectedWorkId = id;
-            
-            const searchInput = document.getElementById("library-search-input").value.trim().toLowerCase();
-            const filtered = libraryWorks.filter(w => 
-                w.title.toLowerCase().includes(searchInput) || 
-                w.author.toLowerCase().includes(searchInput) ||
-                w.era.toLowerCase().includes(searchInput)
-            );
-            renderLibraryList(filtered);
-
-            const work = libraryWorks.find(w => w.id === id);
-            const container = document.getElementById("library-detail-container");
-            if (!work) return;
-
-            let quotesHTML = "";
-            work.quotes.forEach(quote => {
-                quotesHTML += `
-                    <div class="relative bg-black/40 border-l-4 border-obaGold p-4 rounded-r-xl shadow-inner group transition-all hover:bg-black/60">
-                        <p class="text-sm md:text-base text-gray-200 font-medium italic leading-relaxed">"${quote}"</p>
-                        <div class="flex justify-end gap-3 mt-3 opacity-80 group-hover:opacity-100 transition-opacity">
-                            <button onclick="copyQuote(this, '${quote.replace(/'/g, "\\'")}')" class="text-xs text-gray-400 hover:text-obaGold flex items-center gap-1.5 transition-colors">
-                                <i class="fa-solid fa-copy"></i> <span>Kopyala</span>
-                            </button>
-                            <button onclick="quoteToChat('${quote.replace(/'/g, "\\'")}', '${work.title}')" class="text-xs text-obaGold hover:text-obaGoldHover font-bold flex items-center gap-1.5 transition-colors">
-                                <i class="fa-solid fa-quote-left"></i> <span>Meclise Alıntıla</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = `
-                <div class="space-y-6">
-                    <div class="border-b border-gray-800 pb-5">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                            <div>
-                                <h4 class="historical-font text-2xl md:text-3xl font-extrabold text-white tracking-wide">${work.title}</h4>
-                                <p class="text-sm text-obaGold mt-1"><i class="fa-solid fa-pen-nib"></i> Müellif / Yazar: <span class="font-bold text-gray-200">${work.author}</span></p>
-                            </div>
-                            <div class="bg-amber-500/10 border border-obaGold/30 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-obaGold self-start">
-                                ${work.era}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3">
-                        <h5 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fa-solid fa-book-open-reader text-obaGold"></i> Eser Hakkında ve Özeti
-                        </h5>
-                        <p class="text-sm md:text-base text-gray-300 leading-relaxed bg-black/30 p-4 rounded-xl border border-gray-800">
-                            ${work.desc}
-                        </p>
-                    </div>
-
-                    <div class="space-y-3">
-                        <h5 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fa-solid fa-shield-halved text-obaGold"></i> Tarihsel Değeri ve Önemi
-                        </h5>
-                        <p class="text-sm md:text-base text-gray-300 leading-relaxed bg-black/30 p-4 rounded-xl border border-gray-800">
-                            ${work.significance}
-                        </p>
-                    </div>
-
-                    <div class="space-y-4">
-                        <h5 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fa-solid fa-feather-pointed text-obaGold"></i> Kutlu Sözler ve Alıntılar
-                        </h5>
-                        <div class="space-y-4">
-                            ${quotesHTML}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function filterLibrary() {
-            const query = document.getElementById("library-search-input").value.trim().toLowerCase();
-            const filtered = libraryWorks.filter(work => 
-                work.title.toLowerCase().includes(query) || 
-                work.author.toLowerCase().includes(query) ||
-                work.era.toLowerCase().includes(query)
-            );
-            renderLibraryList(filtered);
-            
-            if (filtered.length > 0 && !filtered.some(w => w.id === selectedWorkId)) {
-                selectLibraryWork(filtered[0].id);
-            }
-        }
-
-        function copyQuote(btn, text) {
-            // Güvenli clipboard kopyalama
-            const el = document.createElement('textarea');
-            el.value = text;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-check text-green-500"></i> <span class="text-green-400">Kopyalandı</span>`;
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-            }, 2000);
-            showNotification("Bilge söz panoya kopyalandı yoldaş!");
-        }
-
-        function quoteToChat(quoteText, workTitle) {
-            if (!activeRoom) {
-                showNotification("Kutlu yoldaşım, bu sözü meclise sunmak için önce bir Toy Odasına girmelisin!");
-                return;
-            }
-            
-            const formattedQuote = `"${quoteText}" — (${workTitle} Eserinden Kutlu Bir Alıntı)`;
-            appendMessage(beyName, formattedQuote, isBaybars ? "text-amber-500" : (isBortecine ? "text-purple-400" : "text-obaGold"), true);
-            closeLibrary();
-            
-            setTimeout(() => {
-                let responder = "";
-                let reaction = "";
-                let rColor = "";
-
-                if (isBaybars) {
-                    responder = "Börteçine Hatun";
-                    reaction = `Bu asil sözlerin bozkırda asenalarımızın yolunu aydınlatacaktır Baybars Han. '${workTitle}' içindeki hikmet başımız üstüne. 🔮`;
-                    rColor = "text-purple-400 font-bold";
-                } else if (isBortecine) {
-                    responder = "Baybars Han";
-                    reaction = `Börteçine Hatun'un '${workTitle}' eserinden getirdiği bu kutlu alıntı alplerimizin vatan sevgisini bir kez daha harladı! ⚔️`;
-                    rColor = "text-amber-500 font-bold";
-                } else {
-                    responder = "Börteçine Hatun";
-                    reaction = `Meclis yoldaşımız '${workTitle}' içindeki bu şanlı bilge hikmeti ne güzel hatırlattı. Gökten inen ışık gibidir.`;
-                    rColor = "text-purple-400 font-bold";
-                }
-                
-                appendMessage(responder, reaction, rColor);
-            }, 1500);
-        }
-
-        // ==========================================
-        // OBA SİNEMASI OYNATICI FONKSİYONLARI 
-        // ==========================================
-        function openCinema() {
-            document.getElementById("cinema-modal").classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-            renderCinemaList();
-            selectCinemaMovie(selectedMovieId);
-        }
-
-        function closeCinema() {
-            document.getElementById("cinema-detail-container").innerHTML = `
-                <div class="text-center py-20 text-gray-500">
-                    <p>Oynatıcı durduruluyor...</p>
-                </div>
-            `;
-            document.getElementById("cinema-modal").classList.add("hidden");
-            document.body.style.overflow = "auto";
-        }
-
-        function renderCinemaList() {
-            const container = document.getElementById("cinema-list-container");
-            container.innerHTML = "";
-
-            cinemaMovies.forEach(movie => {
-                const activeStyle = selectedMovieId === movie.id 
-                    ? 'border-red-500 bg-red-500/10 shadow-lg shadow-red-500/5' 
-                    : 'border-gray-800 bg-black/40 hover:border-red-500/50';
-
-                const card = document.createElement("button");
-                card.className = `w-full text-left p-4 rounded-xl border flex items-center gap-4 transition-all duration-300 ${activeStyle}`;
-                card.onclick = () => selectCinemaMovie(movie.id);
-                card.innerHTML = `
-                    <div class="w-10 h-10 rounded-lg bg-black/60 border border-gray-700 flex items-center justify-center text-xl text-red-500">
-                        ${movie.poster}
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-bold text-white truncate">${movie.title}</p>
-                        <p class="text-xs text-gray-400 mt-0.5">${movie.year} • Yönetmen: ${movie.director.split(' ')[0]}</p>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function selectCinemaMovie(id) {
-            selectedMovieId = id;
-            renderCinemaList();
-
-            const movie = cinemaMovies.find(m => m.id === id);
-            const container = document.getElementById("cinema-detail-container");
-            if (!movie) return;
-
-            const embedUrl = `https://www.youtube-nocookie.com/embed/${movie.youtubeId}?autoplay=0&rel=0&showinfo=0&modestbranding=1`;
-            const directUrl = `https://www.youtube.com/watch?v=${movie.youtubeId}`;
-
-            container.innerHTML = `
-                <div class="space-y-6">
-                    <!-- Sinema Ekranı (Oynatıcı) -->
-                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden border-2 border-red-500/30 bg-black shadow-2xl glow-red">
-                        <iframe 
-                            src="${embedUrl}" 
-                            title="${movie.title} Fragman"
-                            class="absolute top-0 left-0 w-full h-full"
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-
-                    <!-- Direkt YouTube Butonu -->
-                    <div class="bg-red-950/20 border border-red-900/30 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl">⚠️</span>
-                            <p class="text-xs text-red-200">Tarayıcı güvenliği veya reklam engelleyiciniz videoyu engelliyorsa direkt izleyebilirsiniz:</p>
-                        </div>
-                        <a href="${directUrl}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-md transition-all flex items-center gap-2">
-                            <i class="fa-brands fa-youtube text-base"></i> <span>YouTube'dan Direkt Aç</span>
-                        </a>
-                    </div>
-
-                    <!-- Film Bilgileri -->
-                    <div class="bg-black/40 p-5 rounded-xl border border-gray-800 space-y-4">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-4">
-                            <div>
-                                <h4 class="historical-font text-xl md:text-2xl font-extrabold text-white text-glow">${movie.title}</h4>
-                                <p class="text-xs text-red-400 mt-1">Yönetmen: <span class="text-gray-300 font-bold">${movie.director}</span> | Yapım Yılı: <span class="text-gray-300 font-bold">${movie.year}</span></p>
-                            </div>
-                            <button onclick="movieToChat('${movie.title.replace(/'/g, "\\'")}', '${movie.year}')" class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-amber-600 hover:brightness-110 active:scale-95 text-white text-xs font-black rounded-lg transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-comments"></i> <span>Mecliste Film Hakkında Konuş</span>
-                            </button>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <span class="text-[10px] text-red-500 font-extrabold uppercase tracking-widest block">Film Özeti</span>
-                            <p class="text-sm text-gray-300 leading-relaxed">${movie.desc}</p>
-                        </div>
-
-                        <div class="space-y-1.5 border-t border-gray-800 pt-3 mt-3">
-                            <span class="text-[10px] text-red-500 font-extrabold uppercase tracking-widest block">Tarihsel Arka Plan ve Önemi</span>
-                            <p class="text-xs text-gray-400 leading-relaxed italic">${movie.background}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function movieToChat(movieTitle, movieYear) {
-            if (!activeRoom) {
-                showNotification("Kutlu yoldaşım, bu film üzerine konuşmak için önce bir Toy Odasına girmelisin!");
-                return;
-            }
-
-            const formattedMessage = `Az önce şanlı Oba Sineması'nda "${movieTitle} (${movieYear})" filmini izledim yoldaşlar. Bu görkemli tarihsel başyapıt hakkında ne düşünüyorsunuz?`;
-            appendMessage(beyName, formattedMessage, isBaybars ? "text-amber-500" : (isBortecine ? "text-purple-400" : "text-obaGold"), true);
-            closeCinema();
-
-            setTimeout(() => {
-                let responder = "";
-                let reaction = "";
-                let rColor = "";
-
-                if (isBaybars) {
-                    responder = "Börteçine Hatun";
-                    if (movieTitle.includes("Tomris")) {
-                        reaction = `Kutlu yoldaşım Tomris Hatun'un cesareti tüm asenalarımızın kalbine birer bağımsızlık meşalesi yakmıştır! 🔮`;
-                    } else {
-                        reaction = `Gazi Mustafa Kemal Atatürk'ün askeri dehasını, vizyonunu ve şanlı mücadelesini izlemek her daim ufkumuzu aydınlatıyor!`;
-                    }
-                    rColor = "text-purple-400 font-bold";
-                } else if (isBortecine) {
-                    responder = "Baybars Han";
-                    if (movieTitle.includes("Tomris")) {
-                        reaction = `Pers ordusuna boyun eğmeyen Saka alplerinin o şanlı zaferi tüylerimizi diken diken etti Börteçine Hatun! Cenk ruhumuz her zaman diridir! ⚔️`;
-                    } else {
-                        reaction = `Atatürk'ün o vizyoner zekası, obamızın her zaman akılla ve ilimle yönetilmesi gerektiğinin en büyük kanıtıdır hanımım.`;
-                    }
-                    rColor = "text-amber-500 font-bold";
-                } else {
-                    responder = "Baybars Han";
-                    reaction = `Yoldaşımız ne güzel sordu. Çanakkale'de 'Ben size taarruzu değil, ölmeyi emrediyorum' diyen dehanın mirasını korumak bizim can borcumuzdur!`;
-                    rColor = "text-amber-500 font-bold";
-                }
-
-                appendMessage(responder, reaction, rColor);
-            }, 1500);
-        }
-
-        function showNotification(text) {
-            let toast = document.getElementById("oba-toast");
-            if (!toast) {
-                toast = document.createElement("div");
-                toast.id = "oba-toast";
-                toast.className = "fixed bottom-5 left-1/2 -translate-x-1/2 bg-black/90 border border-obaGold/60 text-obaGold text-xs md:text-sm px-6 py-3 rounded-xl shadow-2xl z-[100] transition-all opacity-0 pointer-events-none text-center";
-                document.body.appendChild(toast);
-            }
-            toast.innerText = text;
-            toast.classList.remove("opacity-0", "pointer-events-none");
-            setTimeout(() => {
-                toast.classList.add("opacity-0", "pointer-events-none");
-            }, 3000);
-        }
-
-        // ==========================================
-        // WEB AUDIO API EZGİ ÇALAR (SYNTHESIZER)
-        // ==========================================
-        let audioCtx = null;
-        let isPlaying = false;
-        let trackIndex = 0;
-        let playInterval = null;
-        let synthNodes = [];
-
-        const playlist = [
-            {
-                title: "Dombra Ezgisi (Kutlu Şenlik)",
-                notes: [220, 220, 293, 293, 329, 329, 392, 329, 293, 220, 293, 220],
-                durations: [400, 400, 400, 400, 400, 400, 600, 400, 400, 400, 800, 400],
-                tempo: 450
-            },
-            {
-                title: "Bozkır Rüzgarı (Kopuz Tınısı)",
-                notes: [196, 246, 293, 349, 392, 440, 392, 349, 293, 246, 196, 220],
-                durations: [600, 600, 600, 600, 1000, 600, 600, 600, 600, 600, 1000, 1000],
-                tempo: 700
-            },
-            {
-                title: "Cenk Marşı (Davul ve Savaş Sazı)",
-                notes: [147, 147, 220, 220, 246, 220, 147, 147, 220, 246, 293, 220],
-                durations: [300, 300, 500, 300, 300, 500, 300, 300, 500, 300, 300, 800],
-                tempo: 350
-            }
-        ];
-
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        function playSynthNote(freq, duration) {
-            if (!audioCtx) return;
-            
-            const osc1 = audioCtx.createOscillator();
-            const osc2 = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            osc1.type = 'sawtooth';
-            osc1.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-            osc2.type = 'triangle';
-            osc2.frequency.setValueAtTime(freq * 1.5, audioCtx.currentTime); 
-
-            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (duration / 1000));
-
-            osc1.connect(gainNode);
-            osc2.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            osc1.start();
-            osc2.start();
-            osc1.stop(audioCtx.currentTime + (duration / 1000));
-            osc2.stop(audioCtx.currentTime + (duration / 1000));
-
-            synthNodes.push(osc1, osc2);
-        }
-
-        function togglePlayMusic() {
-            initAudio();
-            const btn = document.getElementById("play-pause-btn");
-
-            if (isPlaying) {
-                stopMusic();
-                btn.innerHTML = '<i class="fa-solid fa-play"></i>';
-            } else {
-                isPlaying = true;
-                btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                playTrack(trackIndex);
-            }
-        }
-
-        function playTrack(index) {
-            stopMusic();
-            isPlaying = true;
-            trackIndex = index;
-            const track = playlist[trackIndex];
-            document.getElementById("now-playing-title").innerText = track.title;
-            document.getElementById("play-pause-btn").innerHTML = '<i class="fa-solid fa-pause"></i>';
-
-            let noteIndex = 0;
-            const playLoop = () => {
-                if (!isPlaying) return;
-                const note = track.notes[noteIndex];
-                const duration = track.durations[noteIndex];
-                
-                playSynthNote(note, duration);
-                
-                noteIndex = (noteIndex + 1) % track.notes.length;
-                playInterval = setTimeout(playLoop, track.tempo);
-            };
-            playLoop();
-        }
-
-        function stopMusic() {
-            isPlaying = false;
-            clearTimeout(playInterval);
-            document.getElementById("now-playing-title").innerText = "Müzik durduruldu";
-            synthNodes.forEach(node => {
-                try { node.stop(); } catch(e) {}
-            });
-            synthNodes = [];
-        }
-
-        function nextTrack() {
-            trackIndex = (trackIndex + 1) % playlist.length;
-            if(isPlaying) {
-                playTrack(trackIndex);
-            } else {
-                document.getElementById("now-playing-title").innerText = playlist[trackIndex].title + " (Hazır)";
-            }
-        }
-
-        function prevTrack() {
-            trackIndex = (trackIndex - 1 + playlist.length) % playlist.length;
-            if(isPlaying) {
-                playTrack(trackIndex);
-            } else {
-                document.getElementById("now-playing-title").innerText = playlist[trackIndex].title + " (Hazır)";
-            }
-        }
-
-        window.onload = () => {
-            loadQuestion();
-        };
-    </script>
-</body>
-</html>
+                        </li>
+       
+    </ul>
+    
+</div>
+
+   
